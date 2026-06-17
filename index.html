@@ -363,14 +363,20 @@
         import { getAuth, signInWithEmailAndPassword } 
         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        // Firebase configuration (obfuscated)
+        const _cfg = [
+            atob("QUl6YVN5RFJNU0xRSFpPZnpBbzhNd1hzSDRiQmNPNWNMaUdTdlE="),
+            atob("c3VtbWVyLWNpdHktNmRkZWMuZmlyZWJhc2VhcHAuY29t"),
+            atob("aHR0cHM6Ly9zdW1tZXItY2l0eS02ZGRlYy1kZWZhdWx0LXJ0ZGIuYXNpYS1zb3V0aGVhc3QxLmZpcmViYXNlZGF0YWJhc2UuYXBw"),
+            atob("c3VtbWVyLWNpdHktNmRkZWM="),
+            atob("c3VtbWVyLWNpdHktNmRkZWMuZmlyZWJhc2VzdG9yYWdlLmFwcA=="),
+            atob("Mjc4MDM3MDkwOTIw"),
+            atob("MToyNzgwMzcwOTA5MjA6d2ViOjBkNmU3NWZjYzUyMTUzN2FlY2UxZGQ=")
+        ];
         const firebaseConfig = {
-            apiKey: "AIzaSyDRMwSLQHZOfzAo8MwXsH4bBcO5cLiGSvQ",
-            authDomain: "summer-city-6ddec.firebaseapp.com",
-            databaseURL: "https://summer-city-6ddec-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "summer-city-6ddec",
-            storageBucket: "summer-city-6ddec.firebasestorage.app",
-            messagingSenderId: "278037090920",
-            appId: "1:278037090920:web:0d6e75fcc521537aece1dd"
+            apiKey: _cfg[0], authDomain: _cfg[1], databaseURL: _cfg[2],
+            projectId: _cfg[3], storageBucket: _cfg[4],
+            messagingSenderId: _cfg[5], appId: _cfg[6]
         };
 
         let app, db, auth, isFirebaseValid = false;
@@ -550,8 +556,9 @@
                 try {
                     // ใช้ Firebase Auth Email/Password ที่ตั้งไว้ใน Firebase Console
                     // email ถูกสร้างจาก username เพื่อไม่ให้ใครเดาได้
-                    const adminEmail = "admin@summercity.app";
-                    const credential = await signInWithEmailAndPassword(auth, adminEmail, passIn);
+                    // email ถูก encode ไว้ ไม่แสดงใน source โดยตรง
+                    const _e = atob("YWRtaW5Ac3VtbWVyY2l0eS5hcHA=");
+                    const credential = await signInWithEmailAndPassword(auth, _e, passIn);
                     if (credential.user) {
                         window.currentUser = { username: "Admin_Summer", role: "ADMIN" };
                         loginValid = true;
@@ -573,12 +580,10 @@
                 } catch(err) { console.error("User auth error:", err); }
             }
 
-            // ===== Fallback: ถ้า Firebase ใช้ไม่ได้ ใช้ Local fallback user =====
+            // ===== Fallback: ถ้า Firebase ใช้ไม่ได้ =====
             if (!loginValid && !isFirebaseValid) {
-                if (userIn === "summerplayer" && passIn === "summer999") {
-                    window.currentUser = { username: "Player_Normal", role: "USER" };
-                    loginValid = true;
-                }
+                alert("ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาลองใหม่อีกครั้ง");
+                return;
             }
 
             if (loginValid) window.initMainApp();
