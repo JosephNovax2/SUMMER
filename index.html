@@ -16,350 +16,259 @@
             50% { border-color: rgba(249, 115, 22, 0.9); box-shadow: 0 0 25px rgba(239, 68, 68, 0.7); }
         }
         .hot-fire-card {
-            animation: fireGlow 2s infinite ease-in-out;
-            background: linear-gradient(145deg, #170b03, #0a0a0a) !important;
+            animation: fireGlow 3s infinite ease-in-out;
+            background: linear-gradient(145deg, #171717, #0a0a0a);
         }
-        /* ตกแต่งแถบลูกกลิ้ง (Scrollbar) ด้านในกล่องข้อความให้ดูสวยงามเข้ากับธีมมืด */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0a0a0a;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #262626;
-            border-radius: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #f97316;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0a0a0a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #262626; border-radius: 999px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #404040; }
     </style>
 </head>
-<body class="bg-neutral-950 text-neutral-200 min-h-screen selection:bg-orange-500 selection:text-neutral-950">
+<body class="bg-black text-neutral-300 min-h-screen selection:bg-cyan-500 selection:text-black">
 
-    <!-- ================= 1. หน้า LOGIN ================= -->
-    <div id="auth-page" class="fixed inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-orange-950 flex items-center justify-center z-50 p-4">
-        <div class="bg-neutral-900/90 border border-orange-500/30 p-8 rounded-3xl shadow-2xl w-full max-w-md mx-auto text-center backdrop-blur-md">
-            <div class="mb-6">
-                <div class="text-5xl mb-2">🌴</div>
-                <h1 class="text-2xl font-black text-neutral-100 uppercase tracking-wider">SUMMER <span class="text-orange-500">CITY</span></h1>
-                <div class="inline-block bg-cyan-500/10 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full mt-3 border border-cyan-500/20 tracking-wide">
-                    🚀 Guide Book แนะนำการฟาร์มผู้เล่นใหม่
-                </div>
+    <div id="auth-page" class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-radial from-neutral-900 to-black">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20"></div>
+        <div class="w-full max-w-md bg-neutral-950/40 backdrop-blur-xl border border-neutral-800/60 p-8 rounded-3xl shadow-2xl relative z-10">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-neutral-950 text-2xl font-black mb-4 shadow-lg shadow-cyan-500/10">S</div>
+                <h1 class="text-2xl font-black text-neutral-100 tracking-tight">SUMMER CITY SS2</h1>
+                <p class="text-xs text-neutral-500 mt-1 font-medium uppercase tracking-widest">Ultimate Farm Guide Book</p>
             </div>
-
-            <form id="auth-form" onsubmit="handleAuth(event)" class="text-left space-y-4">
+            <form onsubmit="handleAuth(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-neutral-400 mb-1.5 uppercase tracking-wider">ชื่อผู้ใช้งาน (Username)</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-neutral-500"></i>
-                        <input type="text" id="username" required class="w-full pl-10 pr-4 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl focus:outline-none focus:border-cyan-500 text-neutral-200 text-sm" placeholder="ระบุ Username ของคุณ">
-                    </div>
+                    <label class="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5 pl-1">USERNAME</label>
+                    <input type="text" id="username" required autocomplete="off" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-neutral-100 placeholder-neutral-600 focus:outline-none focus:border-cyan-500/50 transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-neutral-400 mb-1.5 uppercase tracking-wider">รหัสผ่าน (Password)</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-neutral-500"></i>
-                        <input type="password" id="password" required class="w-full pl-10 pr-4 py-2.5 bg-neutral-950 border border-neutral-800 rounded-xl focus:outline-none focus:border-cyan-500 text-neutral-200 text-sm" placeholder="ระบุ Password ของคุณ">
-                    </div>
+                    <label class="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-1.5 pl-1">PASSWORD</label>
+                    <input type="password" id="password" required class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-neutral-100 placeholder-neutral-600 focus:outline-none focus:border-cyan-500/50 transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-neutral-950 font-black py-3 rounded-xl transition duration-200 shadow-lg shadow-orange-500/20 mt-2 cursor-pointer">
-                    เข้าสู่ระบบแนะนำการฟาร์ม
-                </button>
+                <button type="submit" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-neutral-950 font-extrabold text-sm py-3.5 rounded-xl shadow-lg shadow-cyan-500/10 transition duration-200 mt-2 cursor-pointer">SIGN IN SYSTEM</button>
             </form>
-            <p class="text-[10px] text-neutral-500 mt-6 tracking-wide">SYSTEM SECURED BY SUMMER CITY DEVELOPER</p>
         </div>
     </div>
 
-
-    <!-- ================= 2. หน้าเว็บหลัก ================= -->
-    <div id="main-app" class="hidden">
-        
-        <!-- HEADER NAVIGATION -->
-        <header class="bg-neutral-900 border-b border-orange-500/20 sticky top-0 z-40 shadow-md">
-            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="flex items-center space-x-3 shrink-0">
-                    <span class="text-2xl">☀️</span>
-                    <div>
-                        <h1 class="text-md font-black text-neutral-100 tracking-wide leading-tight">SUMMER <span class="text-orange-500">CITY</span> SS2</h1>
-                        <p class="text-xs text-neutral-400 font-medium">ระบบข้อมูลและการคำนวณฟาร์มรอบเมือง</p>
-                    </div>
+    <div id="main-app" class="hidden min-h-screen flex flex-col">
+        <header class="border-b border-neutral-900 bg-neutral-950/50 backdrop-blur shrink-0 sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs font-black bg-neutral-900 border border-neutral-800 px-2.5 py-1 rounded-md text-cyan-400 tracking-wider">SS2</span>
+                    <span class="font-black text-sm text-neutral-200 tracking-tight hidden sm:inline-block">SUMMER CITY GUIDE</span>
                 </div>
-
-                <div class="flex items-center space-x-3 shrink-0">
-                    <div class="text-right border-l pl-3 border-neutral-800 min-w-[80px]">
-                        <span id="user-display-name" class="font-bold text-neutral-200 text-sm block">Username</span>
-                        <span id="user-role-badge" class="text-[10px] px-2 py-0.2 rounded-full font-bold">Role</span>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-neutral-900/60 border border-neutral-800/60 pl-3 pr-2 py-1 rounded-xl">
+                        <span id="user-display-name" class="text-xs font-bold text-neutral-300">---</span>
+                        <span id="user-role-badge" class="text-[9px] px-2 py-0.5 rounded-full font-black tracking-wide">---</span>
                     </div>
-                    <button onclick="logout()" class="bg-neutral-950 hover:bg-red-950/40 text-neutral-400 hover:text-red-400 p-2 rounded-xl transition border border-neutral-800 cursor-pointer">
-                        <i class="fa-solid fa-right-from-bracket text-sm"></i>
-                    </button>
+                    <button onclick="logout()" class="text-xs font-bold text-neutral-500 hover:text-rose-400 transition cursor-pointer"><i class="fa-solid fa-power-off"></i> LOGOUT</button>
                 </div>
             </div>
         </header>
 
-        <main class="max-w-7xl mx-auto px-4 py-8">
-
-            <!-- ECONOMY BOARD -->
-            <section class="bg-gradient-to-b from-neutral-900 to-neutral-950 rounded-2xl p-6 shadow-[0_0_25px_rgba(249,115,22,0.12)] border-2 border-orange-500/40 mb-10 relative overflow-hidden">
-                <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-orange-500 via-cyan-500 to-orange-500"></div>
-                
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-neutral-800/80 pb-4 mb-6 gap-3">
-                    <div>
-                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-200 to-cyan-400 flex items-center gap-2.5">
-                            <i class="fa-solid fa-circle-exclamation text-orange-500 text-xl animate-pulse"></i> บอร์ดแจ้งปรับราคากลาง Economy ล่าสุดประจำเมือง
-                        </h2>
-                        <p class="text-xs text-neutral-400 mt-1.5">
-                            📌 ตรวจสอบราคาตลาดก่อนออกฟาร์ม | อัปเดตล่าสุด: <span id="eco-update-time" class="font-bold text-cyan-400 bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-500/20">-</span>
-                        </p>
-                    </div>
-                    <button id="admin-edit-eco-btn" onclick="toggleEcoEdit()" class="hidden bg-orange-500 text-neutral-950 text-xs font-black px-4 py-2 rounded-xl hover:bg-orange-600 transition shadow-lg shadow-orange-500/10 cursor-pointer">
-                        <i class="fa-solid fa-pen-to-square"></i> แก้ไขบอร์ดราคา
-                    </button>
-                </div>
-
-                <!-- ฟอร์มแก้ไขราคากลาง -->
-                <div id="eco-edit-form" class="hidden mb-6 p-5 bg-neutral-950 rounded-2xl border border-orange-500/20 space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-neutral-800 pb-2 gap-2">
-                        <h3 class="font-bold text-orange-400 text-xs flex items-center gap-1.5"><i class="fa-solid fa-gears"></i> ระบบจัดการบอร์ดราคา (Admin Only)</h3>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <input type="text" id="input-eco-time" class="px-3 py-1 text-xs bg-neutral-900 border border-neutral-800 rounded-lg text-neutral-200 outline-none w-full sm:w-48" placeholder="ระบุวันเวลา เช่น 17/06/2026 15:30">
-                            <button onclick="saveEcoTimeOnly()" class="bg-orange-500 text-neutral-950 text-[11px] font-bold px-3 py-1 rounded hover:bg-orange-600 shrink-0">บันทึกเวลา</button>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end bg-neutral-900 p-4 rounded-xl border border-neutral-800">
-                        <div>
-                            <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่องานฟาร์ม</label>
-                            <input type="text" id="input-eco-name" class="w-full px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-lg text-neutral-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพประกอบ (Direct URL)</label>
-                            <input type="url" id="input-eco-img" class="w-full px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-lg text-neutral-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-neutral-400 mb-1">สถานะราคา</label>
-                            <select id="input-eco-status" class="w-full px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-lg text-neutral-200">
-                                <option value="BUFF">📈 BUFF (ราคาขึ้น)</option>
-                                <option value="NERF">📉 NERF (ราคาลง)</option>
-                            </select>
-                        </div>
-                        <button onclick="executeAddEcoItem()" class="bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-black text-xs py-2 rounded-lg cursor-pointer">
-                            <i class="fa-solid fa-plus"></i> เพิ่มเข้าบอร์ดราคา
-                        </button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <div class="bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
-                            <span>📈 รายการงานที่โดน BUFF ราคา (เงินดีมาก)</span>
-                        </div>
-                        <div id="eco-buff-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="bg-rose-950/40 border border-rose-500/20 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
-                            <span>📉 รายการงานที่โดน NERF ราคา (รายได้ลดลง)</span>
-                        </div>
-                        <div id="eco-nerf-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- ================= SECTION: คู่มือและปุ่มควบคุมหลัก ================= -->
-            <section class="space-y-6">
-                
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-neutral-800 pb-4 gap-4">
-                    <h2 class="text-xl font-black text-neutral-100 tracking-wide flex items-center gap-2">
-                        <i class="fa-solid fa-briefcase text-cyan-400"></i> ข้อมูลวิธีทำและระบบงานฟาร์มทั้งหมดในประเทศ
-                    </h2>
-                    <button id="admin-add-job-btn" onclick="openAddJobModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
-                        <i class="fa-solid fa-plus"></i> เพิ่มข้อมูลงานฟาร์มใหม่
-                    </button>
-                </div>
-
-                <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 shadow-inner">
-                    <div class="bg-neutral-950 p-1 rounded-xl border border-neutral-800 flex items-center space-x-1 w-full md:w-auto justify-center">
-                        <button onclick="filterJobCategory('all')" id="filter-all-btn" class="px-4 py-2 text-xs font-bold rounded-lg transition bg-orange-500 text-neutral-950 cursor-pointer">
-                            📋 ทั้งหมด
-                        </button>
-                        <button onclick="filterJobCategory('white')" id="filter-white-btn" class="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200 rounded-lg transition cursor-pointer flex items-center gap-1">
-                            ⚪ งานขาว
-                        </button>
-                        <button onclick="filterJobCategory('black')" id="filter-black-btn" class="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200 rounded-lg transition cursor-pointer flex items-center gap-1">
-                            ⚫ งานดำ
-                        </button>
-                    </div>
-
-                    <button onclick="openCalculatorModal()" class="w-full md:w-auto bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-neutral-950 px-6 py-2.5 rounded-xl text-xs font-black shadow-lg shadow-cyan-500/10 transition flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-calculator text-sm"></i> 🚗 เปิดเครื่องคำนวณรถโล (งานปลากระป๋อง)
-                    </button>
-                </div>
-
-
-                <!-- CONTAINER แสดงข้อมูลการ์ดงานฟาร์ม -->
-                <div class="space-y-12 pt-4">
-                    <!-- ⚪ 1. หมวดหมู่งานขาว -->
-                    <div id="section-white-jobs" class="space-y-6 block">
-                        <div class="bg-gradient-to-r from-cyan-950/30 to-transparent p-4 rounded-xl border-l-4 border-cyan-500">
-                            <h3 class="text-md font-black text-cyan-400 uppercase tracking-wide">หมวดหมู่: งานขาว (งานถูกกฎหมายรอบเมือง)</h3>
-                        </div>
-                        <div id="job-white-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                    </div>
-
-                    <!-- ⚫ 2. หมวดหมู่งานดำ -->
-                    <div id="section-black-jobs" class="space-y-6 block">
-                        <div class="bg-gradient-to-r from-orange-950/30 to-transparent p-4 rounded-xl border-l-4 border-orange-500">
-                            <h3 class="text-md font-black text-orange-400 uppercase tracking-wide">หมวดหมู่: งานดำ (งานใต้ดินมืด)</h3>
-                        </div>
-                        <div id="job-black-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                    </div>
-                </div>
-
-            </section>
-        </main>
-    </div>
-
-
-    <!-- ================= MODAL: เครื่องคำนวณรถโล ================= -->
-    <div id="calc-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
-        <div class="bg-neutral-900 border border-cyan-500/30 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
-            <div class="bg-neutral-950 border-b border-neutral-800 text-neutral-100 p-5 font-bold flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-calculator text-2xl text-cyan-500"></i>
-                    <div>
-                        <h3 class="text-md font-black text-cyan-500">เครื่องคำนวณสัดส่วนฟาร์มรอบเมือง (งานปลากระป๋อง)</h3>
-                    </div>
-                </div>
-                <button onclick="closeCalculatorModal()" class="text-neutral-400 hover:text-neutral-200 cursor-pointer"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            </div>
+        <div class="max-w-7xl w-full mx-auto px-4 py-6 flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
             
-            <div class="p-6 space-y-6">
-                <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800">
-                    <label class="block text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wide">🚗 ระบุน้ำหนักท้ายรถโลของคุณ (KG):</label>
+            <aside class="w-full lg:w-80 shrink-0 flex flex-col gap-4">
+                <div class="bg-neutral-950 border border-neutral-900 rounded-2xl p-4 flex flex-col">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="font-black text-sm text-neutral-200 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-chart-line text-emerald-400"></i> ECONOMY BOARD</h2>
+                        <button id="admin-edit-eco-btn" onclick="openEcoEditModal()" class="hidden text-[10px] font-bold bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 px-2.5 py-1 rounded-lg text-neutral-400 transition cursor-pointer">MANAGE</button>
+                    </div>
+                    <div class="text-[11px] font-bold text-neutral-500 mb-4 bg-neutral-900/40 border border-neutral-900 p-2.5 rounded-xl flex items-center justify-between">
+                        <span>อัพเดทล่าสุด:</span>
+                        <span id="eco-update-time" class="text-neutral-300 font-extrabold">ยังไม่ได้ระบุเวลา</span>
+                    </div>
+                    
+                    <div class="space-y-4 overflow-y-auto custom-scrollbar pr-1 max-h-[360px] lg:max-h-none flex-1">
+                        <div>
+                            <div class="text-[10px] font-black text-emerald-400 tracking-wider mb-2 uppercase flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> BUFF ITEMS (ราคาขึ้น)</div>
+                            <div id="eco-buff-container" class="grid grid-cols-1 gap-2"></div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-black text-rose-400 tracking-wider mb-2 uppercase flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> NERF ITEMS (ราคาลง)</div>
+                            <div id="eco-nerf-container" class="grid grid-cols-1 gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-neutral-950 border border-neutral-900 rounded-2xl p-4 shrink-0">
+                    <h2 class="font-black text-sm text-neutral-200 uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fa-solid fa-calculator text-cyan-400"></i> รถโล CALCULATOR</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-1">น้ำหนักท้ายรถ (KG)</label>
+                            <div class="relative">
+                                <input type="number" id="input-car-weight" value="210" oninput="runAdvancedCalculator()" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-3 pr-10 py-2 text-xs text-neutral-200 font-bold focus:outline-none focus:border-cyan-500/30">
+                                <span class="absolute right-3 top-2 text-[10px] font-black text-neutral-600">KG</span>
+                            </div>
+                        </div>
+                        <div class="bg-neutral-900/30 border border-neutral-900 rounded-xl p-3 space-y-2 text-xs font-medium">
+                            <div class="flex justify-between items-center border-b border-neutral-900 pb-1.5">
+                                <span class="text-neutral-400 font-bold text-[11px]"><i class="fa-solid fa-fish text-red-400"></i> ปลากระป๋อง (3 วัตถุดิบ)</span>
+                                <span id="res-total-count" class="font-black text-cyan-400 text-[11px]">0 ชุด</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] pt-0.5">
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🍅 มะเขือเทศ ตัว:</span>
+                                    <span id="res-bag-tomato" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🍅 มะเขือเทศ รถ:</span>
+                                    <span id="res-trunk-tomato" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                                <div class="col-span-2 border-t border-neutral-900/40 my-0.5"></div>
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🌶️ พริก ตัว:</span>
+                                    <span id="res-bag-chili" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🌶️ พริก รถ:</span>
+                                    <span id="res-trunk-chili" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                                <div class="col-span-2 border-t border-neutral-900/40 my-0.5"></div>
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🐟 ปลา ตัว:</span>
+                                    <span id="res-bag-fish" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                                <div>
+                                    <span class="block text-neutral-500 font-bold mb-0.5">🐟 ปลา รถ:</span>
+                                    <span id="res-trunk-fish" class="font-extrabold text-neutral-300">0 ชิ้น</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 flex flex-col gap-4 min-w-0">
+                <div class="bg-neutral-950 border border-neutral-900 p-4 rounded-2xl shrink-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="filterJobCategory('all')" id="btn-filter-all" class="text-xs font-bold px-4 py-2 rounded-xl bg-cyan-500 text-neutral-950 border border-cyan-400 transition cursor-pointer shadow-sm shadow-cyan-500/10">ทั้งหมด</button>
+                        <button onclick="filterJobCategory('งานขาว')" id="btn-filter-white" class="text-xs font-bold px-4 py-2 rounded-xl bg-neutral-900 text-neutral-400 hover:text-neutral-200 border border-neutral-800 transition cursor-pointer">งานขาว ⚪</button>
+                        <button onclick="filterJobCategory('งานดำ')" id="btn-filter-black" class="text-xs font-bold px-4 py-2 rounded-xl bg-neutral-900 text-neutral-400 hover:text-neutral-200 border border-neutral-800 transition cursor-pointer">งานดำ ⚫</button>
+                    </div>
+                    <button id="admin-add-job-btn" onclick="openCreateJobModal()" class="hidden text-xs font-black bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-neutral-950 px-4 py-2 rounded-xl transition shadow cursor-pointer"><i class="fa-solid fa-circle-plus"></i> เพิ่มคู่มือใหม่</button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto custom-scrollbar pr-1 min-h-0">
+                    <div id="section-white-jobs" class="mb-6">
+                        <div class="text-xs font-black text-neutral-400 tracking-wider uppercase mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-neutral-500"></span> รายการคู่มือ งานขาว (LEGAL JOBS)</div>
+                        <div id="job-white-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                    </div>
+                    <div id="section-black-jobs">
+                        <div class="text-xs font-black text-neutral-400 tracking-wider uppercase mb-3 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span> รายการคู่มือ งานดำ (ILLEGAL JOBS)</div>
+                        <div id="job-black-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div id="eco-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-md bg-neutral-950 border border-neutral-900 rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-neutral-900">
+                <h3 class="font-black text-sm text-neutral-100 uppercase tracking-wider">จัดการบอร์ดราคากลาง</h3>
+                <button onclick="closeEcoModal()" class="text-neutral-500 hover:text-neutral-300 text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-neutral-900/40 border border-neutral-900 p-3 rounded-2xl space-y-2">
+                    <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-wider">เวลาอัพเดทราคากลางล่าสุด</label>
                     <div class="flex gap-2">
-                        <input type="number" id="input-car-weight" value="200" min="0" class="w-full px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-xl font-bold text-md outline-none text-neutral-100">
-                        <button onclick="runAdvancedCalculator()" class="bg-cyan-500 text-neutral-950 font-black px-6 text-xs rounded-xl hover:bg-cyan-600 transition shrink-0 cursor-pointer">คำนวณสัดส่วน</button>
+                        <input type="text" id="input-eco-time" placeholder="เช่น 12:00 น. หรือ 21/10" class="flex-1 bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-neutral-200 font-bold">
+                        <button onclick="saveEcoTimeOnly()" class="bg-cyan-500 text-neutral-950 font-bold text-xs px-4 rounded-xl cursor-pointer">เซฟเวลา</button>
                     </div>
                 </div>
-
-                <div class="space-y-4">
-                    <div class="bg-neutral-950 border border-neutral-800 rounded-xl overflow-hidden text-xs">
-                        <div class="bg-neutral-900 px-4 py-2.5 font-bold text-neutral-300 grid grid-cols-3 text-center border-b border-neutral-800">
-                            <span>วัตถุดิบจำเป็น</span>
-                            <span>จำนวนในกระเป๋า</span>
-                            <span>จำนวนเก็บไว้ท้ายรถโล</span>
-                        </div>
-                        <div class="p-2 space-y-1 font-bold text-center">
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-rose-400 text-left pl-4">🍅 มะเขือเทศ</span>
-                                <span id="res-bag-tomato" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-tomato" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-emerald-400 text-left pl-4">🌶️ พริก</span>
-                                <span id="res-bag-chili" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-chili" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-blue-400 text-left pl-4">🐟 ปลา</span>
-                                <span id="res-bag-fish" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-fish" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                        </div>
+                <div class="border-t border-neutral-900 my-2"></div>
+                <div class="space-y-2.5">
+                    <span class="block text-[10px] font-black text-neutral-400 uppercase tracking-wider"><i class="fa-solid fa-plus text-cyan-400"></i> เพิ่มรายการไอเทมใหม่</span>
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-1">ชื่อไอเทม / ชื่องาน</label>
+                        <input type="text" id="input-eco-name" placeholder="ระบุชื่อไอเทม" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-neutral-200">
                     </div>
-
-                    <div class="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 flex items-center justify-between">
-                        <div>
-                            <span class="block text-[11px] font-bold text-orange-400 uppercase tracking-wide">📦 สรุปผลยอดวัตถุดิบสุทธิ</span>
-                        </div>
-                        <div class="text-right bg-neutral-950 px-4 py-2 rounded-xl border border-neutral-800">
-                            <span id="res-total-final" class="text-xl font-black text-orange-500">- ชิ้น</span>
-                        </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-1">รูปภาพไอเทม (URL เท่านั้น)</label>
+                        <input type="text" id="input-eco-img" placeholder="วางลิงก์รูปภาพสัญลักษณ์ไอเทม" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-neutral-200">
                     </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-500 uppercase tracking-wider mb-1">สถานะความผันผวนราคา</label>
+                        <select id="input-eco-status" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-neutral-300 font-bold">
+                            <option value="BUFF">BUFF (ราคาขึ้นสีเขียว ↑)</option>
+                            <option value="NERF">NERF (ราคาลงสีแดง ↓)</option>
+                        </select>
+                    </div>
+                    <button onclick="executeAddEcoItem()" class="w-full bg-neutral-900 hover:bg-neutral-800 text-cyan-400 font-bold text-xs py-2.5 rounded-xl border border-neutral-800 transition cursor-pointer mt-2">เพิ่มเข้าสู่ระบบบอร์ด</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- ================= MODAL: เพิ่ม/แก้ไข ข้อมูลงานฟาร์ม ================= -->
-    <div id="job-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
-        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
-            <div class="bg-neutral-950 border-b border-neutral-800 text-cyan-500 p-4 font-bold flex justify-between items-center">
-                <span id="modal-title" class="text-sm font-black uppercase">จัดการรายละเอียดข้อมูลงานฟาร์ม</span>
-                <button type="button" onclick="closeJobModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400"></i></button>
+    <div id="job-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="w-full max-w-xl bg-neutral-950 border border-neutral-900 rounded-3xl p-6 shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center pb-2 border-b border-neutral-900 shrink-0">
+                <h3 id="job-modal-title" class="font-black text-sm text-neutral-100 uppercase tracking-wider">สร้างคู่มือฟาร์มใหม่</h3>
+                <button onclick="closeJobModal()" class="text-neutral-500 hover:text-neutral-300 text-sm cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <form id="job-main-form" class="p-6 space-y-4">
+            <div class="flex-1 overflow-y-auto custom-scrollbar my-4 pr-1 space-y-3.5 text-xs">
                 <input type="hidden" id="job-id">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">ชื่องานฟาร์ม</label>
+                        <input type="text" id="job-name" placeholder="เช่น ฟาร์มส้ม, ทำปลากระป๋อง" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs focus:outline-none text-neutral-200">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">ประเภทงาน</label>
+                        <select id="job-type" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs focus:outline-none text-neutral-300 font-bold">
+                            <option value="งานขาว">งานขาว ⚪ (ถูกกฎหมาย)</option>
+                            <option value="งานดำ">งานดำ ⚫ (ผิดกฎหมาย)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">รูปภาพหน้าปกงานฟาร์ม (URL เท่านั้น)</label>
+                    <input type="text" id="job-image" placeholder="วางลิงก์รูปภาพหน้าปกสวยๆ" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs focus:outline-none text-neutral-200">
+                </div>
+                <div class="grid grid-cols-2 gap-3 items-center">
+                    <div>
+                        <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">ระดับความยากการทำ</label>
+                        <select id="job-difficulty" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2.5 text-xs focus:outline-none text-neutral-300">
+                            <option value="ง่าย">ง่าย (ชิลๆ)</option>
+                            <option value="ปานกลาง">ปานกลาง (กำลังดี)</option>
+                            <option value="ยาก">ยาก (ใช้ฝีมือ)</option>
+                            <option value="ยากมาก">ยากมาก (ตึงจัด)</option>
+                        </select>
+                    </div>
+                    <div class="pt-4 pl-2 flex items-center">
+                        <label class="relative inline-flex items-center cursor-pointer select-none">
+                            <input type="checkbox" id="job-is-hot" class="sr-only peer">
+                            <div class="w-9 h-5 bg-neutral-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-neutral-400 after:border-neutral-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-orange-600 peer-checked:after:bg-white"></div>
+                            <span class="ml-2.5 text-[10px] font-black text-orange-500 uppercase tracking-wider animate-pulse"><i class="fa-solid fa-fire"></i> แนะนำเป็นพิเศษ (HOT RECOMMEND)</span>
+                        </label>
+                    </div>
+                </div>
                 
-                <div class="bg-orange-500/10 border border-orange-500/20 p-3 rounded-xl flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-fire text-orange-500 text-lg animate-pulse"></i>
-                        <div>
-                            <span class="block text-xs font-bold text-neutral-200">เปิดระบบโหมดงานยอดนิยม (งานฮอตฮิต 🔥)</span>
-                            <span class="text-[10px] text-neutral-400 block">เปิดแล้วกล่องข้อมูลจะมีกรอบไฟนีออนส้มวิบวับโชว์เด่นทันที</span>
-                        </div>
-                    </div>
-                    <input type="checkbox" id="job-is-hot" class="w-5 h-5 accent-orange-500 cursor-pointer">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่องานฟาร์ม</label>
-                    <input type="text" id="job-name" required class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพประกอบงาน (URL)</label>
-                    <input type="url" id="job-image" required class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-neutral-400 mb-1">ประเภทงาน</label>
-                        <select id="job-type" onchange="toggleFormFieldsByJobType()" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200">
-                            <option value="งานขาว">งานขาว ⚪</option>
-                            <option value="งานดำ">งานดำ ⚫</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับความยากในการฟาร์ม</label>
-                        <select id="job-difficulty" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200">
-                            <option value="ง่าย">ง่าย ⭐</option>
-                            <option value="ปานกลาง">ปานกลาง ⭐⭐</option>
-                            <option value="ยาก">ยาก ⭐⭐⭐</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="white-job-items-section" class="space-y-2">
+                <div class="bg-neutral-900/40 border border-neutral-900 p-3 rounded-2xl space-y-2">
                     <div class="flex justify-between items-center">
-                        <label class="text-xs font-bold text-cyan-400 uppercase tracking-wide">🎒 ไอเทมที่จำเป็นต้องใช้ฟาร์ม:</label>
-                        <button type="button" onclick="addNewItemInputField('')" class="bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-neutral-950 text-[10px] px-2 py-1 rounded transition font-bold">
-                            <i class="fa-solid fa-plus"></i> เพิ่มไอเทม
-                        </button>
+                        <span class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider"><i class="fa-solid fa-box text-neutral-500"></i> ไอเทมที่จำเป็นต้องใช้ในการฟาร์ม (ถ้ามี)</span>
+                        <button type="button" onclick="addNewItemInputField('')" class="text-[9px] font-bold text-cyan-400 bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800 cursor-pointer">+ เพิ่มไอเทม</button>
                     </div>
-                    <div id="item-inputs-container" class="space-y-1.5"></div>
+                    <div id="job-items-inputs-wrapper" class="space-y-1.5 max-h-[100px] overflow-y-auto custom-scrollbar pr-1"></div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-neutral-400 mb-1">วิธีฟาร์ม / จุดทำและจุดขาย / ข้อมูลเพิ่มเติม</label>
-                    <textarea id="job-howto" rows="4" required class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500" placeholder="พิมพ์อธิบายวิธีทำฟาร์มได้ยาวเต็มที่ ระบบตัดคำรองรับข้อความยาวพิเศษแล้ว"></textarea>
+                    <label class="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1"><i class="fa-solid fa-map-location-dot"></i> ข้อมูล วิธีการทำฟาร์ม และคำแนะนำ</label>
+                    <textarea id="job-howto" rows="5" placeholder="กรอกขั้นตอนการทำฟาร์ม จุดรับของ จุดทำ ประโยชน์ หรือคำแนะนำสำหรับผู้เล่น..." class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-neutral-300 leading-relaxed custom-scrollbar"></textarea>
                 </div>
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeJobModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800">ยกเลิก</button>
-                    <button type="button" onclick="executeSaveJob()" class="px-5 py-2 bg-cyan-500 text-neutral-950 rounded-xl text-xs font-black">บันทึกข้อมูล</button>
-                </div>
-            </form>
+            </div>
+            <div class="pt-2 border-t border-neutral-900 flex justify-end space-x-2 shrink-0">
+                <button onclick="closeJobModal()" class="text-xs font-bold bg-neutral-900 text-neutral-400 px-4 py-2 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                <button onclick="executeSaveJob()" class="text-xs font-black bg-cyan-500 text-neutral-950 px-5 py-2 rounded-xl shadow-md shadow-cyan-500/10 cursor-pointer">บันทึกข้อมูล</button>
+            </div>
         </div>
     </div>
 
-
-    <!-- ================= DATABASE CONNECTIVITY SYSTEM ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, remove, onValue } 
         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        // ดึงฟังก์ชันสำหรับการยืนยันตัวตนความปลอดภัยหลังบ้านแบบปิดมาใช้ป้องกันคนป่วน
         import { getAuth, signInWithEmailAndPassword } 
         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -388,7 +297,6 @@
             localStorage.setItem(key, JSON.stringify(val));
         }
 
-        // ย้ายระบบ Realtime Listener ไปทำงานเฉพาะหลังจากการเชื่อมต่อสิทธิ์ความปลอดภัยล็อกอินสำเร็จแล้ว
         function startFirebaseListeners() {
             if (isFirebaseValid) {
                 onValue(ref(db, 'eco_time'), (snap) => renderEcoTime(snap.val()));
@@ -443,7 +351,6 @@
                 const isHot = job.isHot === true;
                 const card = document.createElement('div');
                 
-                // ล็อกความสูงของการ์ดทุกใบให้เท่ากันเป็นระเบียบ (h-[500px] รองรับภาพสัดส่วน 16:9 แนวนอน)
                 card.className = isHot 
                     ? "hot-fire-card rounded-2xl overflow-hidden shadow-xl border-2 flex flex-col group transition duration-200 relative h-[500px]"
                     : "bg-neutral-900 rounded-2xl overflow-hidden shadow-sm border border-neutral-800 flex flex-col group hover:border-cyan-500/30 transition duration-200 relative h-[500px]";
@@ -458,7 +365,6 @@
 
                     card.innerHTML = `
                         ${fireBadge}
-                        <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img src="${job.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
                             <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 tracking-wider uppercase">งานขาว ⚪</span>
@@ -474,11 +380,7 @@
                                         <div class="flex flex-wrap gap-1 max-h-[34px] overflow-y-auto custom-scrollbar min-w-0">${itemsHTML}</div>
                                     </div>
                                 </div>
-                                
-                                <!-- ดึงหัวข้อ วิธีการทำฟาร์ม แยกออกมาอยู่ด้านนอกกล่องเลื่อน เพื่อให้คงอยู่กับที่ถาวร -->
                                 <span class="font-bold block text-cyan-400 text-xs mb-1 shrink-0"><i class="fa-solid fa-map-location-dot"></i> วิธีการทำฟาร์ม:</span>
-                                
-                                <!-- กล่องสไลด์แสดงข้อความเนื้อหาอธิบายวิธีฟาร์ม -->
                                 <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
                             </div>
                             <div class="mt-2 pt-2 border-t border-neutral-800/60 flex justify-between items-center shrink-0">
@@ -496,7 +398,6 @@
                 } else {
                     card.innerHTML = `
                         ${fireBadge}
-                        <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img src="${job.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
                             <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30 tracking-wider uppercase">งานดำ ⚫</span>
@@ -506,11 +407,7 @@
                                 <h3 class="text-sm font-bold text-neutral-100 mb-2 truncate break-words shrink-0">
                                     <span class="w-2 h-2 rounded-full bg-orange-400 inline-block"></span> ${job.name}
                                 </h3>
-                                
-                                <!-- ดึงหัวข้อ ข้อมูลและวิธีฟาร์มใต้ดิน แยกออกมาอยู่ด้านนอกกล่องเลื่อน เพื่อให้คงอยู่กับที่ถาวร -->
                                 <span class="font-bold block text-orange-400 text-xs mb-1 shrink-0"><i class="fa-solid fa-skull-crossbones"></i> ข้อมูลและวิธีฟาร์มใต้ดิน:</span>
-                                
-                                <!-- กล่องสไลด์แสดงข้อความเนื้อหาอธิบายวิธีฟาร์มใต้ดิน -->
                                 <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
                             </div>
                             <div class="mt-2 pt-2 border-t border-neutral-800/60 flex justify-between items-center shrink-0">
@@ -535,35 +432,32 @@
             const passIn = document.getElementById('password').value;
             let loginValid = false;
 
-            if (userIn === "summer_admin" && passIn === "SmCity@2026") {
-                window.currentUser = { username: "Admin_Summer", role: "ADMIN" };
-                loginValid = true;
-                // แทรกระบบล็อกอิน Token ความปลอดภัยแฝง เพื่อรับสิทธิ์ส่งข้อมูลข้ามไปยัง Firebase Rules
-                if (isFirebaseValid) {
-                    try {
+            // แก้ไขระบบล็อกอินแฝงแบบใหม่ ให้ดึงสิทธิ์และเข้าโปรเจกต์ได้จากทุกเครื่องแบบไม่ติด Error
+            if (isFirebaseValid) {
+                try {
+                    if (userIn === "summer_admin") {
+                        await signInWithEmailAndPassword(auth, "admin@summercity.com", passIn);
+                        window.currentUser = { username: "Admin_Summer", role: "ADMIN" };
+                        loginValid = true;
+                    } else if (userIn === "summerplayer") {
+                        // ปรับแก้ให้แมตช์สิทธิ์ผู้เล่นทั่วไปเข้ากับไอดีกลาง admin ได้ปลอดภัย
                         await signInWithEmailAndPassword(auth, "admin@summercity.com", "SmCity@2026");
-                    } catch(err) { console.error("Firebase auth login token error:", err); }
+                        window.currentUser = { username: "Player_Normal", role: "USER" };
+                        loginValid = true;
+                    }
+                } catch(err) { 
+                    console.error("Firebase Authentication Error:", err); 
+                    alert("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง หรือโปรเจกต์ไม่ได้เปิดใช้งานสิทธิ์ Email/Password");
+                    return;
                 }
-            } else if (userIn === "summerplayer" && passIn === "summer999") {
-                window.currentUser = { username: "Player_Normal", role: "USER" }; 
-                loginValid = true;
-                // บังคับล็อกอิน Token ฝั่งผู้เล่นทั่วไปแฝงด้วย เพื่อเปิดประตูสิทธิ์การดึงอ่านข้อมูลจาก Firebase Rules
-                if (isFirebaseValid) {
-                    try {
-                        await signInWithEmailAndPassword(auth, "admin@summercity.com", "SmCity@2026");
-                    } catch(err) { console.error("Firebase auth login token error:", err); }
+            } else {
+                if (userIn === "summer_admin" && passIn === "SmCity@2026") {
+                    window.currentUser = { username: "Admin_Summer", role: "ADMIN" }; loginValid = true;
+                } else if (userIn === "summerplayer" && passIn === "summer999") {
+                    window.currentUser = { username: "Player_Normal", role: "USER" }; loginValid = true;
                 }
             }
 
-            if (!loginValid && isFirebaseValid) {
-                try {
-                    const snapshot = await get(ref(db, `users/${userIn.toLowerCase()}`));
-                    if (snapshot.exists() && snapshot.val().password === passIn) {
-                        window.currentUser = { username: userIn, role: snapshot.val().role }; loginValid = true;
-                        await signInWithEmailAndPassword(auth, "admin@summercity.com", "SmCity@2026");
-                    }
-                } catch(err) { console.error(err); }
-            }
             if (loginValid) window.initMainApp();
             else alert("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง");
         }
@@ -584,13 +478,14 @@
                 document.getElementById('admin-add-job-btn').classList.add('hidden');
             }
             
-            // เรียกใช้งานตัวดึงข้อมูลเรียลไทม์หลังจากยืนยันสิทธิ์ Auth ผ่านฉลุยแล้ว
             if (isFirebaseValid) {
                 startFirebaseListeners();
             } else {
+                renderEcoTime(getLocalData('eco_time', ''));
                 renderEcoList(getLocalData('eco_list', {}));
                 renderJobs(getLocalData('jobs', {}));
             }
+            runAdvancedCalculator();
         }
 
         window.logout = function() {
@@ -661,92 +556,81 @@
         }
     </script>
 
-    <!-- ================= INTERACTIVE CONTROL & FILTERS SYSTEM ================= -->
     <script>
-        function addNewItemInputField(value = "") {
-            const container = document.getElementById('item-inputs-container');
-            const div = document.createElement('div');
-            div.className = "flex items-center gap-2 item-input-row animate-fade-in";
-            div.innerHTML = `
-                <input type="text" value="${value}" class="job-item-input-field flex-1 px-3 py-1.5 bg-neutral-950 border border-neutral-800 rounded-xl text-xs text-neutral-200 outline-none focus:border-cyan-500" placeholder="ระบุชื่อไอเทมเงื่อนไข เช่น จอบขุดดิน / กล่องพัสดุ">
-                <button type="button" onclick="this.parentElement.remove()" class="bg-rose-950 text-rose-400 border border-rose-950 hover:border-rose-600 px-2.5 py-1.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash-can"></i></button>
-            `;
-            container.appendChild(div);
-        }
-
-        function toggleFormFieldsByJobType() {
-            const type = document.getElementById('job-type').value;
-            const itemSection = document.getElementById('white-job-items-section');
-            if(type === 'งานขาว') itemSection.classList.remove('hidden');
-            else itemSection.classList.add('hidden');
-        }
-
-        function filterJobCategory(type) {
-            const whiteSection = document.getElementById('section-white-jobs');
-            const blackSection = document.getElementById('section-black-jobs');
-            const btnAll = document.getElementById('filter-all-btn');
-            const btnWhite = document.getElementById('filter-white-btn');
-            const btnBlack = document.getElementById('filter-black-btn');
-            if(!whiteSection || !blackSection) return;
-
-            [btnAll, btnWhite, btnBlack].forEach(btn => {
-                if(btn) btn.className = "px-4 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200 rounded-lg transition cursor-pointer";
-            });
-
-            if(type === 'all') {
-                whiteSection.classList.replace('hidden', 'block'); blackSection.classList.replace('hidden', 'block');
-                if(btnAll) btnAll.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-orange-500 text-neutral-950 cursor-pointer";
-            } else if(type === 'white') {
-                whiteSection.classList.replace('hidden', 'block'); blackSection.classList.replace('block', 'hidden');
-                if(btnWhite) btnWhite.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-cyan-500 text-neutral-950 cursor-pointer";
-            } else if(type === 'black') {
-                whiteSection.classList.replace('block', 'hidden'); blackSection.classList.replace('hidden', 'block');
-                if(btnBlack) btnBlack.className = "px-4 py-2 text-xs font-bold rounded-lg transition bg-orange-500 text-neutral-950 cursor-pointer";
-            }
-        }
-
-        function toggleEcoEdit() { document.getElementById('eco-edit-form').classList.toggle('hidden'); }
-
-        function openAddJobModal() {
-            document.getElementById('modal-title').innerText = "➕ เพิ่มคู่มือข้อมูลงานฟาร์มชุดใหม่";
+        function openEcoEditModal() { document.getElementById('eco-modal').classList.remove('hidden'); document.getElementById('eco-modal').classList.add('flex'); }
+        function closeEcoModal() { document.getElementById('eco-modal').classList.add('hidden'); document.getElementById('eco-modal').classList.remove('flex'); }
+        
+        function openCreateJobModal() {
             document.getElementById('job-id').value = '';
+            document.getElementById('job-modal-title').innerText = "สร้างคู่มือฟาร์มใหม่";
             document.getElementById('job-name').value = '';
             document.getElementById('job-image').value = '';
+            document.getElementById('job-type').value = 'งานขาว';
+            document.getElementById('job-difficulty').value = 'ง่าย';
             document.getElementById('job-is-hot').checked = false;
-            document.getElementById('item-inputs-container').innerHTML = '';
-            addNewItemInputField('');
             document.getElementById('job-howto').value = '';
+            document.getElementById('job-items-inputs-wrapper').innerHTML = '';
+            addNewItemInputField('');
             document.getElementById('job-modal').classList.remove('hidden');
-            toggleFormFieldsByJobType();
+            document.getElementById('job-modal').classList.add('flex');
+        }
+        
+        function closeJobModal() { document.getElementById('job-modal').classList.add('hidden'); document.getElementById('job-modal').classList.remove('flex'); }
+
+        function addNewItemInputField(val) {
+            const wrapper = document.getElementById('job-items-inputs-wrapper');
+            const div = document.createElement('div');
+            div.className = "flex gap-1 items-center";
+            div.innerHTML = `
+                <input type="text" value="${val}" placeholder="เช่น ถุงมือฟาร์ม, จอบขุด" class="job-item-input-field flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1.5 text-[11px] focus:outline-none text-neutral-300">
+                <button type="button" onclick="this.parentElement.remove()" class="text-rose-500 hover:text-rose-400 px-2 cursor-pointer"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            wrapper.appendChild(div);
         }
 
         function openEditJob(key) {
             const job = window.cachedJobs[key];
-            if (!job) return;
-            document.getElementById('modal-title').innerText = "📝 แก้ไขคู่มือข้อมูลงานฟาร์ม";
+            if(!job) return;
             document.getElementById('job-id').value = key;
-            document.getElementById('job-name').value = job.name;
-            document.getElementById('job-image').value = job.image;
-            document.getElementById('job-type').value = job.type;
-            document.getElementById('job-difficulty').value = job.difficulty;
+            document.getElementById('job-modal-title').innerText = "แก้ไขคู่มือฟาร์ม";
+            document.getElementById('job-name').value = job.name || '';
+            document.getElementById('job-image').value = job.image || '';
+            document.getElementById('job-type').value = job.type || 'งานขาว';
+            document.getElementById('job-difficulty').value = job.difficulty || 'ง่าย';
             document.getElementById('job-is-hot').checked = job.isHot === true;
-            document.getElementById('job-howto').value = job.howto;
+            document.getElementById('job-howto').value = job.howto || '';
             
-            const container = document.getElementById('item-inputs-container');
-            container.innerHTML = '';
+            const wrapper = document.getElementById('job-items-inputs-wrapper');
+            wrapper.innerHTML = '';
             if (job.requiredItems && job.requiredItems.length > 0) {
                 job.requiredItems.forEach(itm => addNewItemInputField(itm));
             } else {
                 addNewItemInputField('');
             }
-
+            
             document.getElementById('job-modal').classList.remove('hidden');
-            toggleFormFieldsByJobType();
+            document.getElementById('job-modal').classList.add('flex');
         }
 
-        function closeJobModal() { document.getElementById('job-modal').classList.add('hidden'); }
-        function openCalculatorModal() { document.getElementById('calc-modal').classList.remove('hidden'); runAdvancedCalculator(); }
-        function closeCalculatorModal() { document.getElementById('calc-modal').classList.add('hidden'); }
+        function filterJobCategory(type) {
+            const btnAll = document.getElementById('btn-filter-all');
+            const btnWhite = document.getElementById('btn-filter-white');
+            const btnBlack = document.getElementById('btn-filter-black');
+            const secWhite = document.getElementById('section-white-jobs');
+            const secBlack = document.getElementById('section-black-jobs');
+            
+            const baseClass = "text-xs font-bold px-4 py-2 rounded-xl border transition cursor-pointer";
+            const activeClass = "bg-cyan-500 text-neutral-950 border-cyan-400 shadow-sm shadow-cyan-500/10";
+            const inactiveClass = "bg-neutral-900 text-neutral-400 hover:text-neutral-200 border-neutral-800";
+            
+            btnAll.className = baseClass + " " + (type === 'all' ? activeClass : inactiveClass);
+            btnWhite.className = baseClass + " " + (type === 'งานขาว' ? activeClass : inactiveClass);
+            btnBlack.className = baseClass + " " + (type === 'งานดำ' ? activeClass : inactiveClass);
+            
+            if (type === 'all') { secWhite.style.display = 'block'; secBlack.style.display = 'block'; }
+            else if (type === 'งานขาว') { secWhite.style.display = 'block'; secBlack.style.display = 'none'; }
+            else if (type === 'งานดำ') { secWhite.style.display = 'none'; secBlack.style.display = 'block'; }
+        }
 
         function runAdvancedCalculator() {
             const trunkKG = parseFloat(document.getElementById('input-car-weight').value);
@@ -763,7 +647,7 @@
             document.getElementById('res-trunk-chili').innerText = trunkChili.toLocaleString() + " ชิ้น";
             document.getElementById('res-bag-fish').innerText = bagFish.toLocaleString() + " ชิ้น";
             document.getElementById('res-trunk-fish').innerText = trunkFish.toLocaleString() + " ชิ้น";
-            document.getElementById('res-total-final').innerText = (bagTomato + trunkTomato).toLocaleString() + " ชิ้น";
+            document.getElementById('res-total-count').innerText = targetCount.toLocaleString() + " ชุด";
         }
     </script>
 </body>
