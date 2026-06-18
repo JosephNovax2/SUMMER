@@ -3,49 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUMMER CITY SS2 - Ultimate Farm Guide Book</title>
+    <title>SUMMER CITY SS2 - Guide Book ผู้เล่นใหม่</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght=300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Kanit', sans-serif; }
-        @keyframes fireGlow {
-            0%, 100% { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 15px rgba(249, 115, 22, 0.4); }
-            50% { border-color: rgba(249, 115, 22, 0.9); box-shadow: 0 0 25px rgba(239, 68, 68, 0.7); }
+        /* ===== BASE + FANTASY-CYBER ORANGE-BLACK THEME ===== */
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: #050505;
+            background-image:
+                radial-gradient(ellipse 80% 40% at 50% -10%, rgba(249,115,22,0.08) 0%, transparent 70%),
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(249,115,22,0.03) 39px, rgba(249,115,22,0.03) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(249,115,22,0.03) 39px, rgba(249,115,22,0.03) 40px);
         }
+
+        /* ===== SCROLLBAR ===== */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.4); border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #f97316; }
+        .custom-scrollbar { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; will-change: scroll-position; }
+        /* smooth scroll เฉพาะกล่อง howto การ์ดงานฟาร์ม */
+        .farm-howto-scroll { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; will-change: scroll-position; line-height: 1.65; padding: 10px 12px; }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fireGlow {
+            0%, 100% { border-color: rgba(239,68,68,0.6); box-shadow: 0 0 15px rgba(249,115,22,0.4); }
+            50%       { border-color: rgba(249,115,22,0.9); box-shadow: 0 0 25px rgba(239,68,68,0.7); }
+        }
+        @keyframes runeGlow {
+            0%, 100% { opacity: 0.3; }
+            50%       { opacity: 1; }
+        }
+        @keyframes scanLine {
+            0%   { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        @keyframes cornerPulse {
+            0%,100% { opacity: 0.5; }
+            50%      { opacity: 1; }
+        }
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-3px); }
+        }
+        @keyframes hexSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        @keyframes topdonate-glow {
+            0%,100% { box-shadow: 0 0 16px rgba(245,158,11,0.35), 0 0 40px rgba(253,230,138,0.1); border-color: rgba(245,158,11,0.55); }
+            50%      { box-shadow: 0 0 28px rgba(245,158,11,0.6),  0 0 60px rgba(253,230,138,0.2); border-color: rgba(253,230,138,0.8); }
+        }
+        @keyframes auction-glow {
+            0%,100% { box-shadow: 0 0 14px rgba(239,68,68,0.3); border-color: rgba(239,68,68,0.45); }
+            50%      { box-shadow: 0 0 24px rgba(239,68,68,0.55); border-color: rgba(252,165,165,0.65); }
+        }
+        @keyframes celeb-glow {
+            0%,100% { box-shadow: 0 0 14px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.45); }
+            50%      { box-shadow: 0 0 24px rgba(59,130,246,0.55); border-color: rgba(147,197,253,0.65); }
+        }
+        @keyframes orangeCardPulse {
+            0%,100% { box-shadow: 0 0 10px rgba(249,115,22,0.2); border-color: rgba(249,115,22,0.25); }
+            50%      { box-shadow: 0 0 20px rgba(249,115,22,0.4); border-color: rgba(249,115,22,0.5); }
+        }
+
+        /* ===== HOT FIRE CARD ===== */
         .hot-fire-card {
             animation: fireGlow 2s infinite ease-in-out;
             background: linear-gradient(145deg, #170b03, #0a0a0a) !important;
         }
-        /* ตกแต่งแถบลูกกลิ้ง (Scrollbar) ด้านในกล่องข้อความให้ดูสวยงามเข้ากับธีมมืด */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 5px;
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%) !important;
+            border-bottom: 1px solid rgba(249,115,22,0.3) !important;
+            box-shadow: 0 2px 20px rgba(249,115,22,0.1) !important;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0a0a0a;
-            border-radius: 8px;
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(249,115,22,0.6), rgba(251,191,36,0.4), rgba(249,115,22,0.6), transparent);
+            pointer-events: none;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #262626;
-            border-radius: 8px;
+
+        /* ===== NAV ===== */
+        nav {
+            background: linear-gradient(180deg, #0a0a0a 0%, #060606 100%) !important;
+            border-bottom: 1px solid rgba(249,115,22,0.2) !important;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #f97316;
+
+        /* ===== ACTIVE / INACTIVE TAB ===== */
+        .active-tab {
+            background: linear-gradient(135deg, #ea580c, #f97316) !important;
+            color: #000 !important;
+            box-shadow: 0 0 12px rgba(249,115,22,0.5);
+        }
+        .inactive-tab { color: #737373; background: transparent; }
+        .inactive-tab:hover { color: #f97316; background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); }
+
+        /* ===== FANTASY-CYBER CARD ===== */
+        .fantasy-card {
+            position: relative;
+            background: linear-gradient(145deg, #111008, #0a0806);
+            border: 1px solid rgba(249,115,22,0.15);
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+            animation: orangeCardPulse 4s infinite ease-in-out;
+        }
+        .fantasy-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(249,115,22,0.5) !important;
+            box-shadow: 0 8px 32px rgba(249,115,22,0.15), 0 0 0 1px rgba(249,115,22,0.1) !important;
+            animation: none;
+        }
+        /* เส้นไฟด้านบนการ์ด */
+        .fantasy-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(249,115,22,0.7), rgba(251,191,36,0.5), rgba(249,115,22,0.7), transparent);
+            animation: runeGlow 3s infinite ease-in-out;
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        /* มุมไซเบอร์การ์ด */
+        .fantasy-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 16px; height: 16px;
+            border-right: 2px solid rgba(249,115,22,0.4);
+            border-bottom: 2px solid rgba(249,115,22,0.4);
+            border-radius: 0 0 12px 0;
+            pointer-events: none;
+            animation: cornerPulse 3s infinite ease-in-out;
+        }
+
+        /* ===== DIFFICULTY BADGES ===== */
+        .diff-easy   { background: linear-gradient(135deg,#052e16,#14532d); color:#4ade80; border:1px solid #16a34a55; }
+        .diff-medium { background: linear-gradient(135deg,#1c1400,#2e2000); color:#fbbf24; border:1px solid #d97700aa; box-shadow:0 0 6px rgba(217,119,6,0.2); }
+        .diff-hard   { background: linear-gradient(135deg,#1c0a00,#2e1000); color:#fb923c; border:1px solid #ea580caa; box-shadow:0 0 6px rgba(234,88,12,0.2); }
+        .diff-vhard  { background: linear-gradient(135deg,#1a0011,#2d0022); color:#f472b6; border:1px solid #db2777aa; text-shadow:0 0 8px rgba(244,114,182,0.6); }
+
+        /* ===== FASHION TAG BADGES ===== */
+        .ftag-topdonate { background: linear-gradient(135deg,#1a1200,#2e1f00); color:#fde68a; border:1px solid #f59e0b88; box-shadow:0 0 8px rgba(245,158,11,0.3); text-shadow:0 0 6px rgba(253,230,138,0.5); }
+        .ftag-auction   { background: linear-gradient(135deg,#1f0000,#350800); color:#fca5a5; border:1px solid #ef444488; box-shadow:0 0 8px rgba(239,68,68,0.25); }
+        .ftag-celeb     { background: linear-gradient(135deg,#0a1628,#0f2847); color:#93c5fd; border:1px solid #3b82f688; box-shadow:0 0 8px rgba(59,130,246,0.2); }
+        .ftag-30k       { background: linear-gradient(135deg,#150a28,#220e40); color:#c4b5fd; border:1px solid #7c3aed88; }
+        .ftag-event     { background: linear-gradient(135deg,#001a12,#002e1e); color:#6ee7b7; border:1px solid #10b98188; }
+        .ftag-normal    { background: linear-gradient(135deg,#111111,#1a1a1a); color:#a3a3a3; border:1px solid #40404088; }
+
+        /* ===== FASHION FULL-CARD COLORS BY RARITY ===== */
+        .fcard-topdonate {
+            background: linear-gradient(160deg, #1c1400 0%, #120e00 50%, #1a1200 100%) !important;
+            border-color: rgba(245,158,11,0.55) !important;
+            animation: topdonate-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-topdonate::before { background: linear-gradient(90deg, transparent, rgba(253,230,138,0.8), transparent) !important; }
+        .fcard-auction {
+            background: linear-gradient(160deg, #1f0505 0%, #130000 50%, #1a0000 100%) !important;
+            border-color: rgba(239,68,68,0.45) !important;
+            animation: auction-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-auction::before { background: linear-gradient(90deg, transparent, rgba(239,68,68,0.7), transparent) !important; }
+        .fcard-celeb {
+            background: linear-gradient(160deg, #050f1f 0%, #020912 50%, #07112a 100%) !important;
+            border-color: rgba(59,130,246,0.45) !important;
+            animation: celeb-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-celeb::before { background: linear-gradient(90deg, transparent, rgba(59,130,246,0.7), transparent) !important; }
+        .fcard-30k {
+            background: linear-gradient(160deg, #110820 0%, #0a0414 50%, #160a28 100%) !important;
+            border-color: rgba(124,58,237,0.45) !important;
+            box-shadow: 0 0 14px rgba(124,58,237,0.2);
+        }
+        .fcard-30k::before { background: linear-gradient(90deg, transparent, rgba(196,181,253,0.6), transparent) !important; }
+        .fcard-event {
+            background: linear-gradient(160deg, #001510 0%, #000e09 50%, #001a12 100%) !important;
+            border-color: rgba(16,185,129,0.4) !important;
+            box-shadow: 0 0 12px rgba(16,185,129,0.15);
+        }
+        .fcard-event::before { background: linear-gradient(90deg, transparent, rgba(110,231,183,0.5), transparent) !important; }
+        .fcard-normal {
+            background: linear-gradient(160deg, #111008 0%, #0a0806 100%) !important;
+        }
+
+        /* ===== CARD HEIGHT — ปรับขนาดกล่องให้เหมาะสม ===== */
+        /* การ์ดมีรูป: รูป ~130px + เนื้อหา ~150px = ~280px */
+        .info-card-fixed { height: 370px; }
+        .event-card-fixed { height: 300px; }
+
+        /* ===== SECTION / PANEL STYLING ===== */
+        #panel-farm, #panel-devil, #panel-fashion, #panel-items, #panel-events, #panel-gkey {
+            position: relative;
+        }
+
+        /* ===== SECTION HEADER DECORATION ===== */
+        .section-cyber-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+        .section-cyber-title::after {
+            content: '';
+            display: block;
+            width: 40px; height: 2px;
+            background: linear-gradient(90deg, rgba(249,115,22,0.8), transparent);
+            margin-left: 4px;
+        }
+
+        /* ===== ECONOMY BOARD ORANGE GLOW ===== */
+        section.economy-board {
+            background: linear-gradient(145deg, #0e0b06, #080600) !important;
+            border: 1px solid rgba(249,115,22,0.3) !important;
+            box-shadow: 0 0 30px rgba(249,115,22,0.08), inset 0 0 40px rgba(249,115,22,0.03) !important;
+        }
+
+        /* ===== GRID SECTION BACKGROUNDS ===== */
+        .grid-panel-bg {
+            background: linear-gradient(180deg, rgba(249,115,22,0.03) 0%, transparent 100%);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(249,115,22,0.06);
+        }
+
+        /* ===== GLOW LINE DIVIDER ===== */
+        .cyber-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(249,115,22,0.4), rgba(251,191,36,0.3), rgba(249,115,22,0.4), transparent);
+            margin: 8px 0;
         }
     </style>
 </head>
-<body class="bg-neutral-950 text-neutral-200 min-h-screen selection:bg-orange-500 selection:text-neutral-950">
+<body class="text-neutral-200 min-h-screen selection:bg-orange-500 selection:text-neutral-950">
 
     <!-- ================= 1. หน้า LOGIN ================= -->
     <div id="auth-page" class="fixed inset-0 bg-gradient-to-br from-neutral-900 via-neutral-950 to-orange-950 flex items-center justify-center z-50 p-4">
         <div class="bg-neutral-900/90 border border-orange-500/30 p-8 rounded-3xl shadow-2xl w-full max-w-md mx-auto text-center backdrop-blur-md">
             <div class="mb-6">
-                <div class="text-5xl mb-2">🌴</div>
+                <div class="w-16 h-16 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center">
+                    <i class="fa-solid fa-sun text-3xl text-orange-400"></i>
+                </div>
                 <h1 class="text-2xl font-black text-neutral-100 uppercase tracking-wider">SUMMER <span class="text-orange-500">CITY</span></h1>
                 <div class="inline-block bg-cyan-500/10 text-cyan-400 text-xs font-bold px-4 py-1.5 rounded-full mt-3 border border-cyan-500/20 tracking-wide">
-                    🚀 Guide Book แนะนำผู้เล่นใหม่
+                    <i class="fa-solid fa-rocket mr-1"></i> Guide Book แนะนำผู้เล่นใหม่
                 </div>
             </div>
 
@@ -65,7 +274,7 @@
                     </div>
                 </div>
                 <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-neutral-950 font-black py-3 rounded-xl transition duration-200 shadow-lg shadow-orange-500/20 mt-2 cursor-pointer">
-                    เข้าสู่ระบบแนะนำการฟาร์ม
+                    เข้าสู่ระบบ Guide Book
                 </button>
             </form>
             <p class="text-[10px] text-neutral-500 mt-6 tracking-wide">SYSTEM SECURED BY SUMMER CITY DEVELOPER</p>
@@ -77,29 +286,66 @@
     <div id="main-app" class="hidden">
         
         <!-- HEADER NAVIGATION -->
-        <header class="bg-neutral-900 border-b border-orange-500/20 sticky top-0 z-40 shadow-md">
+        <header class="sticky top-0 z-40 shadow-md relative">
             <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3 shrink-0">
-                    <span class="text-2xl">☀️</span>
+                    <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center">
+                        <i class="fa-solid fa-sun text-lg text-orange-400"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500 animate-ping opacity-75"></span>
+                    </div>
                     <div>
-                        <h1 class="text-md font-black text-neutral-100 tracking-wide leading-tight">SUMMER <span class="text-orange-500">CITY</span> SS2</h1>
-                        <p class="text-xs text-neutral-400 font-medium">ระบบข้อมูลและการคำนวณฟาร์มรอบเมือง</p>
+                        <h1 class="text-md font-black tracking-wide leading-tight">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500">SUMMER CITY</span>
+                            <span class="text-neutral-300"> SS2</span>
+                        </h1>
+                        <p class="text-[10px] text-orange-500/60 font-medium tracking-widest uppercase">◈ Guide Book ผู้เล่นใหม่ ◈</p>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-3 shrink-0">
-                    <div class="text-right border-l pl-3 border-neutral-800 min-w-[80px]">
+                    <div class="text-right border-l pl-3 border-orange-500/20 min-w-[80px]">
                         <span id="user-display-name" class="font-bold text-neutral-200 text-sm block">Username</span>
                         <span id="user-role-badge" class="text-[10px] px-2 py-0.2 rounded-full font-bold">Role</span>
                     </div>
-                    <button onclick="logout()" class="bg-neutral-950 hover:bg-red-950/40 text-neutral-400 hover:text-red-400 p-2 rounded-xl transition border border-neutral-800 cursor-pointer">
+                    <button onclick="logout()" class="bg-black/40 hover:bg-red-950/40 text-neutral-400 hover:text-red-400 p-2 rounded-xl transition border border-orange-500/20 hover:border-red-500/40 cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket text-sm"></i>
                     </button>
                 </div>
             </div>
         </header>
 
+        <!-- ================= TAB NAVIGATION BAR ================= -->
+        <nav class="bg-neutral-900 border-b border-neutral-800 sticky top-[61px] z-30 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 overflow-x-auto">
+                <div class="flex items-center gap-1 py-2 min-w-max">
+                    <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-wheat-awn mr-1"></i> ข้อมูลงานฟาร์ม
+                    </button>
+                    <button onclick="switchTab('devil')" id="tab-devil" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-fire mr-1"></i> ผลไม้ปีศาจ
+                    </button>
+                    <button onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-shirt mr-1"></i> สถานะแฟชั่น
+                    </button>
+                    <button onclick="switchTab('items')" id="tab-items" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-bag-shopping mr-1"></i> แหล่งที่มา ITEMS
+                    </button>
+                    <button onclick="switchTab('events')" id="tab-events" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-calendar-days mr-1"></i> เวลากิจกรรม
+                    </button>
+                    <button onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-keyboard mr-1"></i> เมนูลัดปุ่ม G
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- TAB STYLES MOVED TO MAIN STYLE BLOCK -->
+
         <main class="max-w-7xl mx-auto px-4 py-8">
+
+            <!-- ================= TAB PANELS ================= -->
+            <!-- PANEL: ข้อมูลงานฟาร์ม -->
+            <div id="panel-farm">
 
             <!-- ECONOMY BOARD -->
             <section class="bg-gradient-to-b from-neutral-900 to-neutral-950 rounded-2xl p-6 shadow-[0_0_25px_rgba(249,115,22,0.12)] border-2 border-orange-500/40 mb-10 relative overflow-hidden">
@@ -111,7 +357,7 @@
                             <i class="fa-solid fa-circle-exclamation text-orange-500 text-xl animate-pulse"></i> บอร์ดแจ้งปรับราคากลาง Economy ล่าสุดประจำเมือง
                         </h2>
                         <p class="text-xs text-neutral-400 mt-1.5">
-                            📌 ตรวจสอบราคาตลาดก่อนออกฟาร์ม | อัปเดตล่าสุด: <span id="eco-update-time" class="font-bold text-cyan-400 bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-500/20">-</span>
+                            <i class="fa-solid fa-thumbtack mr-1"></i> ตรวจสอบราคาตลาดก่อนออกฟาร์ม | อัปเดตล่าสุด: <span id="eco-update-time" class="font-bold text-cyan-400 bg-cyan-950/50 px-2 py-0.5 rounded border border-cyan-500/20">-</span>
                         </p>
                     </div>
                     <button id="admin-edit-eco-btn" onclick="toggleEcoEdit()" class="hidden bg-orange-500 text-neutral-950 text-xs font-black px-4 py-2 rounded-xl hover:bg-orange-600 transition shadow-lg shadow-orange-500/10 cursor-pointer">
@@ -140,8 +386,8 @@
                         <div>
                             <label class="block text-xs font-bold text-neutral-400 mb-1">สถานะราคา</label>
                             <select id="input-eco-status" class="w-full px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-lg text-neutral-200">
-                                <option value="BUFF">📈 BUFF (ราคาขึ้น)</option>
-                                <option value="NERF">📉 NERF (ราคาลง)</option>
+                                <option value="BUFF">BUFF (ราคาขึ้น)</option>
+                                <option value="NERF">NERF (ราคาลง)</option>
                             </select>
                         </div>
                         <button onclick="executeAddEcoItem()" class="bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-black text-xs py-2 rounded-lg cursor-pointer">
@@ -153,13 +399,13 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="space-y-3">
                         <div class="bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
-                            <span>📈 รายการงานที่โดน BUFF ราคา (เงินดีมาก)</span>
+                            <span><i class="fa-solid fa-arrow-trend-up mr-1"></i> รายการงานที่โดน BUFF ราคา (เงินดีมาก)</span>
                         </div>
                         <div id="eco-buff-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     </div>
                     <div class="space-y-3">
                         <div class="bg-rose-950/40 border border-rose-500/20 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
-                            <span>📉 รายการงานที่โดน NERF ราคา (รายได้ลดลง)</span>
+                            <span><i class="fa-solid fa-arrow-trend-down mr-1"></i> รายการงานที่โดน NERF ราคา (รายได้ลดลง)</span>
                         </div>
                         <div id="eco-nerf-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     </div>
@@ -182,25 +428,25 @@
                 <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4 shadow-inner">
                     <div class="bg-neutral-950 p-1 rounded-xl border border-neutral-800 flex items-center space-x-1 w-full md:w-auto justify-center">
                         <button onclick="filterJobCategory('all')" id="filter-all-btn" class="px-4 py-2 text-xs font-bold rounded-lg transition bg-orange-500 text-neutral-950 cursor-pointer">
-                            📋 ทั้งหมด
+                            <i class="fa-solid fa-list mr-1"></i> ทั้งหมด
                         </button>
                         <button onclick="filterJobCategory('white')" id="filter-white-btn" class="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200 rounded-lg transition cursor-pointer flex items-center gap-1">
-                            ⚪ งานขาว
+                            <i class="fa-regular fa-circle text-[10px]"></i> งานขาว
                         </button>
                         <button onclick="filterJobCategory('black')" id="filter-black-btn" class="px-4 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200 rounded-lg transition cursor-pointer flex items-center gap-1">
-                            ⚫ งานดำ
+                            <i class="fa-solid fa-circle text-[10px]"></i> งานดำ
                         </button>
                     </div>
 
                     <button onclick="openCalculatorModal()" class="w-full md:w-auto bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-neutral-950 px-6 py-2.5 rounded-xl text-xs font-black shadow-lg shadow-cyan-500/10 transition flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-calculator text-sm"></i> 🚗 เปิดเครื่องคำนวณรถโล (งานปลากระป๋อง)
+                        <i class="fa-solid fa-calculator text-sm"></i> <i class="fa-solid fa-truck-pickup mr-1"></i> เปิดเครื่องคำนวณรถโล (งานปลากระป๋อง)
                     </button>
                 </div>
 
 
                 <!-- CONTAINER แสดงข้อมูลการ์ดงานฟาร์ม -->
                 <div class="space-y-12 pt-4">
-                    <!-- ⚪ 1. หมวดหมู่งานขาว -->
+                    <!-- 1. หมวดหมู่งานขาว -->
                     <div id="section-white-jobs" class="space-y-6 block">
                         <div class="bg-gradient-to-r from-cyan-950/30 to-transparent p-4 rounded-xl border-l-4 border-cyan-500">
                             <h3 class="text-md font-black text-cyan-400 uppercase tracking-wide">หมวดหมู่: งานขาว (งานถูกกฎหมายรอบเมือง)</h3>
@@ -208,7 +454,7 @@
                         <div id="job-white-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
 
-                    <!-- ⚫ 2. หมวดหมู่งานดำ -->
+                    <!-- 2. หมวดหมู่งานดำ -->
                     <div id="section-black-jobs" class="space-y-6 block">
                         <div class="bg-gradient-to-r from-orange-950/30 to-transparent p-4 rounded-xl border-l-4 border-orange-500">
                             <h3 class="text-md font-black text-orange-400 uppercase tracking-wide">หมวดหมู่: งานดำ (งานใต้ดินมืด)</h3>
@@ -218,6 +464,99 @@
                 </div>
 
             </section>
+            </div><!-- end panel-farm -->
+
+
+            <!-- ================= PANEL: ผลไม้ปีศาจ ================= -->
+            <div id="panel-devil" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-2xl text-orange-400"></i> ข้อมูลผลไม้ปีศาจ
+                        </h2>
+                        <button id="admin-add-devil-btn" onclick="openDevilModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> เพิ่มผลไม้ปีศาจ
+                        </button>
+                    </div>
+                    <div id="devil-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลผลไม้ปีศาจ...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PANEL: สถานะแฟชั่น ================= -->
+            <div id="panel-fashion" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-shirt text-2xl text-amber-300"></i> ข้อมูลสถานะแฟชั่น
+                        </h2>
+                        <button id="admin-add-fashion-btn" onclick="openFashionModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> เพิ่มแฟชั่น
+                        </button>
+                    </div>
+                    <div id="fashion-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลแฟชั่น...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PANEL: แหล่งที่มา ITEMS ================= -->
+            <div id="panel-items" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-bag-shopping text-2xl text-cyan-400"></i> ข้อมูลแหล่งที่มาของ ITEMS
+                        </h2>
+                        <button id="admin-add-item-btn" onclick="openItemModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> เพิ่ม ITEM
+                        </button>
+                    </div>
+                    <div id="items-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูล ITEMS...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PANEL: เวลากิจกรรม ================= -->
+            <div id="panel-events" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-2xl text-emerald-400"></i> ข้อมูลเวลากิจกรรม
+                        </h2>
+                        <button id="admin-add-event-btn" onclick="openEventModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> เพิ่มกิจกรรม
+                        </button>
+                    </div>
+                    <div id="events-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลกิจกรรม...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PANEL: เมนูลัดปุ่ม G ================= -->
+            <div id="panel-gkey" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                        <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-keyboard text-2xl text-amber-300"></i> เมนูลัดปุ่มตัว G
+                        </h2>
+                        <button id="admin-edit-gkey-btn" onclick="openGkeyModal()" class="hidden bg-orange-500 hover:bg-orange-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-pen-to-square"></i> แก้ไขข้อมูล G-Key
+                        </button>
+                    </div>
+                    <div id="gkey-display" class="space-y-6">
+                        <div class="text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูล...</div>
+                    </div>
+                </section>
+            </div>
+
         </main>
     </div>
 
@@ -237,7 +576,7 @@
             
             <div class="p-6 space-y-6">
                 <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800">
-                    <label class="block text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wide">🚗 ระบุน้ำหนักท้ายรถโลของคุณ (KG):</label>
+                    <label class="block text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wide"><i class="fa-solid fa-truck-pickup mr-1"></i> ระบุน้ำหนักท้ายรถโลของคุณ (KG):</label>
                     <div class="flex gap-2">
                         <input type="number" id="input-car-weight" value="200" min="0" class="w-full px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-xl font-bold text-md outline-none text-neutral-100">
                         <button onclick="runAdvancedCalculator()" class="bg-cyan-500 text-neutral-950 font-black px-6 text-xs rounded-xl hover:bg-cyan-600 transition shrink-0 cursor-pointer">คำนวณสัดส่วน</button>
@@ -253,17 +592,17 @@
                         </div>
                         <div class="p-2 space-y-1 font-bold text-center">
                             <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-rose-400 text-left pl-4">🍅 มะเขือเทศ</span>
+                                <span class="text-rose-400 text-left pl-4"><i class="fa-solid fa-apple-whole mr-1"></i> มะเขือเทศ</span>
                                 <span id="res-bag-tomato" class="text-orange-400 text-sm">- ชิ้น</span>
                                 <span id="res-trunk-tomato" class="text-neutral-200 text-sm">- ชิ้น</span>
                             </div>
                             <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-emerald-400 text-left pl-4">🌶️ พริก</span>
+                                <span class="text-emerald-400 text-left pl-4"><i class="fa-solid fa-pepper-hot mr-1"></i> พริก</span>
                                 <span id="res-bag-chili" class="text-orange-400 text-sm">- ชิ้น</span>
                                 <span id="res-trunk-chili" class="text-neutral-200 text-sm">- ชิ้น</span>
                             </div>
                             <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-blue-400 text-left pl-4">🐟 ปลา</span>
+                                <span class="text-blue-400 text-left pl-4"><i class="fa-solid fa-fish mr-1"></i> ปลา</span>
                                 <span id="res-bag-fish" class="text-orange-400 text-sm">- ชิ้น</span>
                                 <span id="res-trunk-fish" class="text-neutral-200 text-sm">- ชิ้น</span>
                             </div>
@@ -272,7 +611,7 @@
 
                     <div class="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 flex items-center justify-between">
                         <div>
-                            <span class="block text-[11px] font-bold text-orange-400 uppercase tracking-wide">📦 สรุปผลยอดวัตถุดิบสุทธิ</span>
+                            <span class="block text-[11px] font-bold text-orange-400 uppercase tracking-wide"><i class="fa-solid fa-box-open mr-1"></i> สรุปผลยอดวัตถุดิบสุทธิ</span>
                         </div>
                         <div class="text-right bg-neutral-950 px-4 py-2 rounded-xl border border-neutral-800">
                             <span id="res-total-final" class="text-xl font-black text-orange-500">- ชิ้น</span>
@@ -298,7 +637,7 @@
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-fire text-orange-500 text-lg animate-pulse"></i>
                         <div>
-                            <span class="block text-xs font-bold text-neutral-200">เปิดระบบโหมดงานยอดนิยม (งานฮอตฮิต 🔥)</span>
+                            <span class="block text-xs font-bold text-neutral-200">เปิดระบบโหมดงานยอดนิยม (งานฮอตฮิต <i class="fa-solid fa-fire text-orange-500"></i>)</span>
                             <span class="text-[10px] text-neutral-400 block">เปิดแล้วกล่องข้อมูลจะมีกรอบไฟนีออนส้มวิบวับโชว์เด่นทันที</span>
                         </div>
                     </div>
@@ -317,23 +656,24 @@
                     <div>
                         <label class="block text-xs font-bold text-neutral-400 mb-1">ประเภทงาน</label>
                         <select id="job-type" onchange="toggleFormFieldsByJobType()" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200">
-                            <option value="งานขาว">งานขาว ⚪</option>
-                            <option value="งานดำ">งานดำ ⚫</option>
+                            <option value="งานขาว">งานขาว</option>
+                            <option value="งานดำ">งานดำ</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับความยากในการฟาร์ม</label>
+                        <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับความยากของงาน</label>
                         <select id="job-difficulty" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200">
-                            <option value="ง่าย">ง่าย ⭐</option>
-                            <option value="ปานกลาง">ปานกลาง ⭐⭐</option>
-                            <option value="ยาก">ยาก ⭐⭐⭐</option>
+                            <option value="ง่าย">ง่าย</option>
+                            <option value="ปานกลาง">ปานกลาง</option>
+                            <option value="ยาก">ยาก</option>
+                            <option value="ยากมาก">ยากมาก</option>
                         </select>
                     </div>
                 </div>
 
                 <div id="white-job-items-section" class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <label class="text-xs font-bold text-cyan-400 uppercase tracking-wide">🎒 ไอเทมที่จำเป็นต้องใช้ฟาร์ม:</label>
+                        <label class="text-xs font-bold text-cyan-400 uppercase tracking-wide"><i class="fa-solid fa-bag-shopping mr-1"></i> ไอเทมที่จำเป็นต้องใช้ฟาร์ม:</label>
                         <button type="button" onclick="addNewItemInputField('')" class="bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-neutral-950 text-[10px] px-2 py-1 rounded transition font-bold">
                             <i class="fa-solid fa-plus"></i> เพิ่มไอเทม
                         </button>
@@ -353,6 +693,173 @@
         </div>
     </div>
 
+
+    <!-- ================= MODAL: ผลไม้ปีศาจ ================= -->
+    <div id="devil-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-orange-400 p-4 font-bold flex justify-between items-center">
+                <span id="devil-modal-title" class="text-sm font-black uppercase"><i class="fa-solid fa-fire mr-1"></i> เพิ่ม/แก้ไขผลไม้ปีศาจ</span>
+                <button type="button" onclick="closeDevilModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="devil-id">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพ (จาก pic.in.th — วางลิงก์ Direct URL)</label>
+                    <input type="url" id="devil-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500" placeholder="https://pic.in.th/...">
+                    <div id="devil-img-preview" class="mt-2 hidden">
+                        <img id="devil-img-preview-img" src="" class="w-32 h-32 object-cover rounded-xl border border-neutral-700">
+                    </div>
+                    <button type="button" onclick="previewImg('devil-image','devil-img-preview','devil-img-preview-img')" class="mt-1.5 text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-3 py-1 rounded-lg cursor-pointer"><i class="fa-solid fa-eye mr-1"></i> ดูตัวอย่างรูป</button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่อผลไม้ปีศาจ</label>
+                    <input type="text" id="devil-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500" placeholder="เช่น กูมะกูมะโนะมิ">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูลสถานะ (พิมพ์ได้ยาว รองรับหลายสถานะ)</label>
+                    <textarea id="devil-status" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500 custom-scrollbar" placeholder="เช่น &#10;สถานะ 1: เพิ่มพลังโจมตี 50%&#10;สถานะ 2: ลดความเร็ว 20%&#10;สถานะ 3: ..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeDevilModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveDevil()" class="px-5 py-2 bg-orange-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: แฟชั่น ================= -->
+    <div id="fashion-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-purple-400 p-4 font-bold flex justify-between items-center">
+                <span id="fashion-modal-title" class="text-sm font-black uppercase"><i class="fa-solid fa-shirt mr-1"></i> เพิ่ม/แก้ไขแฟชั่น</span>
+                <button type="button" onclick="closeFashionModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="fashion-id">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพ (จาก pic.in.th — วางลิงก์ Direct URL)</label>
+                    <input type="url" id="fashion-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-purple-500" placeholder="https://pic.in.th/...">
+                    <div id="fashion-img-preview" class="mt-2 hidden">
+                        <img id="fashion-img-preview-img" src="" class="w-32 h-32 object-cover rounded-xl border border-neutral-700">
+                    </div>
+                    <button type="button" onclick="previewImg('fashion-image','fashion-img-preview','fashion-img-preview-img')" class="mt-1.5 text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-3 py-1 rounded-lg cursor-pointer"><i class="fa-solid fa-eye mr-1"></i> ดูตัวอย่างรูป</button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ประเภทแฟชั่น</label>
+                    <select id="fashion-category" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-purple-500">
+                        <option value="แฟชั่น Topdonate">แฟชั่น Topdonate (หายากที่สุด)</option>
+                        <option value="แฟชั่นประมูล">แฟชั่นประมูล</option>
+                        <option value="แฟชั่น Celebrity">แฟชั่น Celebrity</option>
+                        <option value="แฟชั่นยอด30k">แฟชั่นยอด30k</option>
+                        <option value="แฟชั่นกิจกรรม">แฟชั่นกิจกรรม</option>
+                        <option value="แฟชั่นปกติ">แฟชั่นปกติ</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่อแฟชั่น</label>
+                    <input type="text" id="fashion-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-purple-500" placeholder="เช่น ชุดนักสืบ / หมวกคาวบอย">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูลสถานะแฟชั่น (พิมพ์ได้ยาว รองรับหลายสถานะ)</label>
+                    <textarea id="fashion-status" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-purple-500 custom-scrollbar" placeholder="เช่น &#10;สถานะ 1: เพิ่มความเร็ว 10%&#10;สถานะ 2: ลดดาเมจที่รับ 5%"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeFashionModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveFashion()" class="px-5 py-2 bg-purple-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: ITEMS ================= -->
+    <div id="item-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-cyan-400 p-4 font-bold flex justify-between items-center">
+                <span id="item-modal-title" class="text-sm font-black uppercase"><i class="fa-solid fa-bag-shopping mr-1"></i> เพิ่ม/แก้ไข ITEM</span>
+                <button type="button" onclick="closeItemModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="item-id">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพ (จาก pic.in.th — วางลิงก์ Direct URL)</label>
+                    <input type="url" id="item-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500" placeholder="https://pic.in.th/...">
+                    <div id="item-img-preview" class="mt-2 hidden">
+                        <img id="item-img-preview-img" src="" class="w-32 h-32 object-cover rounded-xl border border-neutral-700">
+                    </div>
+                    <button type="button" onclick="previewImg('item-image','item-img-preview','item-img-preview-img')" class="mt-1.5 text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-3 py-1 rounded-lg cursor-pointer"><i class="fa-solid fa-eye mr-1"></i> ดูตัวอย่างรูป</button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่อ ITEM</label>
+                    <input type="text" id="item-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500" placeholder="เช่น จอบขุดดิน / กล่องพัสดุ">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">แหล่งที่มา / วิธีหาได้จากไหน (อธิบายได้ยาว)</label>
+                    <textarea id="item-source" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-cyan-500 custom-scrollbar" placeholder="เช่น &#10;ซื้อจากร้านค้า XYZ ราคา 500$&#10;ดร็อปจากบอส ABC&#10;ทำเองได้โดย..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeItemModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveItem()" class="px-5 py-2 bg-cyan-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: กิจกรรม ================= -->
+    <div id="event-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-emerald-400 p-4 font-bold flex justify-between items-center">
+                <span id="event-modal-title" class="text-sm font-black uppercase"><i class="fa-solid fa-calendar-days mr-1"></i> เพิ่ม/แก้ไขกิจกรรม</span>
+                <button type="button" onclick="closeEventModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="event-id">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่อกิจกรรม</label>
+                    <input type="text" id="event-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500" placeholder="เช่น กิจกรรมแข่งรถ / ล่าสมบัติ">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">เวลาที่กิจกรรมเกิดขึ้น (ระบุทุกช่วงเวลา)</label>
+                    <input type="text" id="event-time" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500" placeholder="เช่น 18:00 / 20:00 / 22:00 น. ทุกวัน">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">รายละเอียดกิจกรรม (ใครเล่นได้บ้าง / เงื่อนไขต่างๆ)</label>
+                    <textarea id="event-detail" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500 custom-scrollbar" placeholder="เช่น &#10;เล่นได้: ประชาชนทั่วไป / แก๊ง / ครอบครัว&#10;เงื่อนไข: ต้องมีสมาชิกอย่างน้อย 3 คน&#10;รางวัล: ..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeEventModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveEvent()" class="px-5 py-2 bg-emerald-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: G-Key ================= -->
+    <div id="gkey-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-amber-400 p-4 font-bold flex justify-between items-center">
+                <span class="text-sm font-black uppercase"><i class="fa-solid fa-keyboard mr-1"></i> แก้ไขข้อมูลเมนูลัดปุ่ม G</span>
+                <button type="button" onclick="closeGkeyModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพหลัก (จาก pic.in.th — วางลิงก์ Direct URL)</label>
+                    <input type="url" id="gkey-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-amber-500" placeholder="https://pic.in.th/...">
+                    <div id="gkey-img-preview" class="mt-2 hidden">
+                        <img id="gkey-img-preview-img" src="" class="w-full rounded-xl border border-neutral-700 max-h-48 object-contain bg-neutral-950">
+                    </div>
+                    <button type="button" onclick="previewImg('gkey-image','gkey-img-preview','gkey-img-preview-img')" class="mt-1.5 text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-3 py-1 rounded-lg cursor-pointer"><i class="fa-solid fa-eye mr-1"></i> ดูตัวอย่างรูป</button>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูลอธิบายเมนูลัดปุ่ม G (พิมพ์ได้ยาว)</label>
+                    <textarea id="gkey-detail" rows="7" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-amber-500 custom-scrollbar" placeholder="อธิบายการใช้งานปุ่ม G / เมนูลัดต่างๆ..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeGkeyModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveGkey()" class="px-5 py-2 bg-amber-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= DATABASE CONNECTIVITY SYSTEM ================= -->
     <script type="module">
@@ -398,11 +905,21 @@
             onValue(ref(db, 'eco_time'), (snap) => renderEcoTime(snap.val()));
             onValue(ref(db, 'eco_list'), (snapshot) => renderEcoList(snapshot.val() || {}));
             onValue(ref(db, 'jobs'), (snapshot) => renderJobs(snapshot.val() || {}));
+            onValue(ref(db, 'devils'), (snap) => renderDevils(snap.val() || {}));
+            onValue(ref(db, 'fashions'), (snap) => renderFashions(snap.val() || {}));
+            onValue(ref(db, 'items'), (snap) => renderItems(snap.val() || {}));
+            onValue(ref(db, 'events'), (snap) => renderEvents(snap.val() || {}));
+            onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {}));
         } else {
             setTimeout(() => {
                 renderEcoTime(getLocalData('eco_time', 'อัปเดตแบบ Local บนเครื่องนี้'));
                 renderEcoList(getLocalData('eco_list', {}));
                 renderJobs(getLocalData('jobs', {}));
+                renderDevils(JSON.parse(localStorage.getItem('devils')||'{}'));
+                renderFashions(JSON.parse(localStorage.getItem('fashions')||'{}'));
+                renderItems(JSON.parse(localStorage.getItem('sc_items')||'{}'));
+                renderEvents(JSON.parse(localStorage.getItem('sc_events')||'{}'));
+                renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}'));
             }, 100);
         }
 
@@ -430,7 +947,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <h4 class="font-bold text-xs text-neutral-200 truncate break-words">${item.name}</h4>
-                        <span class="text-[10px] font-bold ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '↑ ราคาขึ้น' : '↓ ราคาลง'}</span>
+                        <span class="text-[10px] font-bold ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> ราคาขึ้น' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> ราคาลง'}</span>
                     </div>
                     ${isAdmin ? `<button onclick="deleteEcoItem('${key}')" class="absolute -top-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-xmark"></i></button>` : ''}
                 `;
@@ -470,7 +987,7 @@
                         <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img src="${job.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
-                            <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 tracking-wider uppercase">งานขาว ⚪</span>
+                            <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 tracking-wider uppercase"><i class="fa-regular fa-circle text-[9px] mr-1"></i> งานขาว</span>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between min-h-0 min-w-0">
                             <div class="flex-1 flex flex-col min-h-0 min-w-0">
@@ -488,10 +1005,10 @@
                                 <span class="font-bold block text-cyan-400 text-xs mb-1 shrink-0"><i class="fa-solid fa-map-location-dot"></i> วิธีการทำฟาร์ม:</span>
                                 
                                 <!-- กล่องสไลด์แสดงข้อความเนื้อหาอธิบายวิธีฟาร์ม -->
-                                <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
+                                <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar farm-howto-scroll min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
                             </div>
                             <div class="mt-2 pt-2 border-t border-neutral-800/60 flex justify-between items-center shrink-0">
-                                <span class="text-[10px] text-neutral-500 font-bold bg-neutral-950 px-2 py-1 rounded border border-neutral-800">ยาก: ${job.difficulty}</span>
+                                ${(()=>{const dm=job.difficulty||'ง่าย';const dc=dm==='ง่าย'?'diff-easy':dm==='ปานกลาง'?'diff-medium':dm==='ยาก'?'diff-hard':'diff-vhard';const di=dm==='ง่าย'?'<i class="fa-solid fa-star text-[9px]"></i>':dm==='ปานกลาง'?'<i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i>':dm==='ยาก'?'<i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i>':'<i class="fa-solid fa-skull text-[9px]"></i>';return `<span class="text-[10px] font-black px-3 py-1.5 rounded-lg ${dc} flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> ระดับความยาก: ${dm} ${di}</span>`;})()}
                                 ${isAdmin ? `
                                     <div class="flex space-x-1">
                                         <button onclick="openEditJob('${key}')" class="text-[10px] bg-neutral-950 text-cyan-400 font-bold px-2 py-1 rounded-lg border border-neutral-800">แก้ไข</button>
@@ -508,7 +1025,7 @@
                         <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img src="${job.image}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
-                            <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30 tracking-wider uppercase">งานดำ ⚫</span>
+                            <span class="absolute top-3 left-3 text-[10px] font-extrabold px-3 py-1 rounded-lg bg-orange-500/20 text-orange-400 border border-orange-500/30 tracking-wider uppercase"><i class="fa-solid fa-circle text-[9px] mr-1"></i> งานดำ</span>
                         </div>
                         <div class="p-4 flex-1 flex flex-col justify-between min-h-0 min-w-0">
                             <div class="flex-1 flex flex-col min-h-0 min-w-0">
@@ -520,10 +1037,10 @@
                                 <span class="font-bold block text-orange-400 text-xs mb-1 shrink-0"><i class="fa-solid fa-skull-crossbones"></i> ข้อมูลและวิธีฟาร์มใต้ดิน:</span>
                                 
                                 <!-- กล่องสไลด์แสดงข้อความเนื้อหาอธิบายวิธีฟาร์มใต้ดิน -->
-                                <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
+                                <div class="text-xs text-neutral-400 bg-neutral-950 p-3 rounded-xl border border-neutral-800 whitespace-pre-line leading-relaxed break-words overflow-y-auto flex-1 custom-scrollbar farm-howto-scroll min-w-0" style="overflow-wrap: anywhere;">${job.howto}</div>
                             </div>
                             <div class="mt-2 pt-2 border-t border-neutral-800/60 flex justify-between items-center shrink-0">
-                                <span class="text-[10px] text-neutral-500 font-bold bg-neutral-950 px-2 py-1 rounded border border-neutral-800">ยาก: ${job.difficulty}</span>
+                                ${(()=>{const dm=job.difficulty||'ง่าย';const dc=dm==='ง่าย'?'diff-easy':dm==='ปานกลาง'?'diff-medium':dm==='ยาก'?'diff-hard':'diff-vhard';const di=dm==='ง่าย'?'<i class="fa-solid fa-star text-[9px]"></i>':dm==='ปานกลาง'?'<i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i>':dm==='ยาก'?'<i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i><i class="fa-solid fa-star text-[9px]"></i>':'<i class="fa-solid fa-skull text-[9px]"></i>';return `<span class="text-[10px] font-black px-3 py-1.5 rounded-lg ${dc} flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[9px]"></i> ระดับความยาก: ${dm} ${di}</span>`;})()}
                                 ${isAdmin ? `
                                     <div class="flex space-x-1">
                                         <button onclick="openEditJob('${key}')" class="text-[10px] bg-neutral-950 text-cyan-400 font-bold px-2 py-1 rounded-lg border border-neutral-800">แก้ไข</button>
@@ -594,20 +1111,41 @@
                 badge.className = "text-[10px] px-2 py-0.5 rounded-full font-bold bg-orange-500 text-neutral-950 uppercase";
                 document.getElementById('admin-edit-eco-btn').classList.remove('hidden');
                 document.getElementById('admin-add-job-btn').classList.remove('hidden');
+                document.getElementById('admin-add-devil-btn').classList.remove('hidden');
+                document.getElementById('admin-add-fashion-btn').classList.remove('hidden');
+                document.getElementById('admin-add-item-btn').classList.remove('hidden');
+                document.getElementById('admin-add-event-btn').classList.remove('hidden');
+                document.getElementById('admin-edit-gkey-btn').classList.remove('hidden');
             } else {
                 badge.className = "text-[10px] px-2 py-0.5 rounded-full font-bold bg-neutral-800 text-neutral-400 uppercase";
                 document.getElementById('admin-edit-eco-btn').classList.add('hidden');
                 document.getElementById('admin-add-job-btn').classList.add('hidden');
+                document.getElementById('admin-add-devil-btn').classList.add('hidden');
+                document.getElementById('admin-add-fashion-btn').classList.add('hidden');
+                document.getElementById('admin-add-item-btn').classList.add('hidden');
+                document.getElementById('admin-add-event-btn').classList.add('hidden');
+                document.getElementById('admin-edit-gkey-btn').classList.add('hidden');
             }
-            // ใช้ onValue (realtime listener) แทน get() เพื่อให้ข้อมูลอัพเดทสดจาก Firebase ตลอดเวลา
-            // ทั้งเครื่อง A และ B จะเห็นข้อมูลเดียวกันทันทีเมื่อมีการเปลี่ยนแปลง
             if (isFirebaseValid) {
                 onValue(ref(db, 'eco_time'), (snap) => renderEcoTime(snap.val()));
                 onValue(ref(db, 'eco_list'), (snap) => renderEcoList(snap.val() || {}));
                 onValue(ref(db, 'jobs'), (snap) => renderJobs(snap.val() || {}));
+                onValue(ref(db, 'devils'), (snap) => renderDevils(snap.val() || {}));
+                onValue(ref(db, 'fashions'), (snap) => renderFashions(snap.val() || {}));
+                onValue(ref(db, 'items'), (snap) => renderItems(snap.val() || {}));
+                onValue(ref(db, 'events'), (snap) => renderEvents(snap.val() || {}));
+                onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {}));
+                window._fbSet = (path, data) => set(ref(db, path), data);
+                window._fbRemove = (path) => remove(ref(db, path));
             } else {
                 renderEcoList(getLocalData('eco_list', {}));
                 renderJobs(getLocalData('jobs', {}));
+                renderDevils(JSON.parse(localStorage.getItem('devils')||'{}'));
+                renderFashions(JSON.parse(localStorage.getItem('fashions')||'{}'));
+                renderItems(JSON.parse(localStorage.getItem('sc_items')||'{}'));
+                renderEvents(JSON.parse(localStorage.getItem('sc_events')||'{}'));
+                renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}'));
+                window._fbSet = null; window._fbRemove = null;
             }
         }
 
@@ -726,7 +1264,7 @@
         function toggleEcoEdit() { document.getElementById('eco-edit-form').classList.toggle('hidden'); }
 
         function openAddJobModal() {
-            document.getElementById('modal-title').innerText = "➕ เพิ่มคู่มือข้อมูลงานฟาร์มชุดใหม่";
+            document.getElementById('modal-title').innerText = "เพิ่มคู่มือข้อมูลงานฟาร์มชุดใหม่";
             document.getElementById('job-id').value = '';
             document.getElementById('job-name').value = '';
             document.getElementById('job-image').value = '';
@@ -741,7 +1279,7 @@
         function openEditJob(key) {
             const job = window.cachedJobs[key];
             if (!job) return;
-            document.getElementById('modal-title').innerText = "📝 แก้ไขคู่มือข้อมูลงานฟาร์ม";
+            document.getElementById('modal-title').innerText = "แก้ไขคู่มือข้อมูลงานฟาร์ม";
             document.getElementById('job-id').value = key;
             document.getElementById('job-name').value = job.name;
             document.getElementById('job-image').value = job.image;
@@ -782,6 +1320,303 @@
             document.getElementById('res-bag-fish').innerText = bagFish.toLocaleString() + " ชิ้น";
             document.getElementById('res-trunk-fish').innerText = trunkFish.toLocaleString() + " ชิ้น";
             document.getElementById('res-total-final').innerText = (bagTomato + trunkTomato).toLocaleString() + " ชิ้น";
+        }
+    </script>
+    <!-- ================= NEW SECTIONS JS ================= -->
+    <script>
+        // ===== TAB SWITCHING =====
+        function switchTab(tab) {
+            const panels = ['farm','devil','fashion','items','events','gkey'];
+            panels.forEach(p => {
+                document.getElementById('panel-'+p).classList.add('hidden');
+                const btn = document.getElementById('tab-'+p);
+                if(btn) { btn.classList.remove('active-tab'); btn.classList.add('inactive-tab'); }
+            });
+            document.getElementById('panel-'+tab).classList.remove('hidden');
+            const activeBtn = document.getElementById('tab-'+tab);
+            if(activeBtn) { activeBtn.classList.add('active-tab'); activeBtn.classList.remove('inactive-tab'); }
+        }
+
+        // ===== IMAGE PREVIEW HELPER =====
+        function previewImg(inputId, wrapId, imgId) {
+            const url = document.getElementById(inputId).value.trim();
+            if(!url) return;
+            document.getElementById(imgId).src = url;
+            document.getElementById(wrapId).classList.remove('hidden');
+        }
+
+        // ===== DEVIL FRUIT =====
+        window.openDevilModal = function(key) {
+            document.getElementById('devil-modal-title').innerText = key ? 'แก้ไขผลไม้ปีศาจ' : 'เพิ่มผลไม้ปีศาจใหม่';
+            document.getElementById('devil-id').value = key || '';
+            document.getElementById('devil-img-preview').classList.add('hidden');
+            if(key && window.cachedDevils && window.cachedDevils[key]) {
+                const d = window.cachedDevils[key];
+                document.getElementById('devil-image').value = d.image || '';
+                document.getElementById('devil-name').value = d.name || '';
+                document.getElementById('devil-status').value = d.status || '';
+            } else {
+                document.getElementById('devil-image').value = '';
+                document.getElementById('devil-name').value = '';
+                document.getElementById('devil-status').value = '';
+            }
+            document.getElementById('devil-modal').classList.remove('hidden');
+        }
+        window.closeDevilModal = function() { document.getElementById('devil-modal').classList.add('hidden'); }
+        window.executeSaveDevil = function() {
+            const id = document.getElementById('devil-id').value || Date.now().toString();
+            const data = { image: document.getElementById('devil-image').value.trim(), name: document.getElementById('devil-name').value.trim(), status: document.getElementById('devil-status').value.trim() };
+            if(!data.name) { alert("กรุณาใส่ชื่อผลไม้ปีศาจ!"); return; }
+            if(window._fbSet) window._fbSet('devils/'+id, data).then(() => { closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { const c = JSON.parse(localStorage.getItem('devils')||'{}'); c[id]=data; localStorage.setItem('devils',JSON.stringify(c)); renderDevils(c); closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+        window.deleteDevil = function(key) {
+            if(!confirm("ต้องการลบผลไม้ปีศาจนี้ถาวร?")) return;
+            if(window._fbRemove) window._fbRemove('devils/'+key);
+            else { const c = JSON.parse(localStorage.getItem('devils')||'{}'); delete c[key]; localStorage.setItem('devils',JSON.stringify(c)); renderDevils(c); }
+        }
+        window.renderDevils = function(data) {
+            window.cachedDevils = data || {};
+            const grid = document.getElementById('devil-grid');
+            if(!grid) return;
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            const keys = Object.keys(data||{});
+            if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-fire mr-1"></i> ยังไม่มีข้อมูลผลไม้ปีศาจ</div>'; return; }
+            grid.innerHTML = '';
+            keys.forEach(key => {
+                const d = data[key];
+                const card = document.createElement('div');
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-orange-500/40 transition flex flex-col info-card-fixed";
+                card.innerHTML = `
+                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px">
+                        <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
+                        <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-orange-400 shrink-0"><i class="fa-solid fa-fire"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                        <div class="flex-1 flex flex-col min-h-0">
+                            <span class="block text-[9px] font-bold text-orange-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-bolt"></i> ข้อมูลสถานะ:</span>
+                            <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-orange-900/30 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
+                        </div>
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="openDevilModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteDevil('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== FASHION =====
+        window.openFashionModal = function(key) {
+            document.getElementById('fashion-modal-title').innerText = key ? 'แก้ไขแฟชั่น' : 'เพิ่มแฟชั่นใหม่';
+            document.getElementById('fashion-id').value = key || '';
+            document.getElementById('fashion-img-preview').classList.add('hidden');
+            if(key && window.cachedFashions && window.cachedFashions[key]) {
+                const d = window.cachedFashions[key];
+                document.getElementById('fashion-image').value = d.image || '';
+                document.getElementById('fashion-name').value = d.name || '';
+                document.getElementById('fashion-status').value = d.status || '';
+                document.getElementById('fashion-category').value = d.category || 'แฟชั่นปกติ';
+            } else {
+                document.getElementById('fashion-image').value = '';
+                document.getElementById('fashion-name').value = '';
+                document.getElementById('fashion-status').value = '';
+                document.getElementById('fashion-category').value = 'แฟชั่นปกติ';
+            }
+            document.getElementById('fashion-modal').classList.remove('hidden');
+        }
+        window.closeFashionModal = function() { document.getElementById('fashion-modal').classList.add('hidden'); }
+        window.executeSaveFashion = function() {
+            const id = document.getElementById('fashion-id').value || Date.now().toString();
+            const data = { image: document.getElementById('fashion-image').value.trim(), name: document.getElementById('fashion-name').value.trim(), status: document.getElementById('fashion-status').value.trim(), category: document.getElementById('fashion-category').value };
+            if(!data.name) { alert("กรุณาใส่ชื่อแฟชั่น!"); return; }
+            if(window._fbSet) window._fbSet('fashions/'+id, data).then(() => { closeFashionModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { const c = JSON.parse(localStorage.getItem('fashions')||'{}'); c[id]=data; localStorage.setItem('fashions',JSON.stringify(c)); renderFashions(c); closeFashionModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+        window.deleteFashion = function(key) {
+            if(!confirm("ต้องการลบแฟชั่นนี้ถาวร?")) return;
+            if(window._fbRemove) window._fbRemove('fashions/'+key);
+            else { const c = JSON.parse(localStorage.getItem('fashions')||'{}'); delete c[key]; localStorage.setItem('fashions',JSON.stringify(c)); renderFashions(c); }
+        }
+        window.renderFashions = function(data) {
+            window.cachedFashions = data || {};
+            const grid = document.getElementById('fashion-grid');
+            if(!grid) return;
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            const keys = Object.keys(data||{});
+            if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-shirt mr-1"></i> ยังไม่มีข้อมูลแฟชั่น</div>'; return; }
+            grid.innerHTML = '';
+            keys.forEach(key => {
+                const d = data[key];
+                const card = document.createElement('div');
+                const cat = d.category||'แฟชั่นปกติ';
+                // จับ class + ไอคอน + hover border + card bg ตามระดับ rare
+                let catCls, cardBg, catIcon, hoverBorder, catLabel, statusColor, borderDivColor;
+                if(cat.includes('Topdonate'))      { catCls='ftag-topdonate'; cardBg='fcard-topdonate'; catIcon='<i class="fa-solid fa-crown"></i>'; hoverBorder='hover:border-amber-400/70';   catLabel=cat; statusColor='text-amber-300';  borderDivColor='border-amber-900/50'; }
+                else if(cat.includes('ประมูล'))    { catCls='ftag-auction';   cardBg='fcard-auction';   catIcon='<i class="fa-solid fa-fire"></i>'; hoverBorder='hover:border-red-400/70';     catLabel=cat; statusColor='text-red-300';    borderDivColor='border-red-900/50'; }
+                else if(cat.includes('Celebrity')) { catCls='ftag-celeb';     cardBg='fcard-celeb';     catIcon='<i class="fa-solid fa-gem"></i>'; hoverBorder='hover:border-blue-400/70';    catLabel=cat; statusColor='text-blue-300';   borderDivColor='border-blue-900/50'; }
+                else if(cat.includes('30k'))       { catCls='ftag-30k';       cardBg='fcard-30k';       catIcon='<i class="fa-solid fa-coins"></i>'; hoverBorder='hover:border-violet-500/70';  catLabel=cat; statusColor='text-violet-300'; borderDivColor='border-violet-900/50'; }
+                else if(cat.includes('กิจกรรม'))  { catCls='ftag-event';     cardBg='fcard-event';     catIcon='<i class="fa-solid fa-star"></i>'; hoverBorder='hover:border-emerald-400/70'; catLabel=cat; statusColor='text-emerald-300';borderDivColor='border-emerald-900/50'; }
+                else                               { catCls='ftag-normal';    cardBg='fcard-normal';    catIcon='<i class="fa-solid fa-shirt"></i>'; hoverBorder='hover:border-neutral-500/50'; catLabel=cat; statusColor='text-neutral-400'; borderDivColor='border-neutral-800'; }
+                card.className = `fantasy-card ${cardBg} rounded-2xl overflow-hidden shadow-md transition flex flex-col info-card-fixed ${hoverBorder}`;
+                card.innerHTML = `
+                    <div class="w-full overflow-hidden shrink-0 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px;background:rgba(0,0,0,0.5)">
+                        <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
+                        <div class="flex items-start justify-between gap-1 shrink-0">
+                            <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1 min-w-0"><span class="shrink-0"><i class="fa-solid fa-shirt"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                        </div>
+                        <span class="text-[10px] font-black px-2 py-1 rounded-lg whitespace-nowrap inline-block w-fit shrink-0 ${catCls}">${catIcon} ${catLabel}</span>
+                        <div class="flex-1 flex flex-col min-h-0">
+                            <span class="block text-[9px] font-bold ${statusColor} uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-star"></i> ข้อมูลสถานะ:</span>
+                            <div class="text-[11px] text-neutral-200 bg-black/30 border ${borderDivColor} rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
+                        </div>
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t ${borderDivColor}"><button onclick="openFashionModal('${key}')" class="flex-1 text-[10px] bg-black/30 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteFashion('${key}')" class="flex-1 text-[10px] bg-rose-950/60 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== ITEMS =====
+        window.openItemModal = function(key) {
+            document.getElementById('item-modal-title').innerText = key ? 'แก้ไข ITEM' : 'เพิ่ม ITEM ใหม่';
+            document.getElementById('item-id').value = key || '';
+            document.getElementById('item-img-preview').classList.add('hidden');
+            if(key && window.cachedItems && window.cachedItems[key]) {
+                const d = window.cachedItems[key];
+                document.getElementById('item-image').value = d.image || '';
+                document.getElementById('item-name').value = d.name || '';
+                document.getElementById('item-source').value = d.source || '';
+            } else {
+                document.getElementById('item-image').value = '';
+                document.getElementById('item-name').value = '';
+                document.getElementById('item-source').value = '';
+            }
+            document.getElementById('item-modal').classList.remove('hidden');
+        }
+        window.closeItemModal = function() { document.getElementById('item-modal').classList.add('hidden'); }
+        window.executeSaveItem = function() {
+            const id = document.getElementById('item-id').value || Date.now().toString();
+            const data = { image: document.getElementById('item-image').value.trim(), name: document.getElementById('item-name').value.trim(), source: document.getElementById('item-source').value.trim() };
+            if(!data.name) { alert("กรุณาใส่ชื่อ ITEM!"); return; }
+            if(window._fbSet) window._fbSet('items/'+id, data).then(() => { closeItemModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { const c = JSON.parse(localStorage.getItem('sc_items')||'{}'); c[id]=data; localStorage.setItem('sc_items',JSON.stringify(c)); renderItems(c); closeItemModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+        window.deleteItem = function(key) {
+            if(!confirm("ต้องการลบ ITEM นี้ถาวร?")) return;
+            if(window._fbRemove) window._fbRemove('items/'+key);
+            else { const c = JSON.parse(localStorage.getItem('sc_items')||'{}'); delete c[key]; localStorage.setItem('sc_items',JSON.stringify(c)); renderItems(c); }
+        }
+        window.renderItems = function(data) {
+            window.cachedItems = data || {};
+            const grid = document.getElementById('items-grid');
+            if(!grid) return;
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            const keys = Object.keys(data||{});
+            if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-bag-shopping mr-1"></i> ยังไม่มีข้อมูล ITEMS</div>'; return; }
+            grid.innerHTML = '';
+            keys.forEach(key => {
+                const d = data[key];
+                const card = document.createElement('div');
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-cyan-500/40 transition flex flex-col info-card-fixed";
+                card.innerHTML = `
+                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px">
+                        <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
+                        <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-cyan-400 shrink-0"><i class="fa-solid fa-bag-shopping"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                        <div class="flex-1 flex flex-col min-h-0">
+                            <span class="block text-[9px] font-bold text-cyan-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-map-pin"></i> แหล่งที่มา:</span>
+                            <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.source||'ยังไม่มีข้อมูล'}</div>
+                        </div>
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="openItemModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteItem('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== EVENTS =====
+        window.openEventModal = function(key) {
+            document.getElementById('event-modal-title').innerText = key ? 'แก้ไขกิจกรรม' : 'เพิ่มกิจกรรมใหม่';
+            document.getElementById('event-id').value = key || '';
+            if(key && window.cachedEvents && window.cachedEvents[key]) {
+                const d = window.cachedEvents[key];
+                document.getElementById('event-name').value = d.name || '';
+                document.getElementById('event-time').value = d.time || '';
+                document.getElementById('event-detail').value = d.detail || '';
+            } else {
+                document.getElementById('event-name').value = '';
+                document.getElementById('event-time').value = '';
+                document.getElementById('event-detail').value = '';
+            }
+            document.getElementById('event-modal').classList.remove('hidden');
+        }
+        window.closeEventModal = function() { document.getElementById('event-modal').classList.add('hidden'); }
+        window.executeSaveEvent = function() {
+            const id = document.getElementById('event-id').value || Date.now().toString();
+            const data = { name: document.getElementById('event-name').value.trim(), time: document.getElementById('event-time').value.trim(), detail: document.getElementById('event-detail').value.trim() };
+            if(!data.name) { alert("กรุณาใส่ชื่อกิจกรรม!"); return; }
+            if(window._fbSet) window._fbSet('events/'+id, data).then(() => { closeEventModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { const c = JSON.parse(localStorage.getItem('sc_events')||'{}'); c[id]=data; localStorage.setItem('sc_events',JSON.stringify(c)); renderEvents(c); closeEventModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+        window.deleteEvent = function(key) {
+            if(!confirm("ต้องการลบกิจกรรมนี้ถาวร?")) return;
+            if(window._fbRemove) window._fbRemove('events/'+key);
+            else { const c = JSON.parse(localStorage.getItem('sc_events')||'{}'); delete c[key]; localStorage.setItem('sc_events',JSON.stringify(c)); renderEvents(c); }
+        }
+        window.renderEvents = function(data) {
+            window.cachedEvents = data || {};
+            const grid = document.getElementById('events-grid');
+            if(!grid) return;
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            const keys = Object.keys(data||{});
+            if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-calendar-days mr-1"></i> ยังไม่มีข้อมูลกิจกรรม</div>'; return; }
+            grid.innerHTML = '';
+            keys.forEach(key => {
+                const d = data[key];
+                const card = document.createElement('div');
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-emerald-500/40 transition flex flex-col event-card-fixed";
+                card.innerHTML = `
+                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
+                        <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0"><span class="text-emerald-400"><i class="fa-solid fa-calendar-days"></i></span>${d.name||'ไม่มีชื่อ'}</h3>
+                        <div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-2.5 py-1.5 text-[11px] text-emerald-300 font-bold shrink-0"><i class="fa-solid fa-clock mr-1"></i>${d.time||'ยังไม่มีข้อมูลเวลา'}</div>
+                        <div class="flex-1 flex flex-col min-h-0">
+                            <span class="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-circle-info"></i> รายละเอียด:</span>
+                            <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.detail||'ยังไม่มีข้อมูล'}</div>
+                        </div>
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="openEventModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteEvent('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== GKEY =====
+        window.openGkeyModal = function() {
+            const d = window.cachedGkey || {};
+            document.getElementById('gkey-image').value = d.image || '';
+            document.getElementById('gkey-detail').value = d.detail || '';
+            document.getElementById('gkey-img-preview').classList.add('hidden');
+            document.getElementById('gkey-modal').classList.remove('hidden');
+        }
+        window.closeGkeyModal = function() { document.getElementById('gkey-modal').classList.add('hidden'); }
+        window.executeSaveGkey = function() {
+            const data = { image: document.getElementById('gkey-image').value.trim(), detail: document.getElementById('gkey-detail').value.trim() };
+            if(window._fbSet) window._fbSet('gkey', data).then(() => { closeGkeyModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { localStorage.setItem('gkey', JSON.stringify(data)); renderGkey(data); closeGkeyModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+        window.renderGkey = function(data) {
+            window.cachedGkey = data || {};
+            const wrap = document.getElementById('gkey-display');
+            if(!wrap) return;
+            if(!data || (!data.image && !data.detail)) {
+                wrap.innerHTML = '<div class="text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-keyboard mr-1"></i> ยังไม่มีข้อมูลเมนูลัดปุ่ม G</div>'; return;
+            }
+            wrap.innerHTML = `
+                <div class="rounded-2xl overflow-hidden border border-amber-500/20 bg-neutral-900 shadow-lg">
+                    ${data.image ? `<div class="w-full bg-neutral-950 border-b border-neutral-800 flex items-center justify-center p-4"><img src="${data.image}" class="max-w-full max-h-[500px] object-contain rounded-xl" onerror="this.style.display='none'"></div>` : ''}
+                    <div class="p-6">
+                        <span class="block text-[10px] font-bold text-amber-400 uppercase tracking-wide mb-2"><i class="fa-solid fa-keyboard"></i> รายละเอียดเมนูลัดปุ่ม G:</span>
+                        <div class="text-sm text-neutral-300 bg-neutral-950 border border-neutral-800 rounded-xl p-4 whitespace-pre-line leading-relaxed overflow-y-auto max-h-96 custom-scrollbar">${data.detail||'ยังไม่มีข้อมูล'}</div>
+                    </div>
+                </div>`;
         }
     </script>
 </body>
