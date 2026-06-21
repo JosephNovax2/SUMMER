@@ -246,6 +246,18 @@
         .job-card-clickable:hover .job-view-detail-hint {
             color: #22d3ee;
         }
+        /* การ์ดเด้งตอนกด (visual only) */
+        .job-card-clickable:active {
+            transform: scale(0.97);
+        }
+        @keyframes scCardPop {
+            0%   { transform: scale(0.92); opacity: 0; }
+            60%  { transform: scale(1.015); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .sc-pop-in > div {
+            animation: scCardPop 0.28s cubic-bezier(.25,.9,.4,1.15);
+        }
         .line-clamp-3 {
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -341,11 +353,20 @@
 
         /* ===== CARD HEIGHT — ปรับขนาดกล่องให้เหมาะสม ===== */
         /* การ์ดมีรูป: รูป ~130px + เนื้อหา ~150px = ~280px */
-        .info-card-fixed { height: 370px; }
+        .info-card-fixed { height: 320px; }
         .event-card-fixed { height: 300px; }
 
+        /* ===== ZOOM CARD — เวอร์ชันขยายของการ์ดผลไม้ปีศาจ/แฟชั่น/ITEMS (กดจากการ์ดเดิมเพื่อดูขยายใหญ่) ===== */
+        /* ขนาด/scale คำนวณแบบไดนามิกจาก JS (openCardZoom) ตามขนาดจริงของการ์ดต้นฉบับ เพื่อให้สัดส่วนเหมือนการ์ดตอนโชว์ปกติทุกอย่าง
+           (รูปไม่บีบ/ไม่เบี้ยว ช่องสถานะยังเลื่อนลูกกลิ้งอ่านได้เหมือนเดิม) แค่ขยายใหญ่ขึ้นเพื่อให้อ่านง่ายขึ้นเท่านั้น */
+        #card-zoom-content { display: flex; align-items: center; justify-content: center; }
+        #card-zoom-content > div {
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+
         /* ===== SECTION / PANEL STYLING ===== */
-        #panel-farm, #panel-devil, #panel-fashion, #panel-items, #panel-events, #panel-gkey {
+        #panel-farm, #panel-devil, #panel-fashion, #panel-items, #panel-events, #panel-gkey, #panel-food {
             position: relative;
         }
 
@@ -485,6 +506,66 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(249,115,22,0.4), rgba(251,191,36,0.3), rgba(249,115,22,0.4), transparent);
             margin: 8px 0;
+        }
+
+        /* ===== FOOD TIER TAG BADGES ===== */
+        .ftag-food-green  { background: linear-gradient(135deg,#001a0d,#002e18); color:#6ee7b7; border:1px solid #10b98188; box-shadow:0 0 8px rgba(16,185,129,0.25); }
+        .ftag-food-purple { background: linear-gradient(135deg,#15003a,#220b55); color:#c4b5fd; border:1px solid #7c3aed88; box-shadow:0 0 8px rgba(124,58,237,0.25); }
+        .ftag-food-gold   { background: linear-gradient(135deg,#1a1200,#2e1f00); color:#fde68a; border:1px solid #f59e0b88; box-shadow:0 0 8px rgba(245,158,11,0.3); text-shadow:0 0 6px rgba(253,230,138,0.5); }
+
+        /* ===== FOOD CARD COLORS BY TIER ===== */
+        @keyframes food-green-glow {
+            0%,100% { box-shadow: 0 0 14px rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.45); }
+            50%      { box-shadow: 0 0 26px rgba(16,185,129,0.5); border-color: rgba(110,231,183,0.65); }
+        }
+        @keyframes food-purple-glow {
+            0%,100% { box-shadow: 0 0 14px rgba(124,58,237,0.25); border-color: rgba(124,58,237,0.45); }
+            50%      { box-shadow: 0 0 26px rgba(124,58,237,0.5); border-color: rgba(196,181,253,0.65); }
+        }
+        @keyframes food-gold-glow {
+            0%,100% { box-shadow: 0 0 16px rgba(245,158,11,0.35), 0 0 40px rgba(253,230,138,0.1); border-color: rgba(245,158,11,0.55); }
+            50%      { box-shadow: 0 0 28px rgba(245,158,11,0.6),  0 0 60px rgba(253,230,138,0.2); border-color: rgba(253,230,138,0.8); }
+        }
+        .fcard-food-green {
+            background: linear-gradient(160deg, #001510 0%, #000e09 50%, #001a12 100%) !important;
+            border-color: rgba(16,185,129,0.4) !important;
+            animation: food-green-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-food-green::before { background: linear-gradient(90deg, transparent, rgba(110,231,183,0.6), transparent) !important; }
+        .fcard-food-purple {
+            background: linear-gradient(160deg, #0e0020 0%, #080010 50%, #140030 100%) !important;
+            border-color: rgba(124,58,237,0.45) !important;
+            animation: food-purple-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-food-purple::before { background: linear-gradient(90deg, transparent, rgba(196,181,253,0.6), transparent) !important; }
+        .fcard-food-gold {
+            background: linear-gradient(160deg, #1c1400 0%, #120e00 50%, #1a1200 100%) !important;
+            border-color: rgba(245,158,11,0.55) !important;
+            animation: food-gold-glow 2.5s infinite ease-in-out !important;
+        }
+        .fcard-food-gold::before { background: linear-gradient(90deg, transparent, rgba(253,230,138,0.8), transparent) !important; }
+
+        /* ===== FOOD DETAIL MODAL STEP CARD ===== */
+        .food-step-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(38,38,38,1);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .food-step-number {
+            width: 26px; height: 26px; min-width: 26px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #0a0a0a; font-weight: 900; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; margin-top: 1px;
+        }
+        .food-step-img {
+            width: 100%; max-height: 220px; object-fit: cover;
+            border-radius: 10px; margin-top: 8px;
+            border: 1px solid #262626; cursor: zoom-in;
         }
     </style>
 </head>
@@ -737,6 +818,9 @@
                     <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
                         <i class="fa-solid fa-wheat-awn mr-1"></i> ข้อมูลงานฟาร์ม
                     </button>
+                    <button onclick="switchTab('food')" id="tab-food" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
+                        <i class="fa-solid fa-utensils mr-1"></i> ข้อมูลอาหาร
+                    </button>
                     <button onclick="switchTab('devil')" id="tab-devil" class="tab-btn inactive-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
                         <i class="fa-solid fa-fire mr-1"></i> ผลไม้ปีศาจ
                     </button>
@@ -922,7 +1006,7 @@
                             <i class="fa-solid fa-plus"></i> เพิ่มผลไม้ปีศาจ
                         </button>
                     </div>
-                    <div id="devil-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div id="devil-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลผลไม้ปีศาจ...</div>
                     </div>
                 </section>
@@ -940,7 +1024,7 @@
                             <i class="fa-solid fa-plus"></i> เพิ่มแฟชั่น
                         </button>
                     </div>
-                    <div id="fashion-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div id="fashion-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลแฟชั่น...</div>
                     </div>
                 </section>
@@ -958,7 +1042,7 @@
                             <i class="fa-solid fa-plus"></i> เพิ่ม ITEM
                         </button>
                     </div>
-                    <div id="items-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div id="items-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูล ITEMS...</div>
                     </div>
                 </section>
@@ -996,6 +1080,26 @@
                     </div>
                     <div id="gkey-display" class="space-y-6">
                         <div class="text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูล...</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ================= PANEL: ข้อมูลอาหาร ================= -->
+            <div id="panel-food" class="hidden">
+                <section class="space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
+                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-emerald-500/50 via-green-400/30 to-transparent"></div>
+                        <div>
+                            <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-300 to-amber-300 tracking-wide flex items-center gap-2">
+                                <i class="fa-solid fa-utensils text-2xl text-emerald-400"></i> ข้อมูลอาหาร
+                            </h2>
+                        </div>
+                        <button id="admin-add-food-btn" onclick="openFoodModal()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-neutral-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow-md flex items-center gap-1.5 transition shrink-0 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> เพิ่มอาหาร
+                        </button>
+                    </div>
+                    <div id="food-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        <div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูลอาหาร...</div>
                     </div>
                 </section>
             </div>
@@ -1176,6 +1280,17 @@
         </div>
     </div>
 
+    <!-- ================= MODAL: ขยายดูการ์ดเดี่ยว (ผลไม้ปีศาจ / สถานะแฟชั่น / แหล่งที่มา ITEMS) ================= -->
+    <!-- ใช้วิธี clone เนื้อหาการ์ดเดิมมาแสดงขยายใหญ่ขึ้นกลางจอ ไม่ใช่หน้ารายละเอียดแยก เพื่อให้ "เหมือนแค่ขยายการ์ดใบนั้น" -->
+    <div id="card-zoom-modal" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-3 sm:p-4 backdrop-blur-md overflow-y-auto" onclick="if(event.target===this) closeCardZoom()">
+        <button type="button" onclick="closeCardZoom()" class="fixed top-4 right-4 w-9 h-9 rounded-full bg-black/70 hover:bg-black/90 text-neutral-200 flex items-center justify-center backdrop-blur-sm border border-white/10 cursor-pointer z-10 shadow-lg">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="w-full max-w-2xl my-auto flex items-center justify-center">
+            <div id="card-zoom-content" class="w-full"></div>
+        </div>
+    </div>
+
 
     <!-- ================= MODAL: ผลไม้ปีศาจ ================= -->
     <div id="devil-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
@@ -1344,6 +1459,91 @@
         </div>
     </div>
 
+    <!-- ================= MODAL: อาหาร (เพิ่ม/แก้ไข) ================= -->
+    <div id="food-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="bg-neutral-950 border-b border-neutral-800 text-emerald-400 p-4 font-bold flex justify-between items-center">
+                <span id="food-modal-title" class="text-sm font-black uppercase"><i class="fa-solid fa-utensils mr-1"></i> เพิ่ม/แก้ไขอาหาร</span>
+                <button type="button" onclick="closeFoodModal()"><i class="fa-solid fa-xmark text-xl text-neutral-400 cursor-pointer"></i></button>
+            </div>
+            <div class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="food-id">
+                <!-- รูปหลัก -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปภาพหลัก (จาก pic.in.th — วางลิงก์ Direct URL)</label>
+                    <input type="url" id="food-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500" placeholder="https://pic.in.th/...">
+                    <div id="food-img-preview" class="mt-2 hidden">
+                        <img id="food-img-preview-img" src="" class="w-32 h-32 object-cover rounded-xl border border-neutral-700">
+                    </div>
+                    <button type="button" onclick="previewImg('food-image','food-img-preview','food-img-preview-img')" class="mt-1.5 text-[10px] bg-neutral-800 hover:bg-neutral-700 text-neutral-300 px-3 py-1 rounded-lg cursor-pointer"><i class="fa-solid fa-eye mr-1"></i> ดูตัวอย่างรูป</button>
+                </div>
+                <!-- ชื่ออาหาร -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่ออาหาร</label>
+                    <input type="text" id="food-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500" placeholder="เช่น ข้าวผัดทะเล / สเต็กเนื้อ">
+                </div>
+                <!-- ระดับอาหาร -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับอาหาร</label>
+                    <select id="food-tier" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500">
+                        <option value="เขียว">🟢 ระดับเขียว (ธรรมดา)</option>
+                        <option value="ม่วง">🟣 ระดับม่วง (หายาก)</option>
+                        <option value="ทอง">🟡 ระดับทอง (หายากที่สุด)</option>
+                    </select>
+                </div>
+                <!-- คำอธิบาย -->
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูล/คำอธิบายอาหาร (เอฟเฟกต์ / วิธีทำ / ที่มา)</label>
+                    <textarea id="food-desc" rows="4" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500 custom-scrollbar" placeholder="เช่น&#10;เอฟเฟกต์: เพิ่มพลังงาน 30 นาที&#10;วิธีหาได้จาก: ร้าน NPC ในเมือง&#10;วัตถุดิบ: ข้าว + ทะเล + เครื่องเทศ"></textarea>
+                </div>
+                <!-- รูปประกอบวัตถุดิบ/ส่วนผสม (เพิ่มได้หลายรูป) -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-bold text-emerald-400 uppercase tracking-wide"><i class="fa-solid fa-images mr-1"></i> รูปประกอบวัตถุดิบ/ส่วนผสม (ไม่บังคับ):</label>
+                        <button type="button" onclick="addFoodIngredientImg('')" class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-neutral-950 text-[10px] px-2 py-1 rounded transition font-bold">
+                            <i class="fa-solid fa-plus"></i> เพิ่มรูป
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-neutral-500">เพิ่มรูปวัตถุดิบ/ส่วนผสมที่ใช้ทำอาหารจาน เพื่อแสดงให้คนดูรู้ว่าต้องใช้อะไรบ้าง</p>
+                    <div id="food-ingredient-imgs-container" class="space-y-2"></div>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeFoodModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="executeSaveFood()" class="px-5 py-2 bg-emerald-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: รายละเอียดอาหารเต็ม ================= -->
+    <div id="food-detail-modal" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-3 sm:p-4 backdrop-blur-md" onclick="if(event.target===this) closeFoodDetailModal()">
+        <div id="food-detail-inner" class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+            <div id="food-detail-hero" class="w-full aspect-video bg-neutral-950 border-b border-neutral-800 shrink-0 relative overflow-hidden">
+                <img id="food-detail-image" src="" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                <button type="button" onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-neutral-200 flex items-center justify-center backdrop-blur-sm border border-white/10 cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <span id="food-detail-tier-badge" class="absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase"></span>
+            </div>
+            <div class="p-5 sm:p-6 overflow-y-auto custom-scrollbar flex-1 min-h-0">
+                <h2 id="food-detail-name" class="text-lg sm:text-xl font-black text-neutral-100 mb-3 break-words"></h2>
+                <div id="food-detail-desc-wrap" class="mb-5">
+                    <span class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5"><i class="fa-solid fa-circle-info"></i> ข้อมูลอาหาร:</span>
+                    <div id="food-detail-desc" class="text-sm text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-3 whitespace-pre-line leading-relaxed custom-scrollbar max-h-48 overflow-y-auto"></div>
+                </div>
+                <div id="food-detail-ingredients-wrap" class="hidden">
+                    <span class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-images"></i> รูปวัตถุดิบ/ส่วนผสม:</span>
+                    <div id="food-detail-ingredients" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+                </div>
+                <!-- ปุ่ม admin แก้ไข/ลบ ในหน้าดูรายละเอียด -->
+                <div id="food-detail-admin-btns" class="hidden mt-5 pt-4 border-t border-neutral-800 flex gap-2">
+                    <button id="food-detail-edit-btn" onclick="closeFoodDetailModal(); setTimeout(()=>openFoodModal(window._foodDetailKey),80)" class="flex-1 bg-neutral-950 border border-neutral-700 text-cyan-400 font-bold text-xs py-2 rounded-xl cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button>
+                    <button id="food-detail-del-btn" onclick="closeFoodDetailModal(); deleteFood(window._foodDetailKey)" class="flex-1 bg-rose-950 border border-neutral-700 text-rose-400 font-bold text-xs py-2 rounded-xl cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= DATABASE CONNECTIVITY SYSTEM ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -1405,6 +1605,7 @@
                 renderItems(JSON.parse(localStorage.getItem('sc_items')||'{}'));
                 renderEvents(JSON.parse(localStorage.getItem('sc_events')||'{}'));
                 renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}'));
+                renderFoods(JSON.parse(localStorage.getItem('sc_foods')||'{}'));
             }, 100);
         }
 
@@ -1517,7 +1718,7 @@
                                 </h3>
                                 <div class="grid grid-cols-1 gap-1.5 text-[11px] mb-2 shrink-0">
                                     <div class="bg-neutral-950 p-2 rounded-xl border border-neutral-800 w-full min-w-0">
-                                        <span class="block text-neutral-500 font-bold mb-1 uppercase tracking-wider text-[9px]"><i class="fa-solid fa-toolbox"></i> ITEMS ที่ต้องใช้:</span>
+                                        <span class="block text-neutral-500 font-bold mb-1 uppercase tracking-wider text-[9px]"><i class="fa-solid fa-toolbox"></i> ITEMS ที่ต้องใช้ในการฟาร์ม:</span>
                                         <div class="flex flex-wrap gap-1 max-h-[34px] overflow-y-auto custom-scrollbar min-w-0">${itemsHTML}</div>
                                     </div>
                                 </div>
@@ -1648,6 +1849,7 @@
                 document.getElementById('admin-add-item-btn').classList.remove('hidden');
                 document.getElementById('admin-add-event-btn').classList.remove('hidden');
                 document.getElementById('admin-edit-gkey-btn').classList.remove('hidden');
+                document.getElementById('admin-add-food-btn').classList.remove('hidden');
             } else {
                 badge.className = "text-[10px] px-2 py-0.5 rounded-full font-bold bg-neutral-800 text-neutral-400 uppercase";
                 document.getElementById('admin-edit-eco-btn').classList.add('hidden');
@@ -1657,6 +1859,7 @@
                 document.getElementById('admin-add-item-btn').classList.add('hidden');
                 document.getElementById('admin-add-event-btn').classList.add('hidden');
                 document.getElementById('admin-edit-gkey-btn').classList.add('hidden');
+                document.getElementById('admin-add-food-btn').classList.add('hidden');
             }
             if (isFirebaseValid) {
                 onValue(ref(db, 'eco_time'), (snap) => renderEcoTime(snap.val()));
@@ -1668,6 +1871,7 @@
                 onValue(ref(db, 'items'), (snap) => renderItems(snap.val() || {}));
                 onValue(ref(db, 'events'), (snap) => renderEvents(snap.val() || {}));
                 onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {}));
+                onValue(ref(db, 'foods'), (snap) => renderFoods(snap.val() || {}));
                 window._fbSet = (path, data) => set(ref(db, path), data);
                 window._fbRemove = (path) => remove(ref(db, path));
             } else {
@@ -1679,6 +1883,7 @@
                 renderItems(JSON.parse(localStorage.getItem('sc_items')||'{}'));
                 renderEvents(JSON.parse(localStorage.getItem('sc_events')||'{}'));
                 renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}'));
+                renderFoods(JSON.parse(localStorage.getItem('sc_foods')||'{}'));
                 window._fbSet = null; window._fbRemove = null;
             }
         }
@@ -1977,7 +2182,7 @@
     <script>
         // ===== TAB SWITCHING =====
         function switchTab(tab) {
-            const panels = ['farm','devil','fashion','items','events','gkey'];
+            const panels = ['farm','devil','fashion','items','events','gkey','food'];
             panels.forEach(p => {
                 document.getElementById('panel-'+p).classList.add('hidden');
                 const btn = document.getElementById('tab-'+p);
@@ -2037,18 +2242,19 @@
             keys.forEach(key => {
                 const d = data[key];
                 const card = document.createElement('div');
-                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-orange-500/40 transition flex flex-col info-card-fixed";
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-orange-500/40 transition flex flex-col info-card-fixed job-card-clickable";
+                card.onclick = function(e) { openCardZoom(card); };
                 card.innerHTML = `
-                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px">
+                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:105px">
                         <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                     </div>
-                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
-                        <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-orange-400 shrink-0"><i class="fa-solid fa-fire"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                    <div class="p-2.5 flex-1 flex flex-col gap-1 min-h-0">
+                        <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-orange-400 shrink-0"><i class="fa-solid fa-fire"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
                         <div class="flex-1 flex flex-col min-h-0">
-                            <span class="block text-[9px] font-bold text-orange-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-bolt"></i> ข้อมูลสถานะ:</span>
-                            <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-orange-900/30 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
+                            <span class="block text-[8px] font-bold text-orange-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-bolt"></i> ข้อมูลสถานะ:</span>
+                            <div class="text-[10px] text-neutral-300 bg-neutral-950/80 border border-orange-900/30 rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
                         </div>
-                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="openDevilModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteDevil('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="event.stopPropagation(); openDevilModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="event.stopPropagation(); deleteDevil('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
                     </div>`;
                 grid.appendChild(card);
             });
@@ -2106,21 +2312,22 @@
                 else if(cat.includes('30k'))       { catCls='ftag-30k';       cardBg='fcard-30k';       catIcon='<i class="fa-solid fa-coins"></i>'; hoverBorder='hover:border-violet-500/70';  catLabel=cat; statusColor='text-violet-300'; borderDivColor='border-violet-900/50'; }
                 else if(cat.includes('กิจกรรม'))  { catCls='ftag-event';     cardBg='fcard-event';     catIcon='<i class="fa-solid fa-star"></i>'; hoverBorder='hover:border-emerald-400/70'; catLabel=cat; statusColor='text-emerald-300';borderDivColor='border-emerald-900/50'; }
                 else                               { catCls='ftag-normal';    cardBg='fcard-normal';    catIcon='<i class="fa-solid fa-shirt"></i>'; hoverBorder='hover:border-neutral-500/50'; catLabel=cat; statusColor='text-neutral-400'; borderDivColor='border-neutral-800'; }
-                card.className = `fantasy-card ${cardBg} rounded-2xl overflow-hidden shadow-md transition flex flex-col info-card-fixed ${hoverBorder}`;
+                card.className = `fantasy-card ${cardBg} rounded-2xl overflow-hidden shadow-md transition flex flex-col info-card-fixed job-card-clickable ${hoverBorder}`;
+                card.onclick = function(e) { openCardZoom(card); };
                 card.innerHTML = `
-                    <div class="w-full overflow-hidden shrink-0 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px;background:rgba(0,0,0,0.5)">
+                    <div class="w-full overflow-hidden shrink-0 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:105px;background:rgba(0,0,0,0.5)">
                         <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                     </div>
-                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
+                    <div class="p-2.5 flex-1 flex flex-col gap-1 min-h-0">
                         <div class="flex items-start justify-between gap-1 shrink-0">
-                            <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1 min-w-0"><span class="shrink-0"><i class="fa-solid fa-shirt"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                            <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1 min-w-0"><span class="shrink-0"><i class="fa-solid fa-shirt"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
                         </div>
-                        <span class="text-[10px] font-black px-2 py-1 rounded-lg whitespace-nowrap inline-block w-fit shrink-0 ${catCls}">${catIcon} ${catLabel}</span>
+                        <span class="text-[9px] font-black px-1.5 py-0.5 rounded-lg whitespace-nowrap inline-block w-fit shrink-0 ${catCls}">${catIcon} ${catLabel}</span>
                         <div class="flex-1 flex flex-col min-h-0">
-                            <span class="block text-[9px] font-bold ${statusColor} uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-star"></i> ข้อมูลสถานะ:</span>
-                            <div class="text-[11px] text-neutral-200 bg-black/30 border ${borderDivColor} rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
+                            <span class="block text-[8px] font-bold ${statusColor} uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-star"></i> ข้อมูลสถานะ:</span>
+                            <div class="text-[10px] text-neutral-200 bg-black/30 border ${borderDivColor} rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
                         </div>
-                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t ${borderDivColor}"><button onclick="openFashionModal('${key}')" class="flex-1 text-[10px] bg-black/30 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteFashion('${key}')" class="flex-1 text-[10px] bg-rose-950/60 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t ${borderDivColor}"><button onclick="event.stopPropagation(); openFashionModal('${key}')" class="flex-1 text-[10px] bg-black/30 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="event.stopPropagation(); deleteFashion('${key}')" class="flex-1 text-[10px] bg-rose-950/60 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
                     </div>`;
                 grid.appendChild(card);
             });
@@ -2167,21 +2374,59 @@
             keys.forEach(key => {
                 const d = data[key];
                 const card = document.createElement('div');
-                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-cyan-500/40 transition flex flex-col info-card-fixed";
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-cyan-500/40 transition flex flex-col info-card-fixed job-card-clickable";
+                card.onclick = function(e) { openCardZoom(card); };
                 card.innerHTML = `
-                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:140px">
+                    <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:105px">
                         <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                     </div>
-                    <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
-                        <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-cyan-400 shrink-0"><i class="fa-solid fa-bag-shopping"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                    <div class="p-2.5 flex-1 flex flex-col gap-1 min-h-0">
+                        <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-cyan-400 shrink-0"><i class="fa-solid fa-bag-shopping"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
                         <div class="flex-1 flex flex-col min-h-0">
-                            <span class="block text-[9px] font-bold text-cyan-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-map-pin"></i> แหล่งที่มา:</span>
-                            <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.source||'ยังไม่มีข้อมูล'}</div>
+                            <span class="block text-[8px] font-bold text-cyan-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-map-pin"></i> แหล่งที่มา:</span>
+                            <div class="text-[10px] text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.source||'ยังไม่มีข้อมูล'}</div>
                         </div>
-                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="openItemModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="deleteItem('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="event.stopPropagation(); openItemModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="event.stopPropagation(); deleteItem('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
                     </div>`;
                 grid.appendChild(card);
             });
+        }
+
+        // ===== ขยายดูการ์ดเดี่ยว (ผลไม้ปีศาจ/สถานะแฟชั่น/แหล่งที่มา ITEMS) =====
+        // กดที่การ์ดในกริด -> clone เนื้อหาการ์ดใบนั้นมาแสดงขยายใหญ่ขึ้นกลางจอ (ไม่ใช่หน้ารายละเอียดแยก)
+        // วัดขนาดจริงของการ์ดต้นฉบับก่อน clone แล้ว fix width/height เท่าของเดิม จากนั้นขยายด้วย scale เท่านั้น
+        // เพื่อให้สัดส่วนรูป/ข้อความ/กล่องสถานะ (เลื่อนลูกกลิ้งได้) เหมือนการ์ดตอนโชว์ปกติทุกอย่าง ไม่บีบไม่เบี้ยว
+        // ไม่เกี่ยวข้องกับ Firebase/login/role ใดๆ เป็นแค่การแสดงผล UI เท่านั้น
+        window.openCardZoom = function(cardEl) {
+            const content = document.getElementById('card-zoom-content');
+            const modal = document.getElementById('card-zoom-modal');
+            if (!content || !modal || !cardEl) return;
+            const rect = cardEl.getBoundingClientRect();
+            const clone = cardEl.cloneNode(true);
+            clone.classList.remove('job-card-clickable');
+            clone.removeAttribute('onclick');
+            clone.onclick = null;
+            // ลบปุ่มแก้ไข/ลบของแอดมินออกจากมุมมองขยาย (ไม่ใช่หน้าจัดการข้อมูล แค่ดูเฉยๆ)
+            clone.querySelectorAll('button').forEach(btn => btn.remove());
+            const lastDivider = clone.querySelector('.border-t');
+            if (lastDivider && lastDivider.children.length === 0) lastDivider.remove();
+            // fix ขนาดของ clone ให้เท่าการ์ดต้นฉบับเป๊ะๆ ก่อน (กันปัญหาหลุด grid แล้วขนาด/สัดส่วนเพี้ยน รูปเลยโดนบีบ)
+            clone.style.width = rect.width + 'px';
+            clone.style.height = rect.height + 'px';
+            clone.style.flexShrink = '0';
+            // คำนวณ scale ให้ขยายใหญ่ขึ้นแต่ไม่ล้นจอ (เผื่อขอบ ~40px ทั้งสองด้าน)
+            const maxW = Math.min(window.innerWidth - 40, 480);
+            const maxH = window.innerHeight - 80;
+            const scale = Math.max(1, Math.min(maxW / rect.width, maxH / rect.height, 2.1));
+            clone.style.transform = `scale(${scale})`;
+            clone.style.transformOrigin = 'center center';
+            content.style.minHeight = (rect.height * scale) + 'px';
+            content.innerHTML = '';
+            content.appendChild(clone);
+            modal.classList.remove('hidden');
+        }
+        window.closeCardZoom = function() {
+            document.getElementById('card-zoom-modal').classList.add('hidden');
         }
 
         // ===== EVENTS =====
@@ -2269,6 +2514,171 @@
                     </div>
                 </div>`;
         }
+
+        // ===== FOOD =====
+        function addFoodIngredientImg(url) {
+            const container = document.getElementById('food-ingredient-imgs-container');
+            if (!container) return;
+            const div = document.createElement('div');
+            div.className = 'food-ingredient-row flex items-center gap-2';
+            div.innerHTML = `
+                <input type="url" value="${url}" class="food-ingredient-img-input flex-1 px-3 py-1.5 bg-neutral-950 border border-neutral-800 rounded-xl text-xs text-neutral-200 outline-none focus:border-emerald-500" placeholder="https://pic.in.th/... (ลิงก์รูปวัตถุดิบ/ส่วนผสม)">
+                <button type="button" onclick="this.parentElement.remove()" class="bg-rose-950 text-rose-400 border border-rose-950 hover:border-rose-600 px-2.5 py-1.5 rounded-xl text-xs transition shrink-0"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        window.openFoodModal = function(key) {
+            document.getElementById('food-modal-title').innerText = key ? 'แก้ไขข้อมูลอาหาร' : 'เพิ่มอาหารใหม่';
+            document.getElementById('food-id').value = key || '';
+            document.getElementById('food-img-preview').classList.add('hidden');
+            document.getElementById('food-ingredient-imgs-container').innerHTML = '';
+            if (key && window.cachedFoods && window.cachedFoods[key]) {
+                const d = window.cachedFoods[key];
+                document.getElementById('food-image').value = d.image || '';
+                document.getElementById('food-name').value = d.name || '';
+                document.getElementById('food-tier').value = d.tier || 'เขียว';
+                document.getElementById('food-desc').value = d.desc || '';
+                if (d.ingredientImgs && d.ingredientImgs.length) {
+                    d.ingredientImgs.forEach(url => addFoodIngredientImg(url));
+                }
+            } else {
+                document.getElementById('food-image').value = '';
+                document.getElementById('food-name').value = '';
+                document.getElementById('food-tier').value = 'เขียว';
+                document.getElementById('food-desc').value = '';
+            }
+            document.getElementById('food-modal').classList.remove('hidden');
+        }
+
+        window.closeFoodModal = function() { document.getElementById('food-modal').classList.add('hidden'); }
+
+        window.executeSaveFood = function() {
+            const id = document.getElementById('food-id').value || Date.now().toString();
+            const imgInputs = document.querySelectorAll('.food-ingredient-img-input');
+            const ingredientImgs = [];
+            imgInputs.forEach(inp => { if (inp.value.trim()) ingredientImgs.push(inp.value.trim()); });
+            const data = {
+                image: document.getElementById('food-image').value.trim(),
+                name: document.getElementById('food-name').value.trim(),
+                tier: document.getElementById('food-tier').value,
+                desc: document.getElementById('food-desc').value.trim(),
+                ingredientImgs
+            };
+            if (!data.name) { alert("กรุณาใส่ชื่ออาหาร!"); return; }
+            if (window._fbSet) window._fbSet('foods/'+id, data).then(() => { closeFoodModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
+            else { const c = JSON.parse(localStorage.getItem('sc_foods')||'{}'); c[id]=data; localStorage.setItem('sc_foods',JSON.stringify(c)); renderFoods(c); closeFoodModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
+        }
+
+        window.deleteFood = function(key) {
+            if (!confirm("ต้องการลบอาหารนี้ถาวร?")) return;
+            if (window._fbRemove) window._fbRemove('foods/'+key);
+            else { const c = JSON.parse(localStorage.getItem('sc_foods')||'{}'); delete c[key]; localStorage.setItem('sc_foods',JSON.stringify(c)); renderFoods(c); }
+        }
+
+        window.renderFoods = function(data) {
+            window.cachedFoods = data || {};
+            const grid = document.getElementById('food-grid');
+            if (!grid) return;
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            const keys = Object.keys(data||{});
+            if (!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-utensils mr-1"></i> ยังไม่มีข้อมูลอาหาร</div>'; return; }
+            grid.innerHTML = '';
+            keys.forEach(key => {
+                const d = data[key];
+                const tier = d.tier || 'เขียว';
+                let tagCls, cardBg, tierIcon, tierLabel, hoverBorder, statusColor, borderDivColor;
+                if (tier === 'ทอง') {
+                    tagCls='ftag-food-gold'; cardBg='fcard-food-gold';
+                    tierIcon='<i class="fa-solid fa-crown"></i>'; tierLabel='ระดับทอง';
+                    hoverBorder='hover:border-amber-400/70'; statusColor='text-amber-300'; borderDivColor='border-amber-900/50';
+                } else if (tier === 'ม่วง') {
+                    tagCls='ftag-food-purple'; cardBg='fcard-food-purple';
+                    tierIcon='<i class="fa-solid fa-gem"></i>'; tierLabel='ระดับม่วง';
+                    hoverBorder='hover:border-violet-400/70'; statusColor='text-violet-300'; borderDivColor='border-violet-900/50';
+                } else {
+                    tagCls='ftag-food-green'; cardBg='fcard-food-green';
+                    tierIcon='<i class="fa-solid fa-leaf"></i>'; tierLabel='ระดับเขียว';
+                    hoverBorder='hover:border-emerald-400/70'; statusColor='text-emerald-300'; borderDivColor='border-emerald-900/50';
+                }
+                const card = document.createElement('div');
+                card.className = `fantasy-card ${cardBg} rounded-2xl overflow-hidden shadow-md transition flex flex-col info-card-fixed job-card-clickable ${hoverBorder}`;
+                card.onclick = function() { openFoodDetailModal(key); };
+                card.innerHTML = `
+                    <div class="w-full overflow-hidden shrink-0 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:105px;background:rgba(0,0,0,0.5)">
+                        <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                    </div>
+                    <div class="p-2.5 flex-1 flex flex-col gap-1 min-h-0">
+                        <div class="flex items-start justify-between gap-1 shrink-0">
+                            <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1 min-w-0"><span class="shrink-0 ${statusColor}"><i class="fa-solid fa-utensils"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                        </div>
+                        <span class="text-[9px] font-black px-1.5 py-0.5 rounded-lg whitespace-nowrap inline-block w-fit shrink-0 ${tagCls}">${tierIcon} ${tierLabel}</span>
+                        <div class="flex-1 flex flex-col min-h-0">
+                            <span class="block text-[8px] font-bold ${statusColor} uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-circle-info"></i> ข้อมูล:</span>
+                            <div class="text-[10px] text-neutral-200 bg-black/30 border ${borderDivColor} rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.desc||'ยังไม่มีข้อมูล'}</div>
+                        </div>
+                        ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t ${borderDivColor}"><button onclick="event.stopPropagation(); openFoodModal('${key}')" class="flex-1 text-[10px] bg-black/30 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="event.stopPropagation(); deleteFood('${key}')" class="flex-1 text-[10px] bg-rose-950/60 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        window.openFoodDetailModal = function(key) {
+            const d = window.cachedFoods ? window.cachedFoods[key] : null;
+            if (!d) return;
+            window._foodDetailKey = key;
+            const tier = d.tier || 'เขียว';
+            // ตั้งสีขอบ modal ตามระดับ
+            const inner = document.getElementById('food-detail-inner');
+            inner.style.borderColor = tier==='ทอง' ? 'rgba(245,158,11,0.55)' : tier==='ม่วง' ? 'rgba(124,58,237,0.5)' : 'rgba(16,185,129,0.45)';
+
+            document.getElementById('food-detail-image').src = d.image || '';
+            document.getElementById('food-detail-image').style.display = '';
+            document.getElementById('food-detail-name').innerText = d.name || '';
+            document.getElementById('food-detail-desc').innerText = d.desc || 'ยังไม่มีข้อมูล';
+
+            const tierBadge = document.getElementById('food-detail-tier-badge');
+            if (tier === 'ทอง') {
+                tierBadge.innerHTML = '<i class="fa-solid fa-crown mr-1"></i> ระดับทอง';
+                tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-gold";
+            } else if (tier === 'ม่วง') {
+                tierBadge.innerHTML = '<i class="fa-solid fa-gem mr-1"></i> ระดับม่วง';
+                tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-purple";
+            } else {
+                tierBadge.innerHTML = '<i class="fa-solid fa-leaf mr-1"></i> ระดับเขียว';
+                tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-green";
+            }
+
+            const ingrWrap = document.getElementById('food-detail-ingredients-wrap');
+            const ingrGrid = document.getElementById('food-detail-ingredients');
+            if (d.ingredientImgs && d.ingredientImgs.length) {
+                ingrWrap.classList.remove('hidden');
+                ingrGrid.innerHTML = d.ingredientImgs.map(url => `
+                    <div class="rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-zoom-in" onclick="window.open('${url}','_blank')">
+                        <img src="${url}" class="w-full h-28 object-cover" onerror="this.style.display='none'">
+                    </div>
+                `).join('');
+            } else {
+                ingrWrap.classList.add('hidden');
+                ingrGrid.innerHTML = '';
+            }
+
+            const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
+            document.getElementById('food-detail-admin-btns').classList.toggle('hidden', !isAdmin);
+            document.getElementById('food-detail-modal').classList.remove('hidden');
+            // เล่นเสียงตอนเปิดการ์ดอาหาร
+            if (typeof SCSound !== 'undefined') SCSound.cardOpen();
+            const modal = document.getElementById('food-detail-modal');
+            modal.classList.remove('sc-pop-in');
+            void modal.offsetWidth;
+            modal.classList.add('sc-pop-in');
+        }
+
+        window.closeFoodDetailModal = function() {
+            document.getElementById('food-detail-modal').classList.add('hidden');
+            if (typeof SCSound !== 'undefined') SCSound.cardClose();
+        }
+
     </script>
 
     <!-- ================= ระบบเสียงเอฟเฟกต์ + คัทซีนคั่นหน้า (UI เท่านั้น ไม่แตะระบบล็อกอิน/Firebase) ================= -->
@@ -2302,9 +2712,132 @@
                     osc.stop(c.currentTime + delay + duration + 0.02);
                 } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
             }
+            // เสียงโน้ตสไตล์เกม 8-bit/chiptune: คลื่นสี่เหลี่ยม/สามเหลี่ยม มี pitch bend สั้นๆ ให้ฟีล "ปิ๊บ" แบบเกม
+            function blip(freq, duration, opts = {}) {
+                const c = getCtx();
+                if (!c) return;
+                try {
+                    const { type = 'square', vol = 0.13, delay = 0, slideTo = null, slideTime = 0 } = opts;
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, c.currentTime + delay);
+                    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, c.currentTime + delay + (slideTime || duration));
+                    gain.gain.setValueAtTime(0.0001, c.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + delay + 0.008);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + duration);
+                    osc.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start(c.currentTime + delay);
+                    osc.stop(c.currentTime + delay + duration + 0.02);
+                } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
+            }
+            // สุ่มหยิบค่าจาก array (ใช้คุมความหลากหลายของเสียงให้ไม่ซ้ำเดิมทุกครั้ง)
+            function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+            // เสียงคลิกแบบ "noise burst" สั้นๆ ผ่าน filter (ใช้กับ cardOpen/cardClose ที่ต้องการเสียงแน่นหนัก)
+            function noiseClick(opts = {}) {
+                const c = getCtx();
+                if (!c) return;
+                try {
+                    const {
+                        duration = 0.045,
+                        vol = 0.16,
+                        filterFreq = 2200,
+                        filterType = 'bandpass',
+                        filterQ = 1.1,
+                        delay = 0,
+                        decay = 0.035
+                    } = opts;
+                    const bufLen = Math.max(1, Math.floor(c.sampleRate * duration));
+                    const buf = c.createBuffer(1, bufLen, c.sampleRate);
+                    const data = buf.getChannelData(0);
+                    for (let i = 0; i < bufLen; i++) {
+                        // white noise ลดความดังลงแบบ exponential ให้ได้ฟีล "แทร่ก" สั้นๆ
+                        const env = Math.pow(1 - i / bufLen, 2.2);
+                        data[i] = (Math.random() * 2 - 1) * env;
+                    }
+                    const src = c.createBufferSource();
+                    src.buffer = buf;
+                    const filt = c.createBiquadFilter();
+                    filt.type = filterType;
+                    filt.frequency.setValueAtTime(filterFreq, c.currentTime + delay);
+                    filt.Q.value = filterQ;
+                    const gain = c.createGain();
+                    gain.gain.setValueAtTime(vol, c.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + decay);
+                    src.connect(filt);
+                    filt.connect(gain);
+                    gain.connect(c.destination);
+                    src.start(c.currentTime + delay);
+                    src.stop(c.currentTime + delay + duration + 0.02);
+                } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
+            }
+            // เสียงนุ่มๆ โดยใช้ sine wave + low-pass filter ให้ไม่แหลมบาด แต่ยังฟังชัดและมีชีวิตชีวา
+            function softTone(freq, duration, vol = 0.09, delay = 0, slideTo = null) {
+                const c = getCtx();
+                if (!c) return;
+                try {
+                    const osc = c.createOscillator();
+                    const gain = c.createGain();
+                    // low-pass filter ตัดความถี่เกิน 2800 Hz ออก เพื่อให้ไม่แหลมเกิน แต่ยังกังวาน
+                    const lpf = c.createBiquadFilter();
+                    lpf.type = 'lowpass';
+                    lpf.frequency.setValueAtTime(2800, c.currentTime + delay);
+                    lpf.Q.value = 0.6;
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, c.currentTime + delay);
+                    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, c.currentTime + delay + duration * 0.8);
+                    gain.gain.setValueAtTime(0.0001, c.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + delay + 0.014);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + duration);
+                    osc.connect(lpf);
+                    lpf.connect(gain);
+                    gain.connect(c.destination);
+                    osc.start(c.currentTime + delay);
+                    osc.stop(c.currentTime + delay + duration + 0.05);
+                } catch (e) { /* เงียบไว้ */ }
+            }
             return {
-                click() { tone(680, 0.07, 'square', 0.07); tone(1100, 0.06, 'square', 0.05, 0.035); },
-                type() { tone(1500 + Math.random() * 500, 0.03, 'square', 0.025); },
+                // เสียงคลิก: sine นุ่ม ช่วงกลาง-สูงพอฟังชัด ไม่แหลมเกิน
+                click() {
+                    const variants = [
+                        // แบบ 1: สองโน้ตไล่ขึ้น ฟีลเลือกเมนู
+                        () => { softTone(440, 0.07, 0.09); softTone(587, 0.08, 0.08, 0.05); },
+                        // แบบ 2: slide ขึ้นนุ่มๆ
+                        () => { softTone(370, 0.09, 0.09, 0, 523); },
+                        // แบบ 3: คู่โน้ตกลาง ฟีลกดปุ่ม
+                        () => { softTone(440, 0.08, 0.09); softTone(660, 0.08, 0.07, 0.05); },
+                        // แบบ 4: โน้ตเดียว slide ลงนิดๆ สั้นกระชับ
+                        () => { softTone(523, 0.08, 0.09, 0, 440); },
+                        // แบบ 5: อาร์เปจโจสามโน้ตเบาๆ
+                        () => { softTone(349, 0.06, 0.08); softTone(440, 0.06, 0.08, 0.04); softTone(523, 0.09, 0.09, 0.08); }
+                    ];
+                    pick(variants)();
+                },
+                // เสียงพิมพ์: sine นุ่ม ช่วงกลาง ไม่กระโดดสูงแบบเดิม
+                type() {
+                    const scale = [330, 370, 392, 440, 494, 523, 587, 622];
+                    const f = pick(scale);
+                    softTone(f, 0.045, 0.07);
+                },
+                // เสียงเปิดการ์ด: noise ต่ำนุ่ม + sine กลาง ฟีล "ป๊อบ" น่าฟัง
+                cardOpen() {
+                    noiseClick({ duration: 0.04, vol: 0.13, filterFreq: 1400, filterType: 'lowpass', filterQ: 0.7, decay: 0.03 });
+                    softTone(330, 0.13, 0.08, 0.01, 440);
+                },
+                // เสียงปิดการ์ด: slide ลงเบาๆ
+                cardClose() {
+                    noiseClick({ duration: 0.03, vol: 0.1, filterFreq: 1000, filterType: 'lowpass', filterQ: 0.5, decay: 0.025 });
+                    softTone(370, 0.09, 0.06, 0, 280);
+                },
+                // เสียง toggle: คู่โน้ตกลาง ฟีล on/off ชัดเจน
+                toggle() {
+                    softTone(440, 0.07, 0.08); softTone(587, 0.07, 0.07, 0.055);
+                },
+                // เสียงลบ: โน้ตกลาง slide ลง ฟีลเตือนอ่อนโยน
+                delete() {
+                    softTone(370, 0.1, 0.08); softTone(262, 0.14, 0.07, 0.07);
+                },
                 loginPress() { tone(523.25, 0.08, 'triangle', 0.1); tone(659.25, 0.09, 'triangle', 0.09, 0.05); },
                 loginSuccess() { tone(523.25, 0.12, 'sine', 0.11); tone(659.25, 0.12, 'sine', 0.1, 0.09); tone(783.99, 0.22, 'sine', 0.13, 0.18); }
             };
@@ -2354,12 +2887,145 @@
             };
         }
 
+        // ----- ผูกเสียง + อนิเมชันเด้งให้การ์ดงานฟาร์ม ตอนกดเปิดดูรายละเอียด (เดิมไม่มีเสียง) -----
+        if (typeof window.openJobDetailModal === 'function') {
+            const _origOpenJobDetail = window.openJobDetailModal;
+            window.openJobDetailModal = function (key) {
+                SCSound.cardOpen();
+                const result = _origOpenJobDetail.apply(this, arguments);
+                const modal = document.getElementById('job-detail-modal');
+                if (modal) {
+                    modal.classList.remove('sc-pop-in');
+                    void modal.offsetWidth; // รีเซ็ตอนิเมชันให้เล่นใหม่ทุกครั้งที่กด
+                    modal.classList.add('sc-pop-in');
+                }
+                return result;
+            };
+        }
+        // ----- ผูกเสียงตอนปิดการ์ดรายละเอียดงานฟาร์ม -----
+        if (typeof window.closeJobDetailModal === 'function') {
+            const _origCloseJobDetail = window.closeJobDetailModal;
+            window.closeJobDetailModal = function () {
+                SCSound.cardClose();
+                return _origCloseJobDetail.apply(this, arguments);
+            };
+        }
+
+        // ----- ผูกเสียง + อนิเมชันเด้งให้การ์ดผลไม้ปีศาจ/สถานะแฟชั่น/แหล่งที่มา ITEMS ตอนกดขยายดู -----
+        if (typeof window.openCardZoom === 'function') {
+            const _origOpenCardZoom = window.openCardZoom;
+            window.openCardZoom = function (cardEl) {
+                SCSound.cardOpen();
+                const result = _origOpenCardZoom.apply(this, arguments);
+                const modal = document.getElementById('card-zoom-modal');
+                if (modal) {
+                    modal.classList.remove('sc-pop-in');
+                    void modal.offsetWidth; // รีเซ็ตอนิเมชันให้เล่นใหม่ทุกครั้งที่กด
+                    modal.classList.add('sc-pop-in');
+                }
+                return result;
+            };
+        }
+        // ----- ผูกเสียงตอนปิดมุมมองขยายการ์ด -----
+        if (typeof window.closeCardZoom === 'function') {
+            const _origCloseCardZoom = window.closeCardZoom;
+            window.closeCardZoom = function () {
+                SCSound.cardClose();
+                return _origCloseCardZoom.apply(this, arguments);
+            };
+        }
+
+        // ----- ผูกเสียงเปิด/ปิด ให้หน้าต่างโมดัลอื่นๆ ที่ยังไม่มีเสียง (เปิดการ์ดเด้ง + เสียงคลิกตามชนิด) -----
+        // หมายเหตุ: ครอบฟังก์ชันจากภายนอกเท่านั้น ไม่แก้ไข logic เดิมใดๆ ในฟังก์ชันเหล่านี้
+        (function () {
+            const openModalFns = [
+                ['openCalculatorModal', 'calc-modal'],
+                ['openAddJobModal', 'job-modal'],
+                ['openEditJob', 'job-modal'],
+                ['openDevilModal', 'devil-modal'],
+                ['openFashionModal', 'fashion-modal'],
+                ['openItemModal', 'item-modal'],
+                ['openEventModal', 'event-modal'],
+                ['openGkeyModal', 'gkey-modal'],
+                ['openFoodModal', 'food-modal']
+            ];
+            const closeModalFns = [
+                'closeCalculatorModal', 'closeJobModal', 'closeDevilModal',
+                'closeFashionModal', 'closeItemModal', 'closeEventModal', 'closeGkeyModal',
+                'closeFoodModal'
+            ];
+            const deleteFns = ['deleteEcoItem', 'deleteJob', 'deleteDevil', 'deleteFashion', 'deleteItem', 'deleteEvent', 'deleteFood'];
+
+            openModalFns.forEach(([fnName, modalId]) => {
+                if (typeof window[fnName] !== 'function') return;
+                const orig = window[fnName];
+                window[fnName] = function () {
+                    SCSound.cardOpen();
+                    const result = orig.apply(this, arguments);
+                    const modal = document.getElementById(modalId);
+                    const panel = modal ? modal.querySelector(':scope > div') : null;
+                    if (panel) {
+                        modal.classList.remove('sc-pop-in');
+                        void modal.offsetWidth;
+                        modal.classList.add('sc-pop-in');
+                    }
+                    return result;
+                };
+            });
+
+            closeModalFns.forEach(fnName => {
+                if (typeof window[fnName] !== 'function') return;
+                const orig = window[fnName];
+                window[fnName] = function () {
+                    SCSound.cardClose();
+                    return orig.apply(this, arguments);
+                };
+            });
+
+            deleteFns.forEach(fnName => {
+                if (typeof window[fnName] !== 'function') return;
+                const orig = window[fnName];
+                window[fnName] = function () {
+                    SCSound.delete();
+                    return orig.apply(this, arguments);
+                };
+            });
+
+            // ปุ่มทั่วไป (toggle ฟอร์มแก้ไข / logout / ดูตัวอย่างรูป) ใช้เสียงคลิกเมาส์ปกติ
+            ['toggleEcoEdit', 'logout'].forEach(fnName => {
+                if (typeof window[fnName] !== 'function') return;
+                const orig = window[fnName];
+                window[fnName] = function () {
+                    SCSound.toggle();
+                    return orig.apply(this, arguments);
+                };
+            });
+        })();
+
+        // ----- ผูกเสียงคลิกเมาส์ให้ปุ่มทั่วไปทุกปุ่มในเว็บที่ยังไม่มีเสียง (event delegation ระดับเอกสาร) -----
+        // ครอบคลุมปุ่มที่เพิ่มเข้ามาใหม่แบบไดนามิก (เช่นปุ่มแก้ไข/ลบในการ์ด) โดยไม่ต้องผูกทีละปุ่ม
+        // และไม่ตีกับเสียงเฉพาะทางที่ผูกไว้ข้างบนแล้ว (cardOpen/cardClose/delete/toggle ยังคงเสียงเฉพาะของมันตามปกติ)
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('button, .job-card-clickable, [role="button"]');
+            if (!btn) return;
+            // เลี่ยงเสียงซ้ำซ้อนกับปุ่มที่ผูกเสียงเฉพาะทางไว้แล้วผ่าน onclick ของ switchTab/filterJobCategory
+            // (ฟังก์ชันเหล่านั้นเรียก SCSound.click()/cardOpen() อยู่แล้วตอนถูกเรียกใช้งานจริง)
+            const onclickAttr = btn.getAttribute('onclick') || '';
+            if (/switchTab|filterJobCategory|openJobDetailModal/.test(onclickAttr) || btn.classList.contains('job-card-clickable')) return;
+            SCSound.click();
+        }, true);
+
         // ----- ผูกเสียงพิมพ์ + เสียง/คัทซีนตอนกดล็อกอิน (ผูกจากภายนอก ไม่แก้โค้ดระบบยืนยันตัวตน/Firebase) -----
         document.addEventListener('DOMContentLoaded', () => {
-            const userInput = document.getElementById('username');
-            const passInput = document.getElementById('password');
-            [userInput, passInput].forEach(inp => {
-                if (inp) inp.addEventListener('input', () => SCSound.type());
+            // เสียงพิมพ์: ผูกแบบ delegation ให้ครอบคลุมทุกช่องกรอกข้อความในเว็บ (ฟอร์มแอดมิน, ช่องค้นหา, ล็อกอิน ฯลฯ)
+            // ไม่ใช่แค่ช่อง username/password เท่านั้น แต่ไม่แตะ logic การตรวจสอบ/ส่งข้อมูลใดๆ ทั้งสิ้น
+            document.addEventListener('input', (e) => {
+                const el = e.target;
+                if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+                    const t = (el.type || '').toLowerCase();
+                    if (t === 'checkbox' || t === 'radio' || t === 'range' || t === 'file' || t === 'color') return;
+                    SCSound.type();
+                }
             });
 
             const authForm = document.getElementById('auth-form');
@@ -2375,7 +3041,7 @@
                 window.initMainApp = function () {
                     const args = arguments, ctx = this;
                     SCSound.loginSuccess();
-                    scPlayCutscene(() => { _origInitMainApp.apply(ctx, args); }, 950);
+                    scPlayCutscene(() => { _origInitMainApp.apply(ctx, args); }, 1950);
                 };
             }
         });
