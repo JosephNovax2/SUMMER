@@ -545,6 +545,23 @@
         }
         .fcard-food-gold::before { background: linear-gradient(90deg, transparent, rgba(253,230,138,0.8), transparent) !important; }
 
+        /* ===== DEVIL FRUIT CARD — NEON GLOW ANIMATION BY TIER ===== */
+        @keyframes devil-gold-pulse {
+            0%,100% { box-shadow: 0 0 6px rgba(245,158,11,0.4), 0 0 16px rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.5); }
+            50%      { box-shadow: 0 0 14px rgba(245,158,11,0.75), 0 0 32px rgba(245,158,11,0.3), 0 0 55px rgba(245,158,11,0.1); border-color: rgba(253,230,138,0.8); }
+        }
+        @keyframes devil-purple-pulse {
+            0%,100% { box-shadow: 0 0 6px rgba(168,85,247,0.4), 0 0 16px rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.5); }
+            50%      { box-shadow: 0 0 14px rgba(168,85,247,0.75), 0 0 32px rgba(168,85,247,0.3), 0 0 55px rgba(168,85,247,0.1); border-color: rgba(216,180,254,0.8); }
+        }
+        @keyframes devil-red-pulse {
+            0%,100% { box-shadow: 0 0 6px rgba(239,68,68,0.4), 0 0 16px rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.5); }
+            50%      { box-shadow: 0 0 14px rgba(239,68,68,0.75), 0 0 32px rgba(239,68,68,0.3), 0 0 55px rgba(239,68,68,0.1); border-color: rgba(252,165,165,0.8); }
+        }
+        .devil-neon-gold   { animation: devil-gold-pulse   2.4s ease-in-out infinite; }
+        .devil-neon-purple { animation: devil-purple-pulse 2.4s ease-in-out infinite; }
+        .devil-neon-red    { animation: devil-red-pulse    2.2s ease-in-out infinite; }
+
         /* ===== FOOD DETAIL MODAL — NEON GLOW ANIMATION BY TIER ===== */
         @keyframes food-modal-green-pulse {
             0%,100% { box-shadow: 0 0 14px rgba(16,185,129,0.3), 0 0 35px rgba(110,231,183,0.08), inset 0 0 20px rgba(16,185,129,0.04); border-color: rgba(16,185,129,0.5); }
@@ -1334,6 +1351,16 @@
                     <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูลสถานะ (พิมพ์ได้ยาว รองรับหลายสถานะ)</label>
                     <textarea id="devil-status" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500 custom-scrollbar" placeholder="เช่น &#10;สถานะ 1: เพิ่มพลังโจมตี 50%&#10;สถานะ 2: ลดความเร็ว 20%&#10;สถานะ 3: ..."></textarea>
                 </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับ (Tier)</label>
+                    <select id="devil-tier" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500">
+                        <option value="Common">🟢 Common (ธรรมดา)</option>
+                        <option value="Rare">🔵 Rare (หายาก)</option>
+                        <option value="EPIC">🟣 EPIC (หายากมาก)</option>
+                        <option value="Legendary">🟡 Legendary (หายากที่สุด)</option>
+                        <option value="Mythic">🔴 Mythic (ตำนาน)</option>
+                    </select>
+                </div>
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeDevilModal()" class="px-4 py-2 bg-neutral-950 text-xs text-neutral-400 rounded-xl border border-neutral-800 cursor-pointer">ยกเลิก</button>
                     <button type="button" onclick="executeSaveDevil()" class="px-5 py-2 bg-orange-500 text-neutral-950 rounded-xl text-xs font-black cursor-pointer">บันทึกข้อมูล</button>
@@ -1503,9 +1530,9 @@
                 <div>
                     <label class="block text-xs font-bold text-neutral-400 mb-1">ระดับอาหาร</label>
                     <select id="food-tier" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500">
-                        <option value="เขียว">🟢 ระดับเขียว (ธรรมดา)</option>
-                        <option value="ม่วง">🟣 ระดับม่วง (หายาก)</option>
-                        <option value="ทอง">🟡 ระดับทอง (หายากที่สุด)</option>
+                        <option value="เขียว">🟢 Common (ธรรมดา)</option>
+                        <option value="ม่วง">🟣 EPIC (หายาก)</option>
+                        <option value="ทอง">🟡 Legendary (หายากที่สุด)</option>
                     </select>
                 </div>
                 <!-- คำอธิบาย -->
@@ -2232,17 +2259,19 @@
                 document.getElementById('devil-image').value = d.image || '';
                 document.getElementById('devil-name').value = d.name || '';
                 document.getElementById('devil-status').value = d.status || '';
+                document.getElementById('devil-tier').value = d.tier || 'Common';
             } else {
                 document.getElementById('devil-image').value = '';
                 document.getElementById('devil-name').value = '';
                 document.getElementById('devil-status').value = '';
+                document.getElementById('devil-tier').value = 'Common';
             }
             document.getElementById('devil-modal').classList.remove('hidden');
         }
         window.closeDevilModal = function() { document.getElementById('devil-modal').classList.add('hidden'); }
         window.executeSaveDevil = function() {
             const id = document.getElementById('devil-id').value || Date.now().toString();
-            const data = { image: document.getElementById('devil-image').value.trim(), name: document.getElementById('devil-name').value.trim(), status: document.getElementById('devil-status').value.trim() };
+            const data = { image: document.getElementById('devil-image').value.trim(), name: document.getElementById('devil-name').value.trim(), status: document.getElementById('devil-status').value.trim(), tier: document.getElementById('devil-tier').value || 'Common' };
             if(!data.name) { alert("กรุณาใส่ชื่อผลไม้ปีศาจ!"); return; }
             if(window._fbSet) window._fbSet('devils/'+id, data).then(() => { closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('devils')||'{}'); c[id]=data; localStorage.setItem('devils',JSON.stringify(c)); renderDevils(c); closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
@@ -2262,18 +2291,37 @@
             grid.innerHTML = '';
             keys.forEach(key => {
                 const d = data[key];
+                const tier = d.tier || 'Common';
+                const tierCfg = {
+                    'Legendary': { label:'Legendary', icon:'fa-crown',   color:'#f59e0b', border:'rgba(245,158,11,0.65)', bg:'rgba(245,158,11,0.13)', textCls:'text-amber-400',
+                        neon:'0 0 8px rgba(245,158,11,0.6), 0 0 20px rgba(245,158,11,0.3), 0 0 40px rgba(245,158,11,0.12)', pulse:'devil-neon-gold' },
+                    'Rare':      { label:'Rare',       icon:'fa-diamond', color:'#38bdf8', border:'rgba(56,189,248,0.55)', bg:'rgba(56,189,248,0.10)', textCls:'text-sky-400',
+                        neon:null, pulse:null },
+                    'EPIC':      { label:'EPIC',       icon:'fa-gem',     color:'#a855f7', border:'rgba(168,85,247,0.65)', bg:'rgba(168,85,247,0.12)', textCls:'text-purple-400',
+                        neon:'0 0 8px rgba(168,85,247,0.6), 0 0 20px rgba(168,85,247,0.3), 0 0 40px rgba(168,85,247,0.12)', pulse:'devil-neon-purple' },
+                    'Mythic':    { label:'Mythic',     icon:'fa-skull',   color:'#ef4444', border:'rgba(239,68,68,0.65)',  bg:'rgba(239,68,68,0.12)',  textCls:'text-red-400',
+                        neon:'0 0 8px rgba(239,68,68,0.6), 0 0 20px rgba(239,68,68,0.3), 0 0 40px rgba(239,68,68,0.12)', pulse:'devil-neon-red' },
+                    'Common':    { label:'Common',     icon:'fa-leaf',    color:'#10b981', border:'rgba(16,185,129,0.45)', bg:'rgba(16,185,129,0.08)', textCls:'text-emerald-400',
+                        neon:null, pulse:null },
+                };
+                const cfg = tierCfg[tier] || tierCfg['Common'];
                 const card = document.createElement('div');
-                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm hover:border-orange-500/40 transition flex flex-col info-card-fixed job-card-clickable";
+                card.className = "fantasy-card rounded-2xl overflow-hidden shadow-sm transition flex flex-col info-card-fixed job-card-clickable" + (cfg.pulse ? ' ' + cfg.pulse : '');
+                card.style.borderColor = cfg.border;
+                if (!cfg.pulse) card.style.boxShadow = cfg.neon || '';
                 card.onclick = function(e) { openCardZoom(card); };
                 card.innerHTML = `
                     <div class="w-full overflow-hidden shrink-0 bg-neutral-950 border-b border-neutral-800/60" style="aspect-ratio:4/3;max-height:105px">
                         <img src="${d.image||''}" class="w-full h-full object-cover" onerror="this.style.display='none'">
                     </div>
                     <div class="p-2.5 flex-1 flex flex-col gap-1 min-h-0">
-                        <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="text-orange-400 shrink-0"><i class="fa-solid fa-fire"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
-                        <div class="flex-1 flex flex-col min-h-0">
-                            <span class="block text-[8px] font-bold text-orange-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-bolt"></i> ข้อมูลสถานะ:</span>
-                            <div class="text-[10px] text-neutral-300 bg-neutral-950/80 border border-orange-900/30 rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar" style="overflow-wrap:anywhere">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
+                        <h3 class="text-[11px] font-black text-neutral-100 flex items-center gap-1.5 shrink-0 truncate"><span class="${cfg.textCls} shrink-0"><i class="fa-solid fa-fire"></i></span><span class="truncate">${d.name||'ไม่มีชื่อ'}</span></h3>
+                        <span class="inline-flex items-center gap-1 self-start text-[9px] font-black px-2 py-0.5 rounded-md tracking-wider uppercase shrink-0" style="background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.border};text-shadow:0 0 6px ${cfg.color}80;">
+                            <i class="fa-solid ${cfg.icon}"></i> ${cfg.label}
+                        </span>
+                        <div class="flex-1 flex flex-col min-h-0 mt-0.5">
+                            <span class="block text-[8px] font-bold uppercase tracking-wide mb-1 shrink-0 ${cfg.textCls}"><i class="fa-solid fa-bolt"></i> ข้อมูลสถานะ:</span>
+                            <div class="text-[10px] text-neutral-300 bg-neutral-950/80 rounded-xl p-2 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar border" style="border-color:${cfg.border};overflow-wrap:anywhere">${d.status||'ยังไม่มีข้อมูลสถานะ'}</div>
                         </div>
                         ${isAdmin ? `<div class="flex gap-1 shrink-0 pt-1.5 border-t border-neutral-800"><button onclick="event.stopPropagation(); openDevilModal('${key}')" class="flex-1 text-[10px] bg-neutral-950 text-cyan-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button><button onclick="event.stopPropagation(); deleteDevil('${key}')" class="flex-1 text-[10px] bg-rose-950 text-rose-400 font-bold py-1 rounded-lg border border-neutral-800 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button></div>` : ''}
                     </div>`;
@@ -2614,15 +2662,15 @@
                 let tagCls, cardBg, tierIcon, tierLabel, hoverBorder, statusColor, borderDivColor;
                 if (tier === 'ทอง') {
                     tagCls='ftag-food-gold'; cardBg='fcard-food-gold';
-                    tierIcon='<i class="fa-solid fa-crown"></i>'; tierLabel='ระดับทอง';
+                    tierIcon='<i class="fa-solid fa-crown"></i>'; tierLabel='Legendary';
                     hoverBorder='hover:border-amber-400/70'; statusColor='text-amber-300'; borderDivColor='border-amber-900/50';
                 } else if (tier === 'ม่วง') {
                     tagCls='ftag-food-purple'; cardBg='fcard-food-purple';
-                    tierIcon='<i class="fa-solid fa-gem"></i>'; tierLabel='ระดับม่วง';
+                    tierIcon='<i class="fa-solid fa-gem"></i>'; tierLabel='EPIC';
                     hoverBorder='hover:border-violet-400/70'; statusColor='text-violet-300'; borderDivColor='border-violet-900/50';
                 } else {
                     tagCls='ftag-food-green'; cardBg='fcard-food-green';
-                    tierIcon='<i class="fa-solid fa-leaf"></i>'; tierLabel='ระดับเขียว';
+                    tierIcon='<i class="fa-solid fa-leaf"></i>'; tierLabel='Common';
                     hoverBorder='hover:border-emerald-400/70'; statusColor='text-emerald-300'; borderDivColor='border-emerald-900/50';
                 }
                 const card = document.createElement('div');
@@ -2683,13 +2731,13 @@
 
             const tierBadge = document.getElementById('food-detail-tier-badge');
             if (tier === 'ทอง') {
-                tierBadge.innerHTML = '<i class="fa-solid fa-crown mr-1"></i> ระดับทอง';
+                tierBadge.innerHTML = '<i class="fa-solid fa-crown mr-1"></i> Legendary';
                 tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-gold";
             } else if (tier === 'ม่วง') {
-                tierBadge.innerHTML = '<i class="fa-solid fa-gem mr-1"></i> ระดับม่วง';
+                tierBadge.innerHTML = '<i class="fa-solid fa-gem mr-1"></i> EPIC';
                 tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-purple";
             } else {
-                tierBadge.innerHTML = '<i class="fa-solid fa-leaf mr-1"></i> ระดับเขียว';
+                tierBadge.innerHTML = '<i class="fa-solid fa-leaf mr-1"></i> Common';
                 tierBadge.className = "absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase ftag-food-green";
             }
 
