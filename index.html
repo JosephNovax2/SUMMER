@@ -545,6 +545,23 @@
         }
         .fcard-food-gold::before { background: linear-gradient(90deg, transparent, rgba(253,230,138,0.8), transparent) !important; }
 
+        /* ===== FOOD DETAIL MODAL — NEON GLOW ANIMATION BY TIER ===== */
+        @keyframes food-modal-green-pulse {
+            0%,100% { box-shadow: 0 0 14px rgba(16,185,129,0.3), 0 0 35px rgba(110,231,183,0.08), inset 0 0 20px rgba(16,185,129,0.04); border-color: rgba(16,185,129,0.5); }
+            50%      { box-shadow: 0 0 26px rgba(16,185,129,0.55), 0 0 60px rgba(110,231,183,0.18), inset 0 0 35px rgba(16,185,129,0.08); border-color: rgba(110,231,183,0.7); }
+        }
+        @keyframes food-modal-purple-pulse {
+            0%,100% { box-shadow: 0 0 14px rgba(124,58,237,0.32), 0 0 35px rgba(196,181,253,0.08), inset 0 0 20px rgba(124,58,237,0.04); border-color: rgba(124,58,237,0.55); }
+            50%      { box-shadow: 0 0 26px rgba(124,58,237,0.58), 0 0 60px rgba(196,181,253,0.18), inset 0 0 35px rgba(124,58,237,0.08); border-color: rgba(196,181,253,0.72); }
+        }
+        @keyframes food-modal-gold-pulse {
+            0%,100% { box-shadow: 0 0 16px rgba(245,158,11,0.38), 0 0 40px rgba(253,230,138,0.1), inset 0 0 24px rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.6); }
+            50%      { box-shadow: 0 0 30px rgba(245,158,11,0.65), 0 0 70px rgba(253,230,138,0.22), inset 0 0 42px rgba(245,158,11,0.1); border-color: rgba(253,230,138,0.85); }
+        }
+        #food-detail-inner.neon-green  { animation: food-modal-green-pulse  2.5s ease-in-out infinite; }
+        #food-detail-inner.neon-purple { animation: food-modal-purple-pulse 2.5s ease-in-out infinite; }
+        #food-detail-inner.neon-gold   { animation: food-modal-gold-pulse   2.4s ease-in-out infinite; }
+
         /* ===== FOOD DETAIL MODAL STEP CARD ===== */
         .food-step-card {
             background: #0a0a0a;
@@ -1496,6 +1513,11 @@
                     <label class="block text-xs font-bold text-neutral-400 mb-1">ข้อมูล/คำอธิบายอาหาร (เอฟเฟกต์ / วิธีทำ / ที่มา)</label>
                     <textarea id="food-desc" rows="4" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-emerald-500 custom-scrollbar" placeholder="เช่น&#10;เอฟเฟกต์: เพิ่มพลังงาน 30 นาที&#10;วิธีหาได้จาก: ร้าน NPC ในเมือง&#10;วัตถุดิบ: ข้าว + ทะเล + เครื่องเทศ"></textarea>
                 </div>
+                <!-- วัตถุดิบที่ใช้ในการคราฟต์ (ข้อความ) -->
+                <div>
+                    <label class="block text-xs font-bold text-amber-400 mb-1"><i class="fa-solid fa-hammer mr-1"></i> วัตถุดิบที่ใช้ในการคราฟต์ (ไม่บังคับ)</label>
+                    <textarea id="food-craft" rows="3" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-amber-500 custom-scrollbar" placeholder="เช่น&#10;ไม้ที่ยังไม่แปรรูป = 2 EA&#10;ปลา Crimson Fish = 1 EA"></textarea>
+                </div>
                 <!-- รูปประกอบวัตถุดิบ/ส่วนผสม (เพิ่มได้หลายรูป) -->
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
@@ -1517,28 +1539,27 @@
 
     <!-- ================= MODAL: รายละเอียดอาหารเต็ม ================= -->
     <div id="food-detail-modal" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-3 sm:p-4 backdrop-blur-md" onclick="if(event.target===this) closeFoodDetailModal()">
-        <div id="food-detail-inner" class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
-            <div id="food-detail-hero" class="w-full aspect-video bg-neutral-950 border-b border-neutral-800 shrink-0 relative overflow-hidden">
+        <div id="food-detail-inner" class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-2xl shadow-2xl flex flex-col" style="height:82vh;max-height:82vh;min-height:500px;">
+            <div id="food-detail-hero" class="w-full bg-neutral-950 border-b border-neutral-800 shrink-0 relative overflow-hidden rounded-t-2xl" style="height:220px;min-height:220px;">
                 <img id="food-detail-image" src="" class="w-full h-full object-cover" onerror="this.style.display='none'">
-                <button type="button" onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-neutral-200 flex items-center justify-center backdrop-blur-sm border border-white/10 cursor-pointer">
+                <button type="button" onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-neutral-200 flex items-center justify-content:center backdrop-blur-sm border border-white/10 cursor-pointer" style="display:flex;align-items:center;justify-content:center;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
                 <span id="food-detail-tier-badge" class="absolute top-3 left-3 text-[10px] font-black px-3 py-1 rounded-lg tracking-wider uppercase"></span>
             </div>
             <div class="p-5 sm:p-6 overflow-y-auto custom-scrollbar flex-1 min-h-0">
                 <h2 id="food-detail-name" class="text-lg sm:text-xl font-black text-neutral-100 mb-3 break-words"></h2>
-                <div id="food-detail-desc-wrap" class="mb-5">
-                    <span class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1.5"><i class="fa-solid fa-circle-info"></i> ข้อมูลอาหาร:</span>
-                    <div id="food-detail-desc" class="text-sm text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-3 whitespace-pre-line leading-relaxed custom-scrollbar max-h-48 overflow-y-auto"></div>
+                <div id="food-detail-desc-wrap" class="mb-4">
+                    <span class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1.5"><i class="fa-solid fa-circle-info"></i> ข้อมูลอาหาร:</span>
+                    <div id="food-detail-desc" class="text-sm text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-3 whitespace-pre-line leading-relaxed custom-scrollbar overflow-y-auto" style="min-height:80px;max-height:200px;"></div>
+                </div>
+                <div id="food-detail-craft-wrap" class="hidden mb-4">
+                    <span class="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1.5"><i class="fa-solid fa-hammer"></i> วัตถุดิบที่ใช้ในการคราฟต์:</span>
+                    <div id="food-detail-craft" class="text-sm text-neutral-300 bg-amber-950/20 border border-amber-900/40 rounded-xl p-3 whitespace-pre-line leading-relaxed custom-scrollbar overflow-y-auto" style="max-height:160px;"></div>
                 </div>
                 <div id="food-detail-ingredients-wrap" class="hidden">
-                    <span class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-images"></i> รูปวัตถุดิบ/ส่วนผสม:</span>
+                    <span class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-images"></i> รูปวัตถุดิบ/ส่วนผสม:</span>
                     <div id="food-detail-ingredients" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
-                </div>
-                <!-- ปุ่ม admin แก้ไข/ลบ ในหน้าดูรายละเอียด -->
-                <div id="food-detail-admin-btns" class="hidden mt-5 pt-4 border-t border-neutral-800 flex gap-2">
-                    <button id="food-detail-edit-btn" onclick="closeFoodDetailModal(); setTimeout(()=>openFoodModal(window._foodDetailKey),80)" class="flex-1 bg-neutral-950 border border-neutral-700 text-cyan-400 font-bold text-xs py-2 rounded-xl cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button>
-                    <button id="food-detail-del-btn" onclick="closeFoodDetailModal(); deleteFood(window._foodDetailKey)" class="flex-1 bg-rose-950 border border-neutral-700 text-rose-400 font-bold text-xs py-2 rounded-xl cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button>
                 </div>
             </div>
         </div>
@@ -2539,6 +2560,7 @@
                 document.getElementById('food-name').value = d.name || '';
                 document.getElementById('food-tier').value = d.tier || 'เขียว';
                 document.getElementById('food-desc').value = d.desc || '';
+                document.getElementById('food-craft').value = d.craft || '';
                 if (d.ingredientImgs && d.ingredientImgs.length) {
                     d.ingredientImgs.forEach(url => addFoodIngredientImg(url));
                 }
@@ -2547,6 +2569,7 @@
                 document.getElementById('food-name').value = '';
                 document.getElementById('food-tier').value = 'เขียว';
                 document.getElementById('food-desc').value = '';
+                document.getElementById('food-craft').value = '';
             }
             document.getElementById('food-modal').classList.remove('hidden');
         }
@@ -2563,6 +2586,7 @@
                 name: document.getElementById('food-name').value.trim(),
                 tier: document.getElementById('food-tier').value,
                 desc: document.getElementById('food-desc').value.trim(),
+                craft: document.getElementById('food-craft').value.trim(),
                 ingredientImgs
             };
             if (!data.name) { alert("กรุณาใส่ชื่ออาหาร!"); return; }
@@ -2628,14 +2652,34 @@
             if (!d) return;
             window._foodDetailKey = key;
             const tier = d.tier || 'เขียว';
-            // ตั้งสีขอบ modal ตามระดับ
+            // ตั้ง neon glow class ตามระดับ (animation CSS)
             const inner = document.getElementById('food-detail-inner');
-            inner.style.borderColor = tier==='ทอง' ? 'rgba(245,158,11,0.55)' : tier==='ม่วง' ? 'rgba(124,58,237,0.5)' : 'rgba(16,185,129,0.45)';
+            inner.classList.remove('neon-green', 'neon-purple', 'neon-gold');
+            inner.style.boxShadow = '';
+            inner.style.borderColor = '';
+            if (tier === 'ทอง') {
+                inner.classList.add('neon-gold');
+            } else if (tier === 'ม่วง') {
+                inner.classList.add('neon-purple');
+            } else {
+                inner.classList.add('neon-green');
+            }
 
             document.getElementById('food-detail-image').src = d.image || '';
             document.getElementById('food-detail-image').style.display = '';
             document.getElementById('food-detail-name').innerText = d.name || '';
             document.getElementById('food-detail-desc').innerText = d.desc || 'ยังไม่มีข้อมูล';
+
+            // วัตถุดิบคราฟต์
+            const craftWrap = document.getElementById('food-detail-craft-wrap');
+            const craftEl = document.getElementById('food-detail-craft');
+            if (d.craft && d.craft.trim()) {
+                craftEl.innerText = d.craft.trim();
+                craftWrap.classList.remove('hidden');
+            } else {
+                craftWrap.classList.add('hidden');
+                craftEl.innerText = '';
+            }
 
             const tierBadge = document.getElementById('food-detail-tier-badge');
             if (tier === 'ทอง') {
@@ -2664,7 +2708,6 @@
             }
 
             const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
-            document.getElementById('food-detail-admin-btns').classList.toggle('hidden', !isAdmin);
             document.getElementById('food-detail-modal').classList.remove('hidden');
             // เล่นเสียงตอนเปิดการ์ดอาหาร
             if (typeof SCSound !== 'undefined') SCSound.cardOpen();
