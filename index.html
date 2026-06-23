@@ -280,19 +280,65 @@
             25% { transform: rotate(-8deg); }
             75% { transform: rotate(8deg); }
         }
+        /* Neon Flicker — เหมือนป้ายไฟนีออนที่ไฟเริ่มเสื่อมแล้ว */
+        @keyframes neonFlicker {
+            0%,  19%,  21%,  23%,  25%,  54%,  56%,  100% {
+                box-shadow:
+                    0 0 4px  rgba(239,68,68,0.8),
+                    0 0 12px rgba(239,68,68,0.6),
+                    0 0 28px rgba(239,68,68,0.4),
+                    0 0 55px rgba(220,38,38,0.25),
+                    inset 0 0 18px rgba(239,68,68,0.06);
+                border-color: rgba(239,68,68,0.85);
+                opacity: 1;
+            }
+            20%,  24%,  55% {
+                box-shadow:
+                    0 0 2px  rgba(239,68,68,0.3),
+                    0 0 5px  rgba(239,68,68,0.2),
+                    inset 0 0 5px rgba(239,68,68,0.02);
+                border-color: rgba(239,68,68,0.35);
+                opacity: 0.85;
+            }
+        }
+        @keyframes neonTitleFlicker {
+            0%,  19%,  21%,  23%,  25%,  54%,  56%,  100% {
+                text-shadow:
+                    0 0 6px  rgba(255,255,255,0.9),
+                    0 0 18px rgba(255,255,255,0.5),
+                    0 0 40px rgba(255,255,255,0.2);
+                opacity: 1;
+            }
+            20%,  24%,  55% {
+                text-shadow: none;
+                opacity: 0.75;
+            }
+        }
+        @keyframes neonLineFlicker {
+            0%,  19%,  21%,  23%,  25%,  54%,  56%,  100% { opacity: 1; }
+            20%,  24%,  55% { opacity: 0.3; }
+        }
         /* ป้ายร้านค้า Gacha — วางอยู่เหนือบอร์ดราคา Economy ตรงกลางหน้า ไม่ใช่ปุ่มลอยติดขอบจอแล้ว */
         #gacha-shop-banner {
             position: relative;
-            background: linear-gradient(135deg, #0f0518 0%, #1a0a32 45%, #0d0518 100%);
-            border: 1.5px solid rgba(109,40,217,0.7);
-            box-shadow: 0 0 0 1px rgba(109,40,217,0.18), 0 10px 30px -8px rgba(109,40,217,0.55), inset 0 0 60px rgba(76,29,149,0.18), 0 0 40px -10px rgba(139,92,246,0.35);
+            background: linear-gradient(135deg, #0f0202 0%, #1c0404 40%, #0a0000 70%, #180308 100%);
+            border: 1.5px solid rgba(239,68,68,0.85);
+            animation: neonFlicker 4.5s infinite;
             overflow: hidden;
         }
         #gacha-shop-banner::before {
             content: '';
             position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, #6d28d9, #a78bfa, #e9d5ff, #a78bfa, #6d28d9, transparent);
+            background: linear-gradient(90deg, transparent, #7f1d1d, #ef4444, #fca5a5, #f87171, #ef4444, #7f1d1d, transparent);
             border-radius: 16px 16px 0 0;
+            animation: neonLineFlicker 4.5s infinite;
+        }
+        /* เส้นไฟด้านล่าง */
+        #gacha-shop-banner::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(239,68,68,0.5), rgba(251,113,133,0.4), rgba(239,68,68,0.5), transparent);
+            pointer-events: none;
         }
         #gacha-shop-banner .gacha-shine {
             position: absolute; inset: 0; overflow: hidden; pointer-events: none;
@@ -300,7 +346,7 @@
         #gacha-shop-banner .gacha-shine::after {
             content: '';
             position: absolute; top: -60%; left: 0; width: 22%; height: 220%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,100,100,0.08), transparent);
             animation: gachaShine 3.2s ease-in-out infinite;
         }
         #gacha-shop-banner .gacha-sale-tag {
@@ -309,6 +355,10 @@
         }
         #gacha-shop-banner:hover .gacha-cart-icon {
             animation: gachaCartWiggle 0.5s ease-in-out;
+        }
+        /* Title neon flicker */
+        #gacha-banner-title-el {
+            animation: neonTitleFlicker 4.5s infinite;
         }
 
         /* ===== GACHA SHOP CARD — ดีไซน์ใหม่: สไตล์ป้ายสินค้าร้านค้า ===== */
@@ -1100,24 +1150,24 @@
 
             <!-- ===== ป้ายร้านค้า GACHA — อยู่กลางหน้า เหนือบอร์ดราคา Economy (ไม่ใช่ปุ่มลอยติดขอบจอแล้ว) ===== -->
             <!-- wrapper div สำหรับกัน SALE tag ล้นออกจากพื้นที่ -->
-            <div class="w-full max-w-2xl mx-auto mb-6 relative pt-3">
-                <span id="gacha-sale-tag-el" class="gacha-sale-tag shrink-0 text-[10px] font-black px-2.5 py-1 rounded-md text-white absolute top-0 left-0 shadow-lg z-10" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 0 12px rgba(245,158,11,0.7)">
-                    <i class="fa-solid fa-tag mr-0.5"></i> SALE
+            <div class="w-full max-w-2xl mx-auto mb-6 relative" style="padding-top:18px">
+                <span id="gacha-sale-tag-el" class="gacha-sale-tag text-[10px] font-black px-2 py-0.5 rounded-md text-white absolute top-0 left-3 shadow-lg z-10 leading-tight" style="background:linear-gradient(135deg,#dc2626,#991b1b);box-shadow:0 0 10px rgba(239,68,68,0.75);letter-spacing:0.05em">
+                    <i class="fa-solid fa-tag mr-0.5 text-[9px]"></i>SALE
                 </span>
                 <button id="gacha-shop-banner" onclick="openGachaPopup()" type="button"
                     class="w-full flex items-center justify-center gap-3 sm:gap-4 rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 cursor-pointer relative">
                     <span class="gacha-shine"></span>
-                    <span class="gacha-cart-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style="background:linear-gradient(145deg,#6d28d9,#a78bfa);box-shadow:0 0 16px rgba(109,40,217,0.6)">
+                    <span class="gacha-cart-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style="background:linear-gradient(145deg,#7f1d1d,#ef4444);box-shadow:0 0 18px rgba(239,68,68,0.7),0 0 36px rgba(239,68,68,0.25)">
                         <i class="fa-solid fa-cart-shopping text-white text-lg sm:text-xl"></i>
                     </span>
                     <span class="flex flex-col items-start min-w-0">
-                        <span id="gacha-banner-title-el" class="text-sm sm:text-base font-black text-transparent bg-clip-text truncate" style="background-image:linear-gradient(90deg,#e9d5ff,#c4b5fd,#a78bfa,#ddd6fe);-webkit-background-clip:text;background-clip:text">ร้านค้า GACHA ประจำเซิฟเวอร์</span>
-                        <span id="gacha-banner-desc-el" class="text-[10px] sm:text-[11px]" style="color:#a78bfa99">กดเพื่อดูของในกาชาทั้งหมด — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ</span>
-                        <span id="gacha-banner-datetime-el" class="hidden mt-1 px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-bold" style="color:#ddd6fe;background:rgba(109,40,217,0.22);border:1px solid rgba(167,139,250,0.4)"><i class="fa-regular fa-clock mr-1" style="color:#c4b5fd"></i><span id="gacha-banner-datetime-text"></span></span>
+                        <span id="gacha-banner-title-el" class="text-sm sm:text-base font-black truncate" style="color:#ffffff">GACHA DONATE SUMMER CITY SS2</span>
+                        <span id="gacha-banner-desc-el" class="text-[10px] sm:text-[11px]" style="color:rgba(252,165,165,0.65)">กดเพื่อดูของในกาชา — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ</span>
+                        <span id="gacha-banner-datetime-el" class="hidden mt-1 px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-bold" style="color:#fca5a5;background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.4)"><i class="fa-regular fa-clock mr-1" style="color:#f87171"></i><span id="gacha-banner-datetime-text"></span></span>
                     </span>
                     <span class="ml-auto flex flex-col items-end gap-1 shrink-0">
-                        <i class="fa-solid fa-chevron-right" style="color:rgba(196,181,253,0.75)"></i>
-                        <span id="gacha-banner-admin-btn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-lg cursor-pointer" style="color:rgba(221,214,254,0.85);background:rgba(109,40,217,0.25);border:1px solid rgba(139,92,246,0.35)" onclick="event.stopPropagation(); openGachaBannerEditModal()"><i class="fa-solid fa-pen mr-0.5"></i> แก้ป้าย</span>
+                        <i class="fa-solid fa-chevron-right" style="color:rgba(252,165,165,0.75)"></i>
+                        <span id="gacha-banner-admin-btn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-lg cursor-pointer" style="color:rgba(252,165,165,0.9);background:rgba(127,29,29,0.35);border:1px solid rgba(239,68,68,0.4)" onclick="event.stopPropagation(); openGachaBannerEditModal()"><i class="fa-solid fa-pen mr-0.5"></i> แก้ป้าย</span>
                     </span>
                 </button>
             </div>
@@ -3799,22 +3849,31 @@
     </script>
 
     <!-- ===== ปุ่มตะกร้าลอย มุมขวาล่าง (เปิด GACHA popup) — ซ่อนตอนหน้า Login ===== -->
-    <button id="gacha-float-cart-btn" onclick="openGachaPopup()"
-        title="ร้านค้า GACHA"
-        style="
-            position:fixed; bottom:54px; right:22px; z-index:999;
-            width:52px; height:52px; border-radius:50%;
-            background:linear-gradient(145deg,#7c3aed,#a78bfa);
-            border:2px solid rgba(167,139,250,0.6);
-            box-shadow:0 0 18px rgba(139,92,246,0.55), 0 4px 16px rgba(0,0,0,0.5);
-            display:none; align-items:center; justify-content:center;
-            cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
-        "
-        onmouseover="this.style.transform='scale(1.12)'; this.style.boxShadow='0 0 28px rgba(139,92,246,0.75), 0 6px 20px rgba(0,0,0,0.5)';"
-        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 18px rgba(139,92,246,0.55), 0 4px 16px rgba(0,0,0,0.5)';"
-    >
-        <i class="fa-solid fa-cart-shopping text-white text-xl"></i>
-    </button>
+    <div id="gacha-float-cart-wrap" style="position:fixed; bottom:54px; right:22px; z-index:999; display:none;">
+        <button id="gacha-float-cart-btn" onclick="openGachaPopup()"
+            style="
+                position:relative;
+                width:52px; height:52px; border-radius:50%;
+                background:linear-gradient(145deg,#7f1d1d,#ef4444);
+                border:2px solid rgba(248,113,113,0.7);
+                box-shadow:0 0 18px rgba(239,68,68,0.7), 0 0 36px rgba(239,68,68,0.25), 0 4px 16px rgba(0,0,0,0.5);
+                display:flex; align-items:center; justify-content:center;
+                cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
+            "
+            onmouseover="this.style.transform='scale(1.12)'; this.style.boxShadow='0 0 30px rgba(239,68,68,0.9), 0 0 50px rgba(239,68,68,0.35), 0 6px 20px rgba(0,0,0,0.5)'; var tt=this.nextElementSibling; if(tt) tt.style.opacity='1';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 18px rgba(239,68,68,0.7), 0 0 36px rgba(239,68,68,0.25), 0 4px 16px rgba(0,0,0,0.5)'; var tt=this.nextElementSibling; if(tt) tt.style.opacity='0';"
+        >
+            <i class="fa-solid fa-cart-shopping text-white text-xl"></i>
+        </button>
+        <span style="
+            position:absolute; bottom:62px; right:0;
+            background:rgba(20,20,24,0.95); color:#fff; font-size:12px; font-weight:600;
+            padding:6px 12px; border-radius:9999px; white-space:nowrap;
+            border:1px solid rgba(239,68,68,0.4);
+            box-shadow:0 4px 12px rgba(0,0,0,0.4);
+            opacity:0; pointer-events:none; transition:opacity 0.2s;
+        ">ร้านค้า GACHA</span>
+    </div>
 
     <!-- ===== MODAL: แก้ไขป้ายร้านค้า GACHA (Admin เท่านั้น) ===== -->
     <div id="gacha-banner-edit-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[70] p-4 backdrop-blur-md">
@@ -3881,16 +3940,18 @@
     /* ===== GACHA BANNER EDIT — Monkey-patch: ไม่แตะ Firebase/Auth/Role/Security เดิม ===== */
     (function() {
         /* ค่า default */
-        var _defaultTitle = 'ร้านค้า GACHA ประจำเซิฟเวอร์';
-        var _defaultDesc  = 'กดเพื่อดูของในกาชาทั้งหมด — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ';
+        var _defaultTitle = 'GACHA DONATE SUMMER CITY SS2';
+        var _defaultDesc  = 'กดเพื่อดูของในกาชา — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ';
 
-        /* ===== 5 สีคนละขั้ว สำหรับชื่อป้าย (วนซ้ำถ้าเกิน 5) ===== */
+        /* ===== 7 สีล็อคตายตัว วนซ้ำถ้าชื่อเกิน ===== */
         var _TITLE_COLORS = [
-            '#ef4444',   /* 1 — แดง (red) */
-            '#34d399',   /* 2 — เขียวมิ้นต์ (emerald) */
-            '#fbbf24',   /* 3 — เหลืองทอง (yellow) */
-            '#38bdf8',   /* 4 — ฟ้าใส (sky) */
-            '#f97316'    /* 5 — ส้มสด (orange) */
+            '#ffffff',   /* 1 — ขาว */
+            '#fbbf24',   /* 2 — เหลือง */
+            '#34d399',   /* 3 — เขียว */
+            '#38bdf8',   /* 4 — ฟ้า */
+            '#fb923c',   /* 5 — ส้ม */
+            '#2dd4bf',   /* 6 — ฟ้าอมเขียว */
+            '#fcd34d'    /* 7 — ส้มอมเหลือง */
         ];
 
         /* inject keyframes สำหรับ slot-flip (ทำครั้งเดียว) */
@@ -3956,10 +4017,17 @@
             }, 290);
         }
 
-        /* เริ่ม/รีเซ็ต timer หมุนชื่อ */
+        /* เริ่ม/รีเซ็ต timer หมุนชื่อ — รีสตาร์ทเฉพาะเมื่อรายชื่อเปลี่ยนจริง กันบัคหมุนค้าง */
         function startTitleRotation(titles) {
+            var cleanTitles = titles.filter(function(t){ return t.trim(); });
+            var sameAsBefore = _rotateTimer &&
+                cleanTitles.length === _rotateTitles.length &&
+                cleanTitles.every(function(t, i){ return t === _rotateTitles[i]; });
+
+            if (sameAsBefore) return; /* รายชื่อไม่เปลี่ยน + timer กำลังหมุนอยู่แล้ว ไม่ต้องรีเซ็ต */
+
             stopTitleRotation();
-            _rotateTitles = titles.filter(function(t){ return t.trim(); });
+            _rotateTitles = cleanTitles;
             _rotateIndex  = 0;
             if (_rotateTitles.length <= 1) return;
 
@@ -4004,21 +4072,28 @@
             var firstTitle = titles[0] || _defaultTitle;
             var desc  = d.desc  || _defaultDesc;
 
-            /* แสดงชื่อแรกทันที พร้อมสีที่ 1 */
-            var firstColor = _TITLE_COLORS[0];
-            if (titleEl) {
-                /* รีเซ็ต flipInner เผื่อ applyBannerData ถูกเรียกซ้ำ */
-                titleEl._flipInner = null;
-                titleEl.textContent = firstTitle;
-                titleEl.style.color = firstColor;
-                titleEl.style.opacity = '1';
+            /* เช็คว่ารายชื่อเปลี่ยนจริงไหม — ถ้าไม่เปลี่ยน ไม่ต้อง snap กลับไปชื่อแรก (กันบัคหมุนค้าง/รีเซ็ตซ้ำ) */
+            var titlesChanged = !_rotateTimer && _rotateTitles.length === 0 ? true :
+                (titles.length !== _rotateTitles.length || titles.some(function(t, i){ return t !== _rotateTitles[i]; }));
+
+            if (titlesChanged) {
+                /* แสดงชื่อแรก (index 0) ด้วยสีแรก */
+                var firstColor = _TITLE_COLORS[0];
+                if (titleEl) {
+                    /* รีเซ็ต flipInner เผื่อ applyBannerData ถูกเรียกซ้ำ */
+                    titleEl._flipInner = null;
+                    titleEl.textContent = firstTitle;
+                    titleEl.style.color = firstColor;
+                    titleEl.style.opacity = '1';
+                }
+                if (modalTitle) {
+                    modalTitle._flipInner = null;
+                    modalTitle.textContent = firstTitle;
+                    modalTitle.style.color = firstColor;
+                    modalTitle.style.opacity = '1';
+                }
             }
-            if (modalTitle) {
-                modalTitle._flipInner = null;
-                modalTitle.textContent = firstTitle;
-                modalTitle.style.color = firstColor;
-                modalTitle.style.opacity = '1';
-            }
+
             if (descEl)     descEl.textContent   = desc;
             if (modalDesc)  { modalDesc.innerHTML = '<i class="fa-solid fa-circle-info mr-1"></i>' + desc; }
 
@@ -4028,7 +4103,7 @@
 
             if (saleTag) saleTag.style.display = (d.saleVisible === false) ? 'none' : '';
 
-            /* เริ่ม/รีเซ็ต rotation */
+            /* เริ่ม/รีเซ็ต rotation (จะรีสตาร์ทจริงเฉพาะตอนรายชื่อเปลี่ยน) */
             startTitleRotation(titles);
         }
 
@@ -4093,6 +4168,7 @@
         }
 
         window._gachaBannerRestBase = null;
+        var _bannerPollStarted = false; /* กันไม่ให้ poll loop ซ้ำซ้อนหลายตัว (ทำให้หมุนชื่อบัค) */
 
         function fetchBannerFromFirebase() {
             var base = window._gachaBannerRestBase || getFirebaseRESTBase();
@@ -4103,8 +4179,16 @@
                 .then(function(data){
                     window._cachedGachaBanner = data || {};
                     applyBannerData(data || {});
-                    /* poll ทุก 30วิ เพื่อ realtime-ish */
-                    setTimeout(fetchBannerFromFirebase, 30000);
+                    /* poll ทุก 30วิ เพื่อ realtime-ish — เริ่มแค่ครั้งเดียวเท่านั้น */
+                    if (!_bannerPollStarted) {
+                        _bannerPollStarted = true;
+                        (function pollLoop() {
+                            setTimeout(function() {
+                                fetchBannerFromFirebase();
+                                pollLoop();
+                            }, 30000);
+                        })();
+                    }
                 })
                 .catch(function(){ setTimeout(fetchBannerFromFirebase, 15000); });
         }
@@ -4123,8 +4207,8 @@
             if (modalEditBtn) modalEditBtn.classList.toggle('hidden', !isAdmin);
 
             /* แสดง/ซ่อนปุ่มตะกร้าลอย — ซ่อนตอนยังไม่ login */
-            var floatBtn = document.getElementById('gacha-float-cart-btn');
-            if (floatBtn) floatBtn.style.display = loggedIn ? 'flex' : 'none';
+            var floatBtn = document.getElementById('gacha-float-cart-wrap');
+            if (floatBtn) floatBtn.style.display = loggedIn ? 'block' : 'none';
         }
         /* Hook openGachaPopup เพื่ออัปเดตปุ่ม admin ทุกครั้งที่เปิด */
         var _origOGP = window.openGachaPopup;
@@ -4156,6 +4240,7 @@
             document.getElementById('gacha-banner-edit-modal').classList.add('hidden');
         };
 
+
         /* ===== บันทึกข้อมูลป้าย → Firebase ===== */
         window.saveGachaBanner = function() {
             /* แยกชื่อป้ายหลายชื่อจาก textarea (แต่ละบรรทัด = 1 ชื่อ) */
@@ -4184,8 +4269,6 @@
                     window._cachedGachaBanner = data;
                     applyBannerData(data);
                     closeGachaBannerEditModal();
-                    /* ล้าง fetch cache ให้โหลดใหม่เร็ว */
-                    fetchBannerFromFirebase();
                 }).catch(function(e) { alert('บันทึกไม่สำเร็จ: ' + e.message); });
             } else {
                 /* fallback localStorage */
