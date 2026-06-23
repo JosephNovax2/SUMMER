@@ -283,15 +283,15 @@
         /* ป้ายร้านค้า Gacha — วางอยู่เหนือบอร์ดราคา Economy ตรงกลางหน้า ไม่ใช่ปุ่มลอยติดขอบจอแล้ว */
         #gacha-shop-banner {
             position: relative;
-            background: linear-gradient(135deg, #0d0a1e, #100b1f 55%, #07050f);
-            border: 1.5px solid rgba(139,92,246,0.55);
-            box-shadow: 0 0 0 1px rgba(139,92,246,0.12), 0 10px 30px -8px rgba(139,92,246,0.4), 0 0 18px -4px rgba(6,182,212,0.18);
+            background: linear-gradient(135deg, #0f0518 0%, #1a0a32 45%, #0d0518 100%);
+            border: 1.5px solid rgba(109,40,217,0.7);
+            box-shadow: 0 0 0 1px rgba(109,40,217,0.18), 0 10px 30px -8px rgba(109,40,217,0.55), inset 0 0 60px rgba(76,29,149,0.18), 0 0 40px -10px rgba(139,92,246,0.35);
             overflow: hidden;
         }
         #gacha-shop-banner::before {
             content: '';
             position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, #8b5cf6, #a78bfa, #c084fc, #8b5cf6, transparent);
+            background: linear-gradient(90deg, transparent, #6d28d9, #a78bfa, #e9d5ff, #a78bfa, #6d28d9, transparent);
             border-radius: 16px 16px 0 0;
         }
         #gacha-shop-banner .gacha-shine {
@@ -1101,23 +1101,23 @@
             <!-- ===== ป้ายร้านค้า GACHA — อยู่กลางหน้า เหนือบอร์ดราคา Economy (ไม่ใช่ปุ่มลอยติดขอบจอแล้ว) ===== -->
             <!-- wrapper div สำหรับกัน SALE tag ล้นออกจากพื้นที่ -->
             <div class="w-full max-w-2xl mx-auto mb-6 relative pt-3">
-                <span id="gacha-sale-tag-el" class="gacha-sale-tag shrink-0 text-[10px] font-black px-2.5 py-1 rounded-md text-white absolute top-0 left-0 shadow-lg z-10" style="background:linear-gradient(135deg,#7c3aed,#ec4899);box-shadow:0 0 10px rgba(139,92,246,0.6)">
+                <span id="gacha-sale-tag-el" class="gacha-sale-tag shrink-0 text-[10px] font-black px-2.5 py-1 rounded-md text-white absolute top-0 left-0 shadow-lg z-10" style="background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 0 12px rgba(245,158,11,0.7)">
                     <i class="fa-solid fa-tag mr-0.5"></i> SALE
                 </span>
                 <button id="gacha-shop-banner" onclick="openGachaPopup()" type="button"
                     class="w-full flex items-center justify-center gap-3 sm:gap-4 rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 cursor-pointer relative">
                     <span class="gacha-shine"></span>
-                    <span class="gacha-cart-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style="background:linear-gradient(145deg,#7c3aed,#a78bfa)">
+                    <span class="gacha-cart-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style="background:linear-gradient(145deg,#6d28d9,#a78bfa);box-shadow:0 0 16px rgba(109,40,217,0.6)">
                         <i class="fa-solid fa-cart-shopping text-white text-lg sm:text-xl"></i>
                     </span>
                     <span class="flex flex-col items-start min-w-0">
-                        <span id="gacha-banner-title-el" class="text-sm sm:text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-purple-300 to-purple-200 truncate">ร้านค้า GACHA ประจำเซิฟเวอร์</span>
-                        <span id="gacha-banner-desc-el" class="text-[10px] sm:text-[11px] text-neutral-400">กดเพื่อดูของในกาชาทั้งหมด — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ</span>
-                        <span id="gacha-banner-datetime-el" class="hidden mt-1 px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-bold text-violet-200" style="background:rgba(124,58,237,0.18);border:1px solid rgba(139,92,246,0.35)"><i class="fa-regular fa-clock mr-1 text-violet-400"></i><span id="gacha-banner-datetime-text"></span></span>
+                        <span id="gacha-banner-title-el" class="text-sm sm:text-base font-black text-transparent bg-clip-text truncate" style="background-image:linear-gradient(90deg,#e9d5ff,#c4b5fd,#a78bfa,#ddd6fe);-webkit-background-clip:text;background-clip:text">ร้านค้า GACHA ประจำเซิฟเวอร์</span>
+                        <span id="gacha-banner-desc-el" class="text-[10px] sm:text-[11px]" style="color:#a78bfa99">กดเพื่อดูของในกาชาทั้งหมด — รถ, แฟชั่น, สกินอาวุธ และอื่นๆ</span>
+                        <span id="gacha-banner-datetime-el" class="hidden mt-1 px-2 py-0.5 rounded-lg text-[10px] sm:text-[11px] font-bold" style="color:#ddd6fe;background:rgba(109,40,217,0.22);border:1px solid rgba(167,139,250,0.4)"><i class="fa-regular fa-clock mr-1" style="color:#c4b5fd"></i><span id="gacha-banner-datetime-text"></span></span>
                     </span>
                     <span class="ml-auto flex flex-col items-end gap-1 shrink-0">
-                        <i class="fa-solid fa-chevron-right text-violet-400/70"></i>
-                        <span id="gacha-banner-admin-btn" class="hidden text-[9px] font-bold text-violet-300/80 hover:text-violet-200 bg-violet-950/50 border border-violet-700/30 px-2 py-0.5 rounded-lg cursor-pointer" onclick="event.stopPropagation(); openGachaBannerEditModal()"><i class="fa-solid fa-pen mr-0.5"></i> แก้ป้าย</span>
+                        <i class="fa-solid fa-chevron-right" style="color:rgba(196,181,253,0.75)"></i>
+                        <span id="gacha-banner-admin-btn" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-lg cursor-pointer" style="color:rgba(221,214,254,0.85);background:rgba(109,40,217,0.25);border:1px solid rgba(139,92,246,0.35)" onclick="event.stopPropagation(); openGachaBannerEditModal()"><i class="fa-solid fa-pen mr-0.5"></i> แก้ป้าย</span>
                     </span>
                 </button>
             </div>
