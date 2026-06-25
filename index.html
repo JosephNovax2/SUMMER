@@ -3026,9 +3026,15 @@
         window.openGachaPopup = function() {
             document.getElementById('gacha-modal').classList.remove('hidden');
             renderGachaTabs();
+            var floatWrap = document.getElementById('gacha-float-cart-wrap');
+            if (floatWrap) floatWrap.style.display = 'none';
         }
         window.closeGachaPopup = function() {
             document.getElementById('gacha-modal').classList.add('hidden');
+            if (window.currentUser) {
+                var floatWrap = document.getElementById('gacha-float-cart-wrap');
+                if (floatWrap) floatWrap.style.display = 'block';
+            }
         }
 
         function renderGachaAdminButtons() {
