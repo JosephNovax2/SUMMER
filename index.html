@@ -443,29 +443,31 @@
             width: 100%;
             height: 160px;
             overflow: hidden;
-            background: radial-gradient(ellipse at center, #1a1a1a 0%, #080808 100%);
+            background: radial-gradient(ellipse at center, #1c1c2e 0%, #0d0d1a 100%);
             position: relative;
             flex-shrink: 0;
         }
         .gacha-shop-card .gc-img-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
+            width: 100%; height: 100%; object-fit: contain;
+            padding: 8px;
             transition: transform 0.45s cubic-bezier(.34,1.3,.64,1);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
         }
         .gacha-shop-card:hover .gc-img-wrap img {
-            transform: scale(1.12);
+            transform: scale(1.08);
         }
-        /* gradient fade ด้านล่างรูป */
+        /* gradient fade ด้านล่างรูป — บางลงมากเพื่อไม่บังรูป */
         .gacha-shop-card .gc-img-wrap::after {
             content: '';
-            position: absolute; bottom: 0; left: 0; right: 0; height: 60%;
-            background: linear-gradient(to top, #111111 0%, rgba(10,10,10,0.75) 55%, transparent 100%);
+            position: absolute; bottom: 0; left: 0; right: 0; height: 25%;
+            background: linear-gradient(to top, rgba(15,15,20,0.7) 0%, transparent 100%);
             pointer-events: none; z-index: 1;
         }
-        /* vignette ด้านบนรูป */
+        /* vignette ด้านบนรูป — ลดลงให้บางมาก */
         .gacha-shop-card .gc-img-wrap::before {
             content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 35%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+            position: absolute; top: 0; left: 0; right: 0; height: 15%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.15), transparent);
             pointer-events: none; z-index: 1;
         }
         .gacha-shop-card .gc-img-placeholder {
