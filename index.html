@@ -34,7 +34,7 @@
                 repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(249,115,22,0.03) 39px, rgba(249,115,22,0.03) 40px);
         }
 
-        /* ===== SUMMER VACATION BEACH SCENE — FIXED BACKDROP (TROPICAL + CYBER) ===== */
+        /* ===== TROPICAL SUMMER BEACH SCENE — FIXED BACKDROP (ดำ-ส้ม ดีไซน์ใหม่) ===== */
         #bg-scene {
             position: fixed;
             inset: 0;
@@ -43,37 +43,56 @@
             pointer-events: none;
         }
         #bg-scene svg { width: 100%; height: 100%; display: block; }
-        #bg-scene .bg-wave-1 { animation: bgWaveDrift 14s ease-in-out infinite; }
-        #bg-scene .bg-wave-2 { animation: bgWaveDrift 18s ease-in-out infinite reverse; }
-        #bg-scene .bg-wave-3 { animation: bgWaveDrift 22s ease-in-out infinite; }
-        #bg-scene .bg-sun-core { animation: bgSunPulse 6s ease-in-out infinite; }
-        #bg-scene .bg-grid { animation: bgGridDrift 5s linear infinite; }
-        #bg-scene .bg-twinkle { animation: bgTwinkle 3.5s ease-in-out infinite; }
-        #bg-scene .bg-twinkle:nth-child(2n) { animation-delay: 1.1s; }
-        #bg-scene .bg-twinkle:nth-child(3n) { animation-delay: 2s; }
-        #bg-scene .bg-scanline { animation: bgScan 7s linear infinite; }
-        @keyframes bgWaveDrift {
-            0%, 100% { transform: translateX(0px); }
-            50%       { transform: translateX(35px); }
+        #bg-scene .bg-sun-rays { animation: bgSunSpin 90s linear infinite; transform-origin: 1650px 230px; }
+        #bg-scene .bg-sun-core { animation: bgSunGlow 5s ease-in-out infinite; }
+        #bg-scene .bg-cloud-1 { animation: bgCloudDrift 40s ease-in-out infinite; }
+        #bg-scene .bg-cloud-2 { animation: bgCloudDrift 55s ease-in-out infinite reverse; }
+        #bg-scene .bg-cloud-3 { animation: bgCloudDrift 32s ease-in-out infinite; }
+        #bg-scene .bg-palm-left { animation: bgPalmSway 6s ease-in-out infinite; transform-origin: 60px 900px; }
+        #bg-scene .bg-palm-right { animation: bgPalmSway 7s ease-in-out infinite reverse; transform-origin: 1860px 900px; }
+        #bg-scene .bg-leaf-tl { animation: bgLeafSway 5.5s ease-in-out infinite; transform-origin: -20px -20px; }
+        #bg-scene .bg-wave-a { animation: bgWaveDrift 9s ease-in-out infinite; }
+        #bg-scene .bg-wave-b { animation: bgWaveDrift 12s ease-in-out infinite reverse; }
+        #bg-scene .bg-wave-c { animation: bgWaveDrift 15s ease-in-out infinite; }
+        #bg-scene .bg-sparkle { animation: bgSparkle 3s ease-in-out infinite; }
+        #bg-scene .bg-sparkle:nth-child(2n) { animation-delay: .9s; }
+        #bg-scene .bg-sparkle:nth-child(3n) { animation-delay: 1.7s; }
+        #bg-scene .bg-bird { animation: bgBirdFly 26s linear infinite; }
+        #bg-scene .bg-bird-2 { animation: bgBirdFly 34s linear infinite; animation-delay: 6s; }
+        @keyframes bgSunSpin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        @keyframes bgSunPulse {
-            0%, 100% { opacity: 0.85; }
+        @keyframes bgSunGlow {
+            0%, 100% { opacity: 0.9; }
             50%       { opacity: 1; }
         }
-        @keyframes bgGridDrift {
-            0%   { transform: translateY(0); }
-            100% { transform: translateY(28px); }
+        @keyframes bgCloudDrift {
+            0%, 100% { transform: translateX(0px); }
+            50%       { transform: translateX(60px); }
         }
-        @keyframes bgTwinkle {
-            0%, 100% { opacity: 0.15; }
-            50%       { opacity: 0.9; }
+        @keyframes bgPalmSway {
+            0%, 100% { transform: rotate(-1.2deg); }
+            50%       { transform: rotate(1.6deg); }
         }
-        @keyframes bgScan {
-            0%   { transform: translateY(-10%); opacity: 0; }
+        @keyframes bgLeafSway {
+            0%, 100% { transform: rotate(-2deg) scale(1); }
+            50%       { transform: rotate(2deg) scale(1.02); }
+        }
+        @keyframes bgWaveDrift {
+            0%, 100% { transform: translateX(0px); }
+            50%       { transform: translateX(-40px); }
+        }
+        @keyframes bgSparkle {
+            0%, 100% { opacity: 0.1; }
+            50%       { opacity: 0.85; }
+        }
+        @keyframes bgBirdFly {
+            0%   { transform: translate(-120px, 0); opacity: 0; }
             8%   { opacity: 0.5; }
-            50%  { opacity: 0.18; }
+            50%  { transform: translate(1020px, -60px); }
             92%  { opacity: 0.5; }
-            100% { transform: translateY(110%); opacity: 0; }
+            100% { transform: translate(2040px, -10px); opacity: 0; }
         }
 
         /* ===== LOGIN / TAB TRANSITION CUTSCENE ===== */
@@ -235,17 +254,9 @@
             pointer-events: none;
             z-index: 1;
         }
-        /* มุมไซเบอร์การ์ด */
+        /* มุมไซเบอร์การ์ด (เอาออกตามคำขอ - ไม่แสดงขอบมุมขวาล่างการ์ดแล้ว) */
         .fantasy-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0; right: 0;
-            width: 16px; height: 16px;
-            border-right: 2px solid rgba(249,115,22,0.4);
-            border-bottom: 2px solid rgba(249,115,22,0.4);
-            border-radius: 0 0 12px 0;
-            pointer-events: none;
-            animation: cornerPulse 3s infinite ease-in-out;
+            display: none;
         }
 
         /* ===== DIFFICULTY BADGES ===== */
@@ -996,162 +1007,218 @@
     <div id="bg-scene" aria-hidden="true">
         <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <linearGradient id="bgSky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"  stop-color="#04030a"/>
-                    <stop offset="30%" stop-color="#1a0e1f"/>
-                    <stop offset="55%" stop-color="#3a1320"/>
-                    <stop offset="68%" stop-color="#4a1c08"/>
-                    <stop offset="82%" stop-color="#140601"/>
+                <linearGradient id="bgSky2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%"  stop-color="#050302"/>
+                    <stop offset="35%" stop-color="#170a02"/>
+                    <stop offset="62%" stop-color="#2e1103"/>
+                    <stop offset="80%" stop-color="#160701"/>
                     <stop offset="100%" stop-color="#020202"/>
                 </linearGradient>
-                <radialGradient id="bgSunGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%"  stop-color="#fff6dd" stop-opacity="0.5"/>
-                    <stop offset="40%" stop-color="#fbbf24" stop-opacity="0.3"/>
+                <radialGradient id="bgSunHalo" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%"  stop-color="#fff7d6" stop-opacity="0.32"/>
+                    <stop offset="55%" stop-color="#fbbf24" stop-opacity="0.1"/>
                     <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
                 </radialGradient>
-                <linearGradient id="bgSunFace" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"  stop-color="#fff3c4"/>
-                    <stop offset="45%" stop-color="#fbbf24"/>
-                    <stop offset="75%" stop-color="#f97316"/>
-                    <stop offset="100%" stop-color="#ea580c"/>
-                </linearGradient>
-                <linearGradient id="bgSea" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"  stop-color="#0d2a2c"/>
-                    <stop offset="45%" stop-color="#031416"/>
+                <radialGradient id="bgSunGlow2" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%"  stop-color="#fff3c4" stop-opacity="0.65"/>
+                    <stop offset="45%" stop-color="#fbbf24" stop-opacity="0.32"/>
+                    <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="bgSunFace2" cx="38%" cy="32%" r="72%">
+                    <stop offset="0%"  stop-color="#fffdf0"/>
+                    <stop offset="28%" stop-color="#fff1b8"/>
+                    <stop offset="58%" stop-color="#fde68a"/>
+                    <stop offset="82%" stop-color="#f97316"/>
+                    <stop offset="100%" stop-color="#c2410c"/>
+                </radialGradient>
+                <linearGradient id="bgSea2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%"  stop-color="#12100a"/>
+                    <stop offset="40%" stop-color="#0a0704"/>
                     <stop offset="100%" stop-color="#000000"/>
                 </linearGradient>
-                <linearGradient id="bgReflect" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%"  stop-color="#fde68a" stop-opacity="0.6"/>
-                    <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+                <linearGradient id="bgSandTop2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2e1608"/>
+                    <stop offset="100%" stop-color="#0d0603"/>
                 </linearGradient>
-                <linearGradient id="bgPalm" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#000000"/>
-                    <stop offset="100%" stop-color="#1a0900"/>
+                <linearGradient id="bgPalmTrunk" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#020100"/>
+                    <stop offset="45%" stop-color="#170b04"/>
+                    <stop offset="78%" stop-color="#2c1608"/>
+                    <stop offset="100%" stop-color="#100701"/>
                 </linearGradient>
-                <linearGradient id="bgGridFade" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.55"/>
-                    <stop offset="100%" stop-color="#f97316" stop-opacity="0.05"/>
+                <linearGradient id="bgPalmLeaf" x1="0" y1="0.15" x2="0.9" y2="1">
+                    <stop offset="0%" stop-color="#241205"/>
+                    <stop offset="45%" stop-color="#0d0602"/>
+                    <stop offset="100%" stop-color="#000000"/>
                 </linearGradient>
-                <linearGradient id="bgScanGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#22d3ee" stop-opacity="0"/>
-                    <stop offset="50%" stop-color="#fde68a" stop-opacity="0.55"/>
-                    <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
-                </linearGradient>
-                <clipPath id="bgSunClip"><circle cx="960" cy="540" r="210"/></clipPath>
+                <radialGradient id="bgCoconut" cx="32%" cy="26%" r="75%">
+                    <stop offset="0%" stop-color="#3a3a3a"/>
+                    <stop offset="35%" stop-color="#1c1c1c"/>
+                    <stop offset="70%" stop-color="#0a0a0a"/>
+                    <stop offset="100%" stop-color="#000000"/>
+                </radialGradient>
+                <clipPath id="bgSunClip2"><circle cx="1650" cy="230" r="150"/></clipPath>
             </defs>
 
-            <!-- ท้องฟ้ายามตะวันลับฟ้า โทนไซเบอร์-ทรอปิคอล -->
-            <rect x="0" y="0" width="1920" height="650" fill="url(#bgSky)"/>
+            <!-- ท้องฟ้าโทนซันเซ็ตดำ-ส้ม -->
+            <rect x="0" y="0" width="1920" height="700" fill="url(#bgSky2)"/>
 
-            <!-- ดาว/อนุภาคไซเบอร์ระยิบระยับบนฟ้า -->
-            <g fill="#fde68a">
-                <circle class="bg-twinkle" cx="220" cy="120" r="2.4"/>
-                <circle class="bg-twinkle" cx="430" cy="200" r="1.8"/>
-                <circle class="bg-twinkle" cx="120" cy="320" r="2"/>
-                <circle class="bg-twinkle" cx="1620" cy="140" r="2.2"/>
-                <circle class="bg-twinkle" cx="1760" cy="260" r="1.6"/>
-                <circle class="bg-twinkle" cx="1480" cy="90" r="1.8"/>
-                <circle class="bg-twinkle" cx="1850" cy="380" r="2"/>
-                <circle class="bg-twinkle" cx="640" cy="90" r="1.6"/>
-                <circle class="bg-twinkle" cx="1300" cy="180" r="2"/>
-                <circle class="bg-twinkle" cx="80" cy="460" r="1.8"/>
+            <!-- เมฆเขตร้อนบางๆ ลอยผ่าน -->
+            <g fill="#ffb347" opacity="0.07">
+                <ellipse class="bg-cloud-1" cx="360" cy="150" rx="190" ry="34"/>
+                <ellipse class="bg-cloud-1" cx="520" cy="110" rx="120" ry="22"/>
+            </g>
+            <g fill="#ffffff" opacity="0.05">
+                <ellipse class="bg-cloud-2" cx="1240" cy="90" rx="220" ry="30"/>
+                <ellipse class="bg-cloud-3" cx="900" cy="200" rx="150" ry="24"/>
             </g>
 
-            <!-- ดวงอาทิตย์เรโทรไซเบอร์ (Outrun Sun) -->
-            <circle class="bg-sun-core" cx="960" cy="540" r="320" fill="url(#bgSunGlow)"/>
-            <g clip-path="url(#bgSunClip)">
-                <circle cx="960" cy="540" r="210" fill="url(#bgSunFace)"/>
-                <g fill="#1a0e1f" opacity="0.85">
-                    <rect x="750" y="600" width="420" height="6"/>
-                    <rect x="750" y="618" width="420" height="8"/>
-                    <rect x="750" y="638" width="420" height="10"/>
-                    <rect x="750" y="660" width="420" height="13"/>
-                    <rect x="750" y="685" width="420" height="16"/>
-                    <rect x="750" y="713" width="420" height="20"/>
-                    <rect x="750" y="745" width="420" height="25"/>
+            <!-- ดวงอาทิตย์เขตร้อนมุมขวาบน พร้อมรัศมีแฉกและแสงฟุ้งหลายชั้น -->
+            <circle cx="1650" cy="230" r="340" fill="url(#bgSunHalo)"/>
+            <g class="bg-sun-rays" opacity="0.4" stroke-linecap="round">
+                <g stroke="#fbbf24" stroke-width="3.5">
+                    <line x1="1650" y1="230" x2="1650" y2="-20"  opacity="0.75"/>
+                    <line x1="1650" y1="230" x2="1650" y2="480"  opacity="0.45"/>
+                    <line x1="1650" y1="230" x2="1400" y2="230"  opacity="0.65"/>
+                    <line x1="1650" y1="230" x2="1900" y2="230"  opacity="0.45"/>
+                    <line x1="1650" y1="230" x2="1473" y2="53"   opacity="0.6"/>
+                    <line x1="1650" y1="230" x2="1827" y2="407"  opacity="0.4"/>
+                    <line x1="1650" y1="230" x2="1473" y2="407"  opacity="0.45"/>
+                    <line x1="1650" y1="230" x2="1827" y2="53"   opacity="0.55"/>
+                </g>
+                <g stroke="#fde68a" stroke-width="1.5" opacity="0.55">
+                    <line x1="1650" y1="230" x2="1650" y2="40"/>
+                    <line x1="1650" y1="230" x2="1748" y2="65"/>
+                    <line x1="1650" y1="230" x2="1552" y2="65"/>
+                    <line x1="1650" y1="230" x2="1552" y2="395"/>
+                    <line x1="1650" y1="230" x2="1748" y2="395"/>
+                    <line x1="1650" y1="230" x2="1840" y2="140"/>
+                    <line x1="1650" y1="230" x2="1460" y2="140"/>
+                    <line x1="1650" y1="230" x2="1460" y2="320"/>
                 </g>
             </g>
-            <circle cx="960" cy="540" r="211" fill="none" stroke="#fde68a" stroke-opacity="0.35" stroke-width="2"/>
+            <circle class="bg-sun-core" cx="1650" cy="230" r="230" fill="url(#bgSunGlow2)"/>
+            <g clip-path="url(#bgSunClip2)">
+                <circle cx="1650" cy="230" r="150" fill="url(#bgSunFace2)"/>
+                <ellipse cx="1600" cy="185" rx="55" ry="34" fill="#fffdf0" opacity="0.35"/>
+            </g>
+            <circle cx="1650" cy="230" r="151" fill="none" stroke="#fde68a" stroke-opacity="0.45" stroke-width="2"/>
+            <circle cx="1650" cy="230" r="150" fill="none" stroke="#fff3c4" stroke-opacity="0.2" stroke-width="6"/>
 
-            <!-- เมฆเรืองแสงบางๆ -->
-            <g fill="#ffffff" opacity="0.06">
-                <ellipse cx="380" cy="260" rx="160" ry="26"/>
-                <ellipse cx="1540" cy="320" rx="200" ry="30"/>
-                <ellipse cx="1100" cy="170" rx="130" ry="20"/>
+            <!-- เส้นขอบฟ้า -->
+            <rect x="0" y="698" width="1920" height="3" fill="#fde68a" opacity="0.4"/>
+
+            <!-- ใบไม้เขตร้อน (มอนสเตอร่า) มุมซ้ายบน -->
+            <g class="bg-leaf-tl" opacity="0.85">
+                <path d="M-40,-40 C120,-60 260,20 300,150 C320,220 300,300 240,340 C260,260 230,190 170,150 C190,220 160,280 100,300 C130,230 110,160 60,120 C70,180 40,230 -20,240 C0,170 -20,100 -60,60 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.25" stroke-width="2"/>
             </g>
 
-            <!-- เส้นขอบฟ้าเรืองแสง -->
-            <rect x="0" y="648" width="1920" height="3" fill="#fde68a" opacity="0.45"/>
+            <!-- ต้นปาล์มมะพร้าว ฝั่งซ้าย โค้งเอนแบบชายหาด (ดีไซน์สมจริงขึ้น) -->
+            <g class="bg-palm-left">
+                <path d="M62,1080 C50,900 60,760 42,600 C36,560 30,530 40,505" fill="none" stroke="url(#bgPalmTrunk)" stroke-width="25" stroke-linecap="round"/>
+                <path d="M55,1075 C45,900 55,760 38,600" fill="none" stroke="#f97316" stroke-opacity="0.12" stroke-width="3" stroke-linecap="round"/>
+                <g opacity="0.45" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    <path d="M33,955 q11,5 22,0"/>
+                    <path d="M31,875 q12,5 24,0"/>
+                    <path d="M34,790 q11,5 21,0"/>
+                    <path d="M37,705 q10,4 19,0"/>
+                    <path d="M39,620 q9,4 16,0"/>
+                </g>
+                <g transform="translate(40,505)">
+                    <path d="M0,3 C-95,-45 -195,-25 -262,25 C-190,0 -95,4 -22,26 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.28" stroke-width="1.5"/>
+                    <path d="M-4,8 C-70,-2 -140,14 -190,42" fill="none" stroke="#f97316" stroke-opacity="0.22" stroke-width="1"/>
+                    <path d="M0,0 C-55,-105 -78,-195 -48,-275 C-24,-192 -10,-98 8,-6 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.28" stroke-width="1.5"/>
+                    <path d="M-3,-8 C-18,-90 -22,-170 -12,-245" fill="none" stroke="#f97316" stroke-opacity="0.22" stroke-width="1"/>
+                    <path d="M0,0 C78,-62 175,-70 248,-32 C170,-24 88,-2 14,24 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.28" stroke-width="1.5"/>
+                    <path d="M4,6 C60,-10 130,-8 195,10" fill="none" stroke="#f97316" stroke-opacity="0.22" stroke-width="1"/>
+                    <path d="M0,0 C58,30 138,78 182,158 C108,105 52,62 4,30 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.28" stroke-width="1.5"/>
+                    <path d="M2,6 C40,32 78,68 100,120" fill="none" stroke="#f97316" stroke-opacity="0.22" stroke-width="1"/>
+                    <path d="M0,0 C-62,36 -140,88 -178,168 C-96,108 -44,64 6,28 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.28" stroke-width="1.5"/>
+                    <path d="M-2,6 C-38,34 -76,72 -100,124" fill="none" stroke="#f97316" stroke-opacity="0.22" stroke-width="1"/>
+                    <path d="M0,-2 C22,-100 26,-198 -16,-268 C-6,-188 2,-92 10,-10 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.24" stroke-width="1.3" opacity="0.92"/>
+                    <path d="M0,0 C-108,-6 -205,20 -252,68 C-178,40 -92,24 -18,26 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.22" stroke-width="1.2" opacity="0.85"/>
+                    <path d="M0,2 C55,-3 108,26 145,72 C88,44 45,26 6,20 Z" fill="url(#bgPalmLeaf)" stroke="#f97316" stroke-opacity="0.22" stroke-width="1.2" opacity="0.85"/>
+                    <ellipse cx="0" cy="8" rx="18" ry="20" fill="url(#bgPalmTrunk)"/>
+                </g>
+            </g>
+
+            <!-- ต้นปาล์มมะพร้าว ฝั่งขวา (ดีไซน์สมจริงขึ้น) -->
+            <g class="bg-palm-right">
+                <path d="M1858,1080 C1870,900 1852,760 1878,600 C1886,560 1892,530 1885,505" fill="none" stroke="url(#bgPalmTrunk)" stroke-width="23" stroke-linecap="round"/>
+                <path d="M1866,1075 C1876,900 1858,760 1882,600" fill="none" stroke="#22d3ee" stroke-opacity="0.1" stroke-width="3" stroke-linecap="round"/>
+                <g opacity="0.45" stroke="#000000" stroke-width="2" stroke-linecap="round">
+                    <path d="M1868,955 q11,5 22,0"/>
+                    <path d="M1866,875 q12,5 24,0"/>
+                    <path d="M1869,790 q11,5 21,0"/>
+                    <path d="M1872,705 q10,4 19,0"/>
+                    <path d="M1878,620 q9,4 16,0"/>
+                </g>
+                <g transform="translate(1885,485)">
+                    <path d="M0,3 C82,-38 172,-22 232,20 C165,-2 88,4 24,24 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.24" stroke-width="1.5"/>
+                    <path d="M4,8 C65,-3 130,12 175,38" fill="none" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1"/>
+                    <path d="M0,0 C48,-92 62,-172 32,-248 C16,-170 4,-88 -8,-6 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.24" stroke-width="1.5"/>
+                    <path d="M3,-8 C16,-88 20,-166 10,-235" fill="none" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1"/>
+                    <path d="M0,0 C-68,-58 -155,-68 -218,-30 C-150,-22 -78,-2 -12,22 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.24" stroke-width="1.5"/>
+                    <path d="M-4,6 C-52,-8 -112,-6 -168,10" fill="none" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1"/>
+                    <path d="M0,0 C-52,32 -122,80 -160,150 C-92,100 -44,60 -4,28 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.24" stroke-width="1.5"/>
+                    <path d="M-2,6 C-36,32 -70,64 -90,112" fill="none" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1"/>
+                    <path d="M0,0 C55,34 125,84 158,155 C90,102 42,60 -6,26 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.24" stroke-width="1.5"/>
+                    <path d="M2,6 C34,34 66,68 84,116" fill="none" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1"/>
+                    <path d="M0,-2 C-20,-94 -24,-186 14,-252 C6,-176 -2,-88 -8,-8 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.2" stroke-width="1.3" opacity="0.9"/>
+                    <path d="M0,0 C96,-4 182,20 224,64 C158,38 82,22 16,24 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1.2" opacity="0.85"/>
+                    <path d="M0,2 C-48,-2 -96,24 -128,66 C-78,40 -40,24 -6,20 Z" fill="url(#bgPalmLeaf)" stroke="#22d3ee" stroke-opacity="0.18" stroke-width="1.2" opacity="0.85"/>
+                    <ellipse cx="0" cy="8" rx="17" ry="19" fill="url(#bgPalmTrunk)"/>
+                </g>
+            </g>
+
+            <!-- นกนางนวลบิน -->
+            <g class="bg-bird" stroke="#fde68a" stroke-opacity="0.45" stroke-width="2.5" fill="none" stroke-linecap="round">
+                <path d="M0,0 q 14,-14 28,0 q 14,-14 28,0"/>
+            </g>
+            <g class="bg-bird-2" stroke="#fde68a" stroke-opacity="0.35" stroke-width="2" fill="none" stroke-linecap="round">
+                <path d="M0,40 q 11,-11 22,0 q 11,-11 22,0"/>
+            </g>
 
             <!-- ทะเล -->
-            <rect x="0" y="650" width="1920" height="430" fill="url(#bgSea)"/>
-            <rect x="850" y="650" width="220" height="430" fill="url(#bgReflect)" opacity="0.45"/>
+            <rect x="0" y="700" width="1920" height="380" fill="url(#bgSea2)"/>
 
-            <!-- กริดไซเบอร์เรืองแสงสไตล์ Synthwave บนผืนน้ำ -->
-            <g class="bg-grid" stroke="url(#bgGridFade)" stroke-width="1.4" opacity="0.55">
-                <line x1="960" y1="645" x2="260" y2="1080" />
-                <line x1="960" y1="645" x2="360" y2="1080" />
-                <line x1="960" y1="645" x2="460" y2="1080" />
-                <line x1="960" y1="645" x2="560" y2="1080" />
-                <line x1="960" y1="645" x2="660" y2="1080" />
-                <line x1="960" y1="645" x2="760" y2="1080" />
-                <line x1="960" y1="645" x2="860" y2="1080" />
-                <line x1="960" y1="645" x2="960" y2="1080" />
-                <line x1="960" y1="645" x2="1060" y2="1080" />
-                <line x1="960" y1="645" x2="1160" y2="1080" />
-                <line x1="960" y1="645" x2="1260" y2="1080" />
-                <line x1="960" y1="645" x2="1360" y2="1080" />
-                <line x1="960" y1="645" x2="1460" y2="1080" />
-                <line x1="960" y1="645" x2="1560" y2="1080" />
-                <line x1="960" y1="645" x2="1660" y2="1080" />
-            </g>
-            <g stroke="#22d3ee" stroke-width="1.2" opacity="0.22">
-                <line x1="0" y1="652" x2="1920" y2="652" />
-                <line x1="0" y1="676" x2="1920" y2="676" />
-                <line x1="0" y1="718" x2="1920" y2="718" />
-                <line x1="0" y1="779" x2="1920" y2="779" />
-                <line x1="0" y1="860" x2="1920" y2="860" />
-                <line x1="0" y1="960" x2="1920" y2="960" />
+            <!-- ประกายแดดกระทบผิวน้ำ -->
+            <g fill="#fde68a">
+                <circle class="bg-sparkle" cx="640" cy="760" r="2.2"/>
+                <circle class="bg-sparkle" cx="780" cy="800" r="1.8"/>
+                <circle class="bg-sparkle" cx="900" cy="740" r="2"/>
+                <circle class="bg-sparkle" cx="1020" cy="810" r="1.6"/>
+                <circle class="bg-sparkle" cx="1150" cy="770" r="2.1"/>
+                <circle class="bg-sparkle" cx="860" cy="860" r="1.7"/>
+                <circle class="bg-sparkle" cx="980" cy="890" r="1.9"/>
+                <circle class="bg-sparkle" cx="720" cy="900" r="1.5"/>
+                <circle class="bg-sparkle" cx="1600" cy="750" r="2.4"/>
+                <circle class="bg-sparkle" cx="1700" cy="790" r="2"/>
+                <circle class="bg-sparkle" cx="1560" cy="850" r="1.8"/>
+                <circle class="bg-sparkle" cx="1740" cy="880" r="2.2"/>
+                <circle class="bg-sparkle" cx="1630" cy="930" r="1.9"/>
+                <circle class="bg-sparkle" cx="1690" cy="970" r="2.3"/>
+                <circle class="bg-sparkle" cx="1580" cy="1010" r="2"/>
+                <circle class="bg-sparkle" cx="1720" cy="1040" r="1.7"/>
             </g>
 
-            <!-- คลื่นทะเล -->
-            <g class="bg-wave-1" opacity="0.24">
-                <path d="M-100,700 Q 320,670 740,700 T 1580,700 T 2020,700 V 760 H -100 Z" fill="#22d3ee"/>
+            <!-- คลื่นทะเลซ้อนชั้น -->
+            <g class="bg-wave-a" opacity="0.22">
+                <path d="M-100,760 Q 320,730 740,760 T 1580,760 T 2020,760 V 810 H -100 Z" fill="#f97316"/>
             </g>
-            <g class="bg-wave-2" opacity="0.18">
-                <path d="M-100,760 Q 360,725 760,760 T 1600,760 T 2020,760 V 820 H -100 Z" fill="#fb923c"/>
+            <g class="bg-wave-b" opacity="0.16">
+                <path d="M-100,820 Q 360,790 760,820 T 1600,820 T 2020,820 V 870 H -100 Z" fill="#fbbf24"/>
             </g>
-            <g class="bg-wave-3" opacity="0.14">
-                <path d="M-100,830 Q 400,795 800,830 T 1620,830 T 2020,830 V 900 H -100 Z" fill="#22d3ee"/>
+            <g class="bg-wave-c" opacity="0.13">
+                <path d="M-100,880 Q 400,850 800,880 T 1620,880 T 2020,880 V 930 H -100 Z" fill="#f97316"/>
             </g>
-            <g class="bg-wave-2" opacity="0.1">
-                <path d="M-100,910 Q 420,880 820,910 T 1640,910 T 2020,910 V 980 H -100 Z" fill="#fbbf24"/>
-            </g>
-
-            <!-- เกาะปาล์ม ฝั่งซ้าย พร้อมเส้นขอบเรืองแสงไซเบอร์ -->
-            <g transform="translate(40,560) scale(1.05)" opacity="0.92">
-                <path d="M120,540 C112,420 118,300 150,210 C140,205 130,200 122,192 C150,188 172,196 186,210 C198,150 222,96 270,40 C262,70 252,110 250,150 C272,108 302,78 348,58 C326,90 302,122 286,160 C322,134 360,122 402,122 C368,142 332,160 300,186 C338,176 376,178 412,196 C374,200 338,212 306,232 C150,260 178,400 168,540 Z" fill="url(#bgPalm)" stroke="#f97316" stroke-opacity="0.3" stroke-width="1.5"/>
-                <rect x="142" y="530" width="22" height="20" rx="3" fill="url(#bgPalm)" stroke="#f97316" stroke-opacity="0.3" stroke-width="1.5"/>
-            </g>
-            <!-- เกาะปาล์ม ฝั่งขวา -->
-            <g transform="translate(1700,520) scale(-1.15,1.15)" opacity="0.92">
-                <path d="M120,540 C112,420 118,300 150,210 C140,205 130,200 122,192 C150,188 172,196 186,210 C198,150 222,96 270,40 C262,70 252,110 250,150 C272,108 302,78 348,58 C326,90 302,122 286,160 C322,134 360,122 402,122 C368,142 332,160 300,186 C338,176 376,178 412,196 C374,200 338,212 306,232 C150,260 178,400 168,540 Z" fill="url(#bgPalm)" stroke="#22d3ee" stroke-opacity="0.25" stroke-width="1.5"/>
-                <rect x="142" y="530" width="22" height="20" rx="3" fill="url(#bgPalm)" stroke="#22d3ee" stroke-opacity="0.25" stroke-width="1.5"/>
+            <g class="bg-wave-b" opacity="0.1">
+                <path d="M-100,940 Q 420,915 820,940 T 1640,940 T 2020,940 V 990 H -100 Z" fill="#fde68a"/>
             </g>
 
-            <!-- นกบินเล็กๆ เพิ่มบรรยากาศทรอปิคอล -->
-            <g stroke="#fde68a" stroke-opacity="0.35" stroke-width="2.5" fill="none" stroke-linecap="round">
-                <path d="M1140,200 q 14,-14 28,0 q 14,-14 28,0"/>
-                <path d="M1200,240 q 11,-11 22,0 q 11,-11 22,0"/>
-                <path d="M300,160 q 12,-12 24,0 q 12,-12 24,0"/>
-            </g>
-
-            <!-- เส้นสแกนไซเบอร์ไล่ระดับ -->
-            <rect class="bg-scanline" x="0" y="0" width="1920" height="120" fill="url(#bgScanGrad)" opacity="0.35"/>
-
-            <!-- ผืนทรายเรืองแสงไซเบอร์ด้านล่าง -->
-            <rect x="0" y="980" width="1920" height="100" fill="#000000"/>
-            <rect x="0" y="978" width="1920" height="2" fill="#f97316" opacity="0.3"/>
+            <!-- ผืนทรายชายหาดด้านล่าง (ขยายให้กว้างขึ้น เพื่อให้ต้นมะพร้าวยืนอยู่บนชายหาดชัดเจน ไม่ลอยอยู่กลางน้ำ) -->
+            <rect x="0" y="900" width="1920" height="180" fill="url(#bgSandTop2)"/>
+            <rect x="0" y="898" width="1920" height="2" fill="#f97316" opacity="0.3"/>
         </svg>
     </div>
 
