@@ -1964,7 +1964,7 @@
     <!-- ================= DATABASE CONNECTIVITY SYSTEM ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, remove, onValue } 
+        import { getDatabase, ref, set, get, update, remove, onValue } 
         from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
         // ดึงฟังก์ชันสำหรับการยืนยันตัวตนความปลอดภัยหลังบ้านแบบปิดมาใช้ป้องกันคนป่วน
         import { getAuth, signInWithEmailAndPassword } 
@@ -2089,6 +2089,7 @@
                         <span class="text-[10px] font-bold ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> ราคาขึ้น' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> ราคาลง'}</span>
                     </div>
                     ${isGolden && isBuff ? `<span class="golden-week-badge absolute top-1 right-1 text-[8px] font-black px-1.5 py-0.5 rounded-full border border-amber-300/60 flex items-center gap-0.5 leading-none"><i class="fa-solid fa-crown text-[7px]"></i>GW</span>` : ''}
+                    ${isAdmin ? `<button onclick="toggleEcoStatus('${key}','${item.status}')" title="สลับเป็น ${isBuff ? 'NERF' : 'BUFF'}" class="absolute -bottom-1 -right-7 bg-cyan-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>` : ''}
                     ${isAdmin ? `<button onclick="deleteEcoItem('${key}')" class="absolute -bottom-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-xmark"></i></button>` : ''}
                 `;
                 if (item.status === 'BUFF') buffContainer.appendChild(card);
@@ -2349,6 +2350,17 @@
             if(!confirm("ต้องการลบออกจากบอร์ดราคา?")) return;
             if(isFirebaseValid) remove(ref(db, `eco_list/${key}`));
             else { const current = getLocalData('eco_list', {}); delete current[key]; setLocalData('eco_list', current); renderEcoList(current); }
+        }
+
+        // สลับสถานะ BUFF <-> NERF ของรายการเดิม โดยไม่ต้องลบแล้วเพิ่มใหม่
+        window.toggleEcoStatus = function(key, currentStatus) {
+            const newStatus = currentStatus === 'BUFF' ? 'NERF' : 'BUFF';
+            if(isFirebaseValid) {
+                update(ref(db, `eco_list/${key}`), { status: newStatus });
+            } else {
+                const current = getLocalData('eco_list', {});
+                if(current[key]) { current[key].status = newStatus; setLocalData('eco_list', current); renderEcoList(current); }
+            }
         }
 
         window.executeSaveJob = function() {
