@@ -103,7 +103,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); border-radius: 8px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(249,115,22,0.4); border-radius: 8px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #f97316; }
-        .custom-scrollbar { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; will-change: scroll-position; }
+        .custom-scrollbar { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; overscroll-behavior: auto; will-change: scroll-position; }
         /* smooth scroll เฉพาะกล่อง howto การ์ดงานฟาร์ม */
         .farm-howto-scroll { scroll-behavior: smooth; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; will-change: scroll-position; line-height: 1.65; padding: 10px 12px; }
 
@@ -1020,7 +1020,7 @@
     <div id="main-app" class="hidden">
         
         <!-- HEADER NAVIGATION -->
-        <header class="sticky top-0 z-40 shadow-md relative">
+        <header id="site-header" class="sticky top-0 z-40 shadow-md relative">
             <div class="max-w-7xl mx-auto px-4 max-sm:px-3 py-3 max-sm:py-2 flex justify-between items-center">
                 <div class="flex items-center space-x-3 max-sm:space-x-2 shrink-0 min-w-0">
                     <div id="admin-login-trigger" onclick="showAdminLogin()" title="" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 cursor-pointer select-none">
@@ -1041,13 +1041,13 @@
                     <a id="creator-badge" href="https://www.facebook.com/joseph.cnv" target="_blank" rel="noopener noreferrer"
                        title="เยี่ยมชม Facebook ผู้จัดทำเว็บไซต์"
                        class="group flex items-center gap-2 pl-1.5 pr-3 max-sm:pl-1 max-sm:pr-2 py-1.5 max-sm:py-1 rounded-xl bg-black/30 border border-orange-500/20 hover:border-orange-500/50 hover:bg-orange-500/10 transition shrink-0 select-none">
-                        <span class="relative w-7 h-7 max-sm:w-6 max-sm:h-6 shrink-0">
-                            <img src="https://raw.githubusercontent.com/GITHUB_USERNAME/GITHUB_REPO/main/creator-avatar.png"
+                        <span class="relative w-11 h-11 max-sm:w-9 max-sm:h-9 shrink-0">
+                            <img src="https://raw.githubusercontent.com/JosephNovax2/SUMMER/main/creator-avatar.png"
                                  alt="Creator avatar"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                 class="w-7 h-7 max-sm:w-6 max-sm:h-6 rounded-full object-cover border border-orange-400/40">
-                            <span style="display:none;" class="absolute inset-0 rounded-full bg-gradient-to-br from-orange-500/30 to-amber-500/20 border border-orange-400/40 items-center justify-center">
-                                <i class="fa-brands fa-facebook-f text-orange-300 text-[11px]"></i>
+                                 class="w-11 h-11 max-sm:w-9 max-sm:h-9 rounded-full object-cover border-2 border-orange-400/50">
+                            <span style="display:none;" class="absolute inset-0 rounded-full bg-gradient-to-br from-orange-500/30 to-amber-500/20 border-2 border-orange-400/50 items-center justify-center">
+                                <i class="fa-brands fa-facebook-f text-orange-300 text-base"></i>
                             </span>
                         </span>
                         <span class="text-left leading-tight max-sm:hidden">
@@ -1071,7 +1071,7 @@
         </header>
 
         <!-- ================= TAB NAVIGATION BAR ================= -->
-        <nav class="bg-neutral-900 border-b border-neutral-800 sticky top-[61px] max-sm:top-[49px] z-30 shadow-sm">
+        <nav id="tab-nav" class="bg-neutral-900 border-b border-neutral-800 sticky z-30 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 max-sm:px-2 overflow-x-auto" style="-webkit-overflow-scrolling:touch;">
                 <div class="flex items-center gap-1 py-2 max-sm:py-1.5 min-w-max">
                     <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
@@ -4451,6 +4451,36 @@
                 setTimeout(initBannerFromFirebase, 1500);
             }, 300);
         });
+    })();
+    </script>
+
+    <!-- ===== FIX: ล็อคแถบเมนู (tab-nav) ให้อยู่ใต้ header เสมอ ไม่ว่า header จะสูงเท่าไหร่ ===== -->
+    <script>
+    (function() {
+        function syncNavOffset() {
+            var header = document.getElementById('site-header');
+            var nav = document.getElementById('tab-nav');
+            if (!header || !nav) return;
+            var h = header.getBoundingClientRect().height;
+            nav.style.top = h + 'px';
+        }
+        window.addEventListener('load', syncNavOffset);
+        window.addEventListener('resize', syncNavOffset);
+        document.addEventListener('DOMContentLoaded', syncNavOffset);
+        /* เผื่อรูปโปรไฟล์ผู้จัดทำโหลดช้าแล้วทำให้ header สูงขึ้นภายหลัง */
+        var avatarImg = document.querySelector('#creator-badge img');
+        if (avatarImg) {
+            avatarImg.addEventListener('load', syncNavOffset);
+            avatarImg.addEventListener('error', syncNavOffset);
+        }
+        /* เผื่อ header เปลี่ยนขนาดจากเหตุอื่น (login/logout, responsive, ฯลฯ) */
+        if (window.ResizeObserver) {
+            var headerEl = document.getElementById('site-header');
+            if (headerEl) {
+                new ResizeObserver(syncNavOffset).observe(headerEl);
+            }
+        }
+        syncNavOffset();
     })();
     </script>
 </body>
