@@ -1180,14 +1180,14 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
-                    <div class="space-y-3">
+                <div id="eco-board-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 relative z-10">
+                    <div id="eco-buff-wrapper" class="space-y-3">
                         <div class="bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
                             <span><i class="fa-solid fa-arrow-trend-up mr-1"></i> รายการงานที่โดน BUFF ราคา (เงินดีมาก)</span>
                         </div>
                         <div id="eco-buff-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
                     </div>
-                    <div class="space-y-3">
+                    <div id="eco-nerf-section" class="space-y-3">
                         <div class="bg-rose-950/40 border border-rose-500/20 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
                             <span><i class="fa-solid fa-arrow-trend-down mr-1"></i> รายการงานที่โดน NERF ราคา (รายได้ลดลง)</span>
                         </div>
@@ -2038,8 +2038,18 @@
             const banner = document.getElementById('eco-golden-banner');
             const goldenTag = document.getElementById('eco-golden-tag');
             const checkbox = document.getElementById('input-eco-golden');
+            const nerfSection = document.getElementById('eco-nerf-section');
+            const buffWrapper = document.getElementById('eco-buff-wrapper');
+            const buffContainer = document.getElementById('eco-buff-container');
             if (section) section.classList.toggle('golden-week-active', window.isGoldenWeekActive);
             if (banner) banner.classList.toggle('hidden', !window.isGoldenWeekActive);
+            if (nerfSection) nerfSection.classList.toggle('hidden', window.isGoldenWeekActive);
+            // ช่วง GoldenWeek: ซ่อนแถบ NERF แล้ว ให้แถบ BUFF ขยายใช้พื้นที่เต็มฝั่งขวาแทน ไม่ให้โล่ง
+            if (buffWrapper) buffWrapper.classList.toggle('col-span-full', window.isGoldenWeekActive);
+            if (buffContainer) {
+                buffContainer.classList.toggle('lg:grid-cols-3', window.isGoldenWeekActive);
+                buffContainer.classList.toggle('xl:grid-cols-4', window.isGoldenWeekActive);
+            }
             if (goldenTag) {
                 goldenTag.classList.toggle('hidden', !window.isGoldenWeekActive);
                 goldenTag.classList.toggle('flex', window.isGoldenWeekActive);
