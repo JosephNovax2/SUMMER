@@ -243,6 +243,19 @@
         .sc-pop-in > div {
             animation: scCardPop 0.28s cubic-bezier(.25,.9,.4,1.15);
         }
+        /* ===== ล็อกสกรอลพื้นหลังตอนเปิดการ์ด/โมดัลรายละเอียดใหญ่ (ทุกหมวด) ให้เลื่อนลูกกลิ้งพื้นหลังไม่ได้จนกว่าจะปิดการ์ดก่อน ===== */
+        html.sc-scroll-locked,
+        body.sc-scroll-locked {
+            overflow: hidden !important;
+            height: 100% !important;
+            overscroll-behavior: none;
+        }
+        body.sc-scroll-locked {
+            position: fixed !important;
+            left: 0;
+            right: 0;
+            width: 100% !important;
+        }
         .line-clamp-3 {
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -3505,7 +3518,7 @@
             const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
             document.getElementById('food-detail-modal').classList.remove('hidden');
             // เล่นเสียงตอนเปิดการ์ดอาหาร
-            if (typeof SCSound !== 'undefined') SCSound.cardOpen();
+            if (typeof SCSound !== 'undefined') SCSound.cardOpen(); if (typeof scLockScroll === 'function') scLockScroll();
             const modal = document.getElementById('food-detail-modal');
             modal.classList.remove('sc-pop-in');
             void modal.offsetWidth;
@@ -3514,14 +3527,17 @@
 
         window.closeFoodDetailModal = function() {
             document.getElementById('food-detail-modal').classList.add('hidden');
-            if (typeof SCSound !== 'undefined') SCSound.cardClose();
+            if (typeof SCSound !== 'undefined') SCSound.cardClose(); if (typeof scUnlockScroll === 'function') scUnlockScroll();
         }
 
     </script>
 
-    <!-- ================= ระบบเสียงเอฟเฟกต์ + คัทซีนคั่นหน้า (UI เท่านั้น ไม่แตะระบบล็อกอิน/Firebase) ================= -->
+    <!-- ================= ระบบเสียงเอฟเฟกต์ (8-bit/เกมย้อนยุค) + คัทซีนคั่นหน้า (UI เท่านั้น ไม่แตะระบบล็อกอิน/Firebase) ================= -->
     <script>
-        // ----- เสียงเอฟเฟกต์ สังเคราะห์ด้วย Web Audio API (ไม่ต้องพึ่งไฟล์เสียงภายนอก) -----
+        // ----- เสียงเอฟเฟกต์สไตล์ "คีย์บอร์ดกลไก" (Mechanical Keyboard / Tactile) สังเคราะห์ด้วย Web Audio API (ไม่ต้องพึ่งไฟล์เสียงภายนอก) -----
+        // แนวคิด: ทุกเสียงประกอบด้วย 2 ชั้นเสียงซ้อนกันเหมือนสวิตช์คีย์บอร์ดกลจริง
+        //   1) "click" = เสียงแทร่กคมสั้นมากตอนสวิตช์เริ่มขยับ (noise burst กรองความถี่สูง)
+        //   2) "thock"  = เสียงทึบหนักแน่นตอนคีย์แคปกดจนสุด (โทนต่ำ สลายเร็ว)
         const SCSound = (() => {
             let ctx = null;
             function getCtx() {
@@ -3533,65 +3549,30 @@
                 if (ctx.state === 'suspended') ctx.resume();
                 return ctx;
             }
-            function tone(freq, duration, type = 'sine', vol = 0.12, delay = 0) {
-                const c = getCtx();
-                if (!c) return;
-                try {
-                    const osc = c.createOscillator();
-                    const gain = c.createGain();
-                    osc.type = type;
-                    osc.frequency.setValueAtTime(freq, c.currentTime + delay);
-                    gain.gain.setValueAtTime(0.0001, c.currentTime + delay);
-                    gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + delay + 0.012);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + duration);
-                    osc.connect(gain);
-                    gain.connect(c.destination);
-                    osc.start(c.currentTime + delay);
-                    osc.stop(c.currentTime + delay + duration + 0.02);
-                } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
-            }
-            // เสียงโน้ตสไตล์เกม 8-bit/chiptune: คลื่นสี่เหลี่ยม/สามเหลี่ยม มี pitch bend สั้นๆ ให้ฟีล "ปิ๊บ" แบบเกม
-            function blip(freq, duration, opts = {}) {
-                const c = getCtx();
-                if (!c) return;
-                try {
-                    const { type = 'square', vol = 0.13, delay = 0, slideTo = null, slideTime = 0 } = opts;
-                    const osc = c.createOscillator();
-                    const gain = c.createGain();
-                    osc.type = type;
-                    osc.frequency.setValueAtTime(freq, c.currentTime + delay);
-                    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, c.currentTime + delay + (slideTime || duration));
-                    gain.gain.setValueAtTime(0.0001, c.currentTime + delay);
-                    gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + delay + 0.008);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + duration);
-                    osc.connect(gain);
-                    gain.connect(c.destination);
-                    osc.start(c.currentTime + delay);
-                    osc.stop(c.currentTime + delay + duration + 0.02);
-                } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
-            }
             // สุ่มหยิบค่าจาก array (ใช้คุมความหลากหลายของเสียงให้ไม่ซ้ำเดิมทุกครั้ง)
             function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-            // เสียงคลิกแบบ "noise burst" สั้นๆ ผ่าน filter (ใช้กับ cardOpen/cardClose ที่ต้องการเสียงแน่นหนัก)
-            function noiseClick(opts = {}) {
+            function rnd(min, max) { return min + Math.random() * (max - min); }
+
+            // ชั้น "click": เสียงแทร่กคมสั้นมากของสวิตช์กล (white noise กรองผ่าน bandpass/highpass ความถี่สูง)
+            function keyClick(opts = {}) {
                 const c = getCtx();
                 if (!c) return;
                 try {
                     const {
-                        duration = 0.045,
-                        vol = 0.16,
-                        filterFreq = 2200,
+                        duration = 0.016,
+                        vol = 0.2,
+                        filterFreq = 3200,
                         filterType = 'bandpass',
-                        filterQ = 1.1,
+                        filterQ = 1.4,
                         delay = 0,
-                        decay = 0.035
+                        decay = 0.013
                     } = opts;
                     const bufLen = Math.max(1, Math.floor(c.sampleRate * duration));
                     const buf = c.createBuffer(1, bufLen, c.sampleRate);
                     const data = buf.getChannelData(0);
                     for (let i = 0; i < bufLen; i++) {
-                        // white noise ลดความดังลงแบบ exponential ให้ได้ฟีล "แทร่ก" สั้นๆ
-                        const env = Math.pow(1 - i / bufLen, 2.2);
+                        // white noise ลดความดังลงแบบเร็วมาก ให้ได้ฟีล "แทร่ก" คมของสวิตช์กด
+                        const env = Math.pow(1 - i / bufLen, 1.5);
                         data[i] = (Math.random() * 2 - 1) * env;
                     }
                     const src = c.createBufferSource();
@@ -3607,80 +3588,114 @@
                     filt.connect(gain);
                     gain.connect(c.destination);
                     src.start(c.currentTime + delay);
-                    src.stop(c.currentTime + delay + duration + 0.02);
+                    src.stop(c.currentTime + delay + duration + 0.01);
                 } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
             }
-            // เสียงนุ่มๆ โดยใช้ sine wave + low-pass filter ให้ไม่แหลมบาด แต่ยังฟังชัดและมีชีวิตชีวา
-            function softTone(freq, duration, vol = 0.09, delay = 0, slideTo = null) {
+            // ชั้น "thock": เสียงทึบหนักแน่นตอนคีย์แคปกดจนสุด (โทนต่ำ สลายเร็ว มีการโน้มความถี่ลงเล็กน้อยให้ฟีล "ตุบ")
+            function keyThock(opts = {}) {
                 const c = getCtx();
                 if (!c) return;
                 try {
+                    const { freq = 130, duration = 0.05, vol = 0.16, type = 'sine', delay = 0 } = opts;
                     const osc = c.createOscillator();
                     const gain = c.createGain();
-                    // low-pass filter ตัดความถี่เกิน 2800 Hz ออก เพื่อให้ไม่แหลมเกิน แต่ยังกังวาน
-                    const lpf = c.createBiquadFilter();
-                    lpf.type = 'lowpass';
-                    lpf.frequency.setValueAtTime(2800, c.currentTime + delay);
-                    lpf.Q.value = 0.6;
-                    osc.type = 'sine';
+                    osc.type = type;
                     osc.frequency.setValueAtTime(freq, c.currentTime + delay);
-                    if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, c.currentTime + delay + duration * 0.8);
-                    gain.gain.setValueAtTime(0.0001, c.currentTime + delay);
-                    gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + delay + 0.014);
+                    osc.frequency.exponentialRampToValueAtTime(Math.max(28, freq * 0.55), c.currentTime + delay + duration);
+                    gain.gain.setValueAtTime(vol, c.currentTime + delay);
                     gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + delay + duration);
-                    osc.connect(lpf);
-                    lpf.connect(gain);
+                    osc.connect(gain);
                     gain.connect(c.destination);
                     osc.start(c.currentTime + delay);
-                    osc.stop(c.currentTime + delay + duration + 0.05);
-                } catch (e) { /* เงียบไว้ */ }
+                    osc.stop(c.currentTime + delay + duration + 0.02);
+                } catch (e) { /* เงียบไว้ ไม่ให้กระทบการทำงานหลักของเว็บ */ }
+            }
+            // การกดคีย์แบบสมบูรณ์หนึ่งครั้ง = click + thock ซ้อนกันแบบสวิตช์กลจริง พร้อมสุ่มความถี่เล็กน้อยให้ไม่จำเจ
+            function mechKey(opts = {}) {
+                const { vol = 1, freq = 130, clickFreq = 3200, delay = 0 } = opts;
+                keyClick({ vol: 0.2 * vol, filterFreq: clickFreq + rnd(-250, 250), delay });
+                keyThock({ vol: 0.15 * vol, freq: freq + rnd(-6, 6), delay: delay + 0.004 });
             }
             return {
-                // เสียงคลิก: sine นุ่ม ช่วงกลาง-สูงพอฟังชัด ไม่แหลมเกิน
+                // เสียงคลิก: กดสวิตช์กลหนึ่งครั้งหนักแน่นชัดเจน สำหรับปุ่มกด/เมนูทั่วไป
                 click() {
                     const variants = [
-                        // แบบ 1: สองโน้ตไล่ขึ้น ฟีลเลือกเมนู
-                        () => { softTone(440, 0.07, 0.09); softTone(587, 0.08, 0.08, 0.05); },
-                        // แบบ 2: slide ขึ้นนุ่มๆ
-                        () => { softTone(370, 0.09, 0.09, 0, 523); },
-                        // แบบ 3: คู่โน้ตกลาง ฟีลกดปุ่ม
-                        () => { softTone(440, 0.08, 0.09); softTone(660, 0.08, 0.07, 0.05); },
-                        // แบบ 4: โน้ตเดียว slide ลงนิดๆ สั้นกระชับ
-                        () => { softTone(523, 0.08, 0.09, 0, 440); },
-                        // แบบ 5: อาร์เปจโจสามโน้ตเบาๆ
-                        () => { softTone(349, 0.06, 0.08); softTone(440, 0.06, 0.08, 0.04); softTone(523, 0.09, 0.09, 0.08); }
+                        () => mechKey({ freq: 135, clickFreq: 3400 }),
+                        () => mechKey({ freq: 150, clickFreq: 3000 }),
+                        () => mechKey({ freq: 120, clickFreq: 3650 }),
+                        () => mechKey({ freq: 128, clickFreq: 3200, vol: 1.05 })
                     ];
                     pick(variants)();
                 },
-                // เสียงพิมพ์: sine นุ่ม ช่วงกลาง ไม่กระโดดสูงแบบเดิม
+                // เสียงพิมพ์: คลิกคีย์บอร์ดกลสั้นเบา ความถี่สุ่มเล็กน้อยในแต่ละครั้งให้ฟีลพิมพ์ต่อเนื่องเป็นธรรมชาติ
                 type() {
-                    const scale = [330, 370, 392, 440, 494, 523, 587, 622];
-                    const f = pick(scale);
-                    softTone(f, 0.045, 0.07);
+                    mechKey({ vol: 0.7, freq: rnd(125, 175), clickFreq: rnd(2900, 4200) });
                 },
-                // เสียงเปิดการ์ด: noise ต่ำนุ่ม + sine กลาง ฟีล "ป๊อบ" น่าฟัง
+                // เสียงเปิดการ์ด: กดคีย์หนักแน่นหนึ่งครั้ง ตามด้วยเสียงทึบต่ำอีกจังหวะ ให้ฟีล "ปลดล็อก" ของกลไก
                 cardOpen() {
-                    noiseClick({ duration: 0.04, vol: 0.13, filterFreq: 1400, filterType: 'lowpass', filterQ: 0.7, decay: 0.03 });
-                    softTone(330, 0.13, 0.08, 0.01, 440);
+                    mechKey({ freq: 105, clickFreq: 2700, vol: 1.15 });
+                    keyThock({ freq: 75, duration: 0.1, vol: 0.13, delay: 0.06 });
                 },
-                // เสียงปิดการ์ด: slide ลงเบาๆ
+                // เสียงปิดการ์ด: คลิกทึบสั้นครั้งเดียว โทนต่ำกว่าตอนเปิดเล็กน้อย กระชับ
                 cardClose() {
-                    noiseClick({ duration: 0.03, vol: 0.1, filterFreq: 1000, filterType: 'lowpass', filterQ: 0.5, decay: 0.025 });
-                    softTone(370, 0.09, 0.06, 0, 280);
+                    mechKey({ freq: 92, clickFreq: 2300, vol: 0.85 });
                 },
-                // เสียง toggle: คู่โน้ตกลาง ฟีล on/off ชัดเจน
+                // เสียง toggle: คลิกสวิตช์ + เสียงทึบตามหลัง ให้ฟีลเหมือนโยกสวิตช์กลไก on/off
                 toggle() {
-                    softTone(440, 0.07, 0.08); softTone(587, 0.07, 0.07, 0.055);
+                    keyClick({ vol: 0.22, filterFreq: 3300, duration: 0.014 });
+                    keyThock({ freq: 165, duration: 0.045, vol: 0.14, delay: 0.05 });
                 },
-                // เสียงลบ: โน้ตกลาง slide ลง ฟีลเตือนอ่อนโยน
+                // เสียงลบ: กดคีย์ 2 จังหวะรัวถี่ๆ โทนต่ำลงเรื่อยๆ แบบกดแป้น backspace ย้ำ
                 delete() {
-                    softTone(370, 0.1, 0.08); softTone(262, 0.14, 0.07, 0.07);
+                    mechKey({ freq: 115, clickFreq: 3500, vol: 0.95 });
+                    mechKey({ freq: 90, clickFreq: 3100, vol: 0.85, delay: 0.07 });
                 },
-                loginPress() { tone(523.25, 0.08, 'triangle', 0.1); tone(659.25, 0.09, 'triangle', 0.09, 0.05); },
-                loginSuccess() { tone(523.25, 0.12, 'sine', 0.11); tone(659.25, 0.12, 'sine', 0.1, 0.09); tone(783.99, 0.22, 'sine', 0.13, 0.18); }
+                // เสียงกดปุ่ม login: คลิกคีย์หนักแน่นหนึ่งครั้ง มั่นใจ
+                loginPress() {
+                    mechKey({ freq: 140, clickFreq: 3300, vol: 1.1 });
+                },
+                // เสียง login สำเร็จ: กดคีย์ 4 จังหวะรัวถี่ต่อเนื่องแบบพิมพ์เร็วมั่นใจ โทนค่อยๆ สูงขึ้น
+                loginSuccess() {
+                    mechKey({ freq: 130, clickFreq: 3200, vol: 1 });
+                    mechKey({ freq: 150, clickFreq: 3300, vol: 1, delay: 0.09 });
+                    mechKey({ freq: 170, clickFreq: 3400, vol: 1.05, delay: 0.18 });
+                    mechKey({ freq: 195, clickFreq: 3600, vol: 1.15, delay: 0.27 });
+                },
+                // เสียงคัทซีน/เปลี่ยนหมวด: กดคีย์หนักแน่นหนึ่งครั้งคล้ายปุ่ม Enter ตามด้วยเสียงทึบก้องต่ำ ให้ฟีล "ยืนยันเปลี่ยนฉาก"
+                transition() {
+                    keyClick({ vol: 0.22, filterFreq: 2900, filterType: 'highpass', filterQ: 0.7, duration: 0.02, decay: 0.016 });
+                    keyThock({ freq: 95, duration: 0.13, vol: 0.15, delay: 0.006 });
+                    keyThock({ freq: 60, duration: 0.16, vol: 0.08, delay: 0.05 });
+                }
             };
         })();
         window.SCSound = SCSound;
+
+        // ----- ล็อก/ปลดล็อกสกรอลพื้นหลังของทั้งเว็บ ตอนเปิด/ปิดการ์ดใหญ่หรือโมดัลรายละเอียดใดๆ -----
+        // ใช้ตัวนับ (counter) เผื่อกรณีมีการ์อดหรือโมดัลซ้อนกันมากกว่า 1 ชั้น (เช่น เปิดโมดัลย่อยจากในโมดัลใหญ่)
+        // จะปลดล็อกให้เลื่อนพื้นหลังได้ก็ต่อเมื่อปิดการ์ด/โมดัลจนหมดทุกชั้นแล้วเท่านั้น
+        (function () {
+            let lockCount = 0;
+            let savedScrollY = 0;
+            window.scLockScroll = function () {
+                lockCount++;
+                if (lockCount === 1) {
+                    savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+                    document.body.style.top = '-' + savedScrollY + 'px';
+                    document.documentElement.classList.add('sc-scroll-locked');
+                    document.body.classList.add('sc-scroll-locked');
+                }
+            };
+            window.scUnlockScroll = function () {
+                if (lockCount > 0) lockCount--;
+                if (lockCount === 0) {
+                    document.documentElement.classList.remove('sc-scroll-locked');
+                    document.body.classList.remove('sc-scroll-locked');
+                    document.body.style.top = '';
+                    window.scrollTo(0, savedScrollY);
+                }
+            };
+        })();
 
         // ----- คัทซีนคั่นหน้า (ใช้โลโก้ Summer City SS2) -----
         // ทำงานแบบ "คลุมจอทันที -> ค่อยเปลี่ยนเนื้อหาเบื้องหลัง -> ค้างไว้ครู่ -> แล้วค่อยจางออก"
@@ -3690,6 +3705,9 @@
             const el = document.getElementById('sc-cutscene');
             if (!el) { if (typeof onCovered === 'function') onCovered(); return; }
             if (scCutsceneTimer) clearTimeout(scCutsceneTimer);
+
+            // เล่นเสียงคัทซีน 8-bit ทุกครั้งที่จอถูกคลุม
+            if (typeof SCSound !== 'undefined') SCSound.transition();
 
             // ปิด transition ชั่วคราว แล้วคลุมจอให้ทึบทันที (ไม่มีการจางทีละนิด)
             el.classList.remove('sc-fade');
@@ -3729,7 +3747,7 @@
         if (typeof window.openJobDetailModal === 'function') {
             const _origOpenJobDetail = window.openJobDetailModal;
             window.openJobDetailModal = function (key) {
-                SCSound.cardOpen();
+                SCSound.cardOpen(); if (typeof scLockScroll === 'function') scLockScroll();
                 const result = _origOpenJobDetail.apply(this, arguments);
                 const modal = document.getElementById('job-detail-modal');
                 if (modal) {
@@ -3744,7 +3762,7 @@
         if (typeof window.closeJobDetailModal === 'function') {
             const _origCloseJobDetail = window.closeJobDetailModal;
             window.closeJobDetailModal = function () {
-                SCSound.cardClose();
+                SCSound.cardClose(); if (typeof scUnlockScroll === 'function') scUnlockScroll();
                 return _origCloseJobDetail.apply(this, arguments);
             };
         }
@@ -3753,7 +3771,7 @@
         if (typeof window.openCardZoom === 'function') {
             const _origOpenCardZoom = window.openCardZoom;
             window.openCardZoom = function (cardEl) {
-                SCSound.cardOpen();
+                SCSound.cardOpen(); if (typeof scLockScroll === 'function') scLockScroll();
                 const result = _origOpenCardZoom.apply(this, arguments);
                 const modal = document.getElementById('card-zoom-modal');
                 if (modal) {
@@ -3768,7 +3786,7 @@
         if (typeof window.closeCardZoom === 'function') {
             const _origCloseCardZoom = window.closeCardZoom;
             window.closeCardZoom = function () {
-                SCSound.cardClose();
+                SCSound.cardClose(); if (typeof scUnlockScroll === 'function') scUnlockScroll();
                 return _origCloseCardZoom.apply(this, arguments);
             };
         }
@@ -3801,7 +3819,7 @@
                 if (typeof window[fnName] !== 'function') return;
                 const orig = window[fnName];
                 window[fnName] = function () {
-                    SCSound.cardOpen();
+                    SCSound.cardOpen(); if (typeof scLockScroll === 'function') scLockScroll();
                     const result = orig.apply(this, arguments);
                     const modal = document.getElementById(modalId);
                     const panel = modal ? modal.querySelector(':scope > div') : null;
@@ -3818,7 +3836,7 @@
                 if (typeof window[fnName] !== 'function') return;
                 const orig = window[fnName];
                 window[fnName] = function () {
-                    SCSound.cardClose();
+                    SCSound.cardClose(); if (typeof scUnlockScroll === 'function') scUnlockScroll();
                     return orig.apply(this, arguments);
                 };
             });
