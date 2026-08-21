@@ -1085,29 +1085,40 @@
 
         <!-- ================= TAB NAVIGATION BAR ================= -->
         <nav id="tab-nav" class="bg-neutral-900 border-b border-neutral-800 sticky z-30 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 max-sm:px-2 overflow-x-auto" style="-webkit-overflow-scrolling:touch;">
-                <div class="flex items-center gap-1 py-2 max-sm:py-1.5 min-w-max">
-                    <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-wheat-awn mr-1"></i> ข้อมูลงานฟาร์ม
-                    </button>
-                    <button onclick="switchTab('food')" id="tab-food" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-utensils mr-1"></i> ข้อมูลอาหาร
-                    </button>
-                    <button onclick="switchTab('devil')" id="tab-devil" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-fire mr-1"></i> ผลไม้ปีศาจ
-                    </button>
-                    <button onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-shirt mr-1"></i> สถานะแฟชั่น
-                    </button>
-                    <button onclick="switchTab('items')" id="tab-items" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-bag-shopping mr-1"></i> แหล่งที่มา ITEMS
-                    </button>
-                    <button onclick="switchTab('events')" id="tab-events" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-calendar-days mr-1"></i> เวลากิจกรรม
-                    </button>
-                    <button onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-xl text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                        <i class="fa-solid fa-keyboard mr-1"></i> เมนูลัดปุ่ม G
-                    </button>
+            <div class="max-w-7xl mx-auto px-4 max-sm:px-2 py-2 max-sm:py-1.5 flex items-center gap-2 max-sm:gap-1.5">
+                <!-- ปุ่มไอคอน (พระอาทิตย์) — กดเพื่อเปิด/ปิดหมวดข้อมูลงาน -->
+                <button type="button" id="job-nav-toggle-btn" onclick="toggleJobCategoryNav()"
+                    title="แสดง/ซ่อนหมวดข้อมูลงาน"
+                    aria-expanded="true"
+                    class="relative w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full bg-gradient-to-br from-orange-500/25 to-amber-500/10 border border-orange-500/40 flex items-center justify-center shrink-0 cursor-pointer select-none transition hover:border-orange-400/80 hover:bg-orange-500/20">
+                    <i id="job-nav-toggle-icon" class="fa-solid fa-sun text-base max-sm:text-sm text-orange-400 transition-transform duration-200"></i>
+                </button>
+
+                <!-- แคปซูลหมวดข้อมูลงาน — เปิด/ปิดได้ด้วยปุ่มไอคอนด้านซ้าย -->
+                <div id="job-category-buttons-wrap" class="overflow-x-auto flex-1 transition-all duration-200" style="-webkit-overflow-scrolling:touch;">
+                    <div class="flex items-center gap-1.5 max-sm:gap-1 py-1 min-w-max bg-neutral-950 border border-neutral-800 rounded-full px-1.5 max-sm:px-1">
+                        <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-wheat-awn mr-1"></i> ข้อมูลงานฟาร์ม
+                        </button>
+                        <button onclick="switchTab('food')" id="tab-food" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-utensils mr-1"></i> ข้อมูลอาหาร
+                        </button>
+                        <button onclick="switchTab('devil')" id="tab-devil" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-fire mr-1"></i> ผลไม้ปีศาจ
+                        </button>
+                        <button onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-shirt mr-1"></i> สถานะแฟชั่น
+                        </button>
+                        <button onclick="switchTab('items')" id="tab-items" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-bag-shopping mr-1"></i> แหล่งที่มา ITEMS
+                        </button>
+                        <button onclick="switchTab('events')" id="tab-events" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-calendar-days mr-1"></i> เวลากิจกรรม
+                        </button>
+                        <button onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
+                            <i class="fa-solid fa-keyboard mr-1"></i> เมนูลัดปุ่ม G
+                        </button>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -2695,6 +2706,22 @@
     </script>
     <!-- ================= NEW SECTIONS JS ================= -->
     <script>
+        // ===== เปิด/ปิด แคปซูลหมวดข้อมูลงาน ด้วยปุ่มไอคอนพระอาทิตย์ด้านซ้าย =====
+        function toggleJobCategoryNav() {
+            const wrap = document.getElementById('job-category-buttons-wrap');
+            const toggleBtn = document.getElementById('job-nav-toggle-btn');
+            const icon = document.getElementById('job-nav-toggle-icon');
+            if (!wrap) return;
+            const isHidden = wrap.classList.toggle('hidden');
+            if (toggleBtn) toggleBtn.setAttribute('aria-expanded', isHidden ? 'false' : 'true');
+            if (icon) {
+                // หมุนไอคอนเล็กน้อยเพื่อบอกสถานะเปิด/ปิด
+                icon.style.transform = isHidden ? 'rotate(-90deg)' : 'rotate(0deg)';
+                icon.classList.toggle('text-orange-400', !isHidden);
+                icon.classList.toggle('text-neutral-500', isHidden);
+            }
+        }
+
         // ===== TAB SWITCHING =====
         function switchTab(tab) {
             const panels = ['farm','devil','fashion','items','events','gkey','food'];
