@@ -123,8 +123,8 @@
 
         /* ===== ANIMATIONS ===== */
         @keyframes fireGlow {
-            0%, 100% { border-color: rgba(239,68,68,0.6); box-shadow: 0 0 15px rgba(249,115,22,0.4); }
-            50%       { border-color: rgba(249,115,22,0.9); box-shadow: 0 0 25px rgba(239,68,68,0.7); }
+            0%, 100% { border-color: rgba(239,68,68,0.6); box-shadow: 0 0 18px 3px rgba(249,115,22,0.5), 0 0 36px 4px rgba(239,68,68,0.28); }
+            50%       { border-color: rgba(249,115,22,0.9); box-shadow: 0 0 30px 6px rgba(249,115,22,0.8), 0 0 55px 8px rgba(239,68,68,0.45); }
         }
         @keyframes runeGlow {
             0%, 100% { opacity: 0.3; }
@@ -167,6 +167,72 @@
         .hot-fire-card {
             animation: fireGlow 2s infinite ease-in-out;
             background: linear-gradient(145deg, #170b03, #0a0a0a) !important;
+            z-index: 5;
+        }
+
+        /* ===== HOT RECOMMEND RIBBON (แท็กมุมการ์ดงานยอดฮิต) ===== */
+        .hot-ribbon-wrap {
+            position: absolute;
+            top: 6px;
+            right: -2px;
+            z-index: 20;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.55));
+            max-width: calc(100% - 0.5rem);
+        }
+        .hot-ribbon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px 6px 16px;
+            font-size: 10.5px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: #2b0900;
+            white-space: nowrap;
+            background: linear-gradient(100deg, #ffe27a 0%, #ffb238 28%, #ff7a1a 58%, #e0281c 100%);
+            background-size: 240% 100%;
+            clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+            box-shadow: 0 0 0 1px rgba(255,224,150,0.55) inset;
+            animation: hotRibbonShift 2.6s ease-in-out infinite, hotRibbonPulse 1.8s ease-in-out infinite;
+            overflow: hidden;
+        }
+        .hot-ribbon::before {
+            /* แสงวิ่งพาดผ่านป้าย */
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 40%; height: 100%;
+            background: linear-gradient(115deg, transparent, rgba(255,255,255,0.75), transparent);
+            transform: skewX(-20deg);
+            animation: hotRibbonShine 2.8s ease-in-out infinite;
+        }
+        .hot-ribbon i {
+            font-size: 10px;
+            animation: hotFlicker 1.3s ease-in-out infinite;
+            filter: drop-shadow(0 0 3px rgba(255,90,0,0.9));
+        }
+        .hot-ribbon span {
+            position: relative;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+        }
+        @keyframes hotRibbonShift {
+            0%, 100% { background-position: 0% 50%; }
+            50%       { background-position: 100% 50%; }
+        }
+        @keyframes hotRibbonPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,122,26,0.55), 0 0 0 1px rgba(255,224,150,0.55) inset; }
+            50%       { box-shadow: 0 0 20px rgba(224,40,28,0.8),  0 0 0 1px rgba(255,236,190,0.8) inset; }
+        }
+        @keyframes hotRibbonShine {
+            0%   { left: -60%; }
+            45%  { left: 130%; }
+            100% { left: 130%; }
+        }
+        @keyframes hotFlicker {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            30%       { transform: scale(1.15) rotate(-6deg); opacity: 0.85; }
+            60%       { transform: scale(0.92) rotate(5deg); opacity: 1; }
         }
 
         /* ===== HEADER ===== */
@@ -241,9 +307,30 @@
         /* ===== JOB CARD — กดทั้งใบเพื่อเปิดดูรายละเอียดได้ ===== */
         .job-card-clickable {
             cursor: pointer;
+            transform: translateY(0) scale(1);
+            transition-duration: 0.28s;
+            transition-timing-function: cubic-bezier(.2,.8,.2,1);
+        }
+        /* เด้งลอยขึ้น + เงาเข้ม + ขอบสว่างขึ้นชัดเจนตอนเอาเมาส์ชี้ ให้รู้ทันทีว่าชี้การ์ดใบไหนอยู่ */
+        .job-card-clickable:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -8px rgba(0,0,0,0.65), 0 0 0 1px rgba(34,211,238,0.35);
+            z-index: 20;
+        }
+        /* การ์ดฮอต: ตอนชี้ให้ขอบ/เงาออกโทนไฟแทนไซแอน ให้เข้ากับธีม */
+        .hot-fire-card.job-card-clickable:hover {
+            box-shadow: 0 22px 44px -8px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,153,51,0.55), 0 0 46px 8px rgba(255,102,0,0.5);
         }
         .job-card-clickable:hover .job-view-detail-hint {
             color: #22d3ee;
+        }
+        /* รูปในการ์ดซูมเบาๆ ตอนเอาเมาส์ชี้ ให้เห็นชัดว่าการ์ดใบนี้กำลังถูกโฟกัส */
+        .job-card-clickable img {
+            transition: transform 0.4s ease, filter 0.4s ease;
+        }
+        .job-card-clickable:hover img {
+            transform: scale(1.07);
+            filter: brightness(1.08) saturate(1.08);
         }
         /* การ์ดเด้งตอนกด (visual only) */
         .job-card-clickable:active {
@@ -1344,6 +1431,10 @@
                         <button onclick="executeAddEcoItem()" class="bg-cyan-500 hover:bg-cyan-600 text-neutral-950 font-black text-xs py-2 rounded-lg cursor-pointer">
                             <i class="fa-solid fa-plus"></i> เพิ่มเข้าบอร์ดราคา
                         </button>
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-bold text-neutral-400 mb-1">หมายเหตุกำกับ (ถ้ามี) เช่น "บัฟแค่ 48 ชม."</label>
+                            <input type="text" id="input-eco-note" maxlength="60" class="w-full px-3 py-1.5 text-xs bg-neutral-950 border border-neutral-800 rounded-lg text-neutral-200 outline-none" placeholder="เช่น บัฟแค่ 48 ชม. / เฉพาะวันหยุด">
+                        </div>
                     </div>
                 </div>
 
@@ -1588,6 +1679,43 @@
                             <span id="res-total-final" class="text-xl font-black text-orange-500">- ชิ้น</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= MODAL: แก้ไขรายการในบอร์ดราคา Economy ================= -->
+    <div id="eco-edit-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4 backdrop-blur-md">
+        <div class="bg-neutral-900 border border-amber-500/30 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="bg-neutral-950 border-b border-amber-500/20 text-amber-400 p-4 font-bold flex justify-between items-center shrink-0">
+                <span class="text-sm font-black uppercase flex items-center gap-2"><i class="fa-solid fa-pen-to-square"></i> แก้ไขรายการบอร์ดราคา</span>
+                <button type="button" onclick="closeEcoEditModal()" class="cursor-pointer"><i class="fa-solid fa-xmark text-xl text-neutral-400 hover:text-neutral-200"></i></button>
+            </div>
+            <div class="p-5 space-y-3.5 overflow-y-auto custom-scrollbar">
+                <input type="hidden" id="eco-edit-modal-key">
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1.5">ชื่องานฟาร์ม</label>
+                    <input type="text" id="eco-edit-modal-name" class="w-full px-3 py-2.5 text-sm bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-200 outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1.5">ลิงก์รูปภาพประกอบ (Direct URL)</label>
+                    <input type="url" id="eco-edit-modal-img" class="w-full px-3 py-2.5 text-sm bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-200 outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1.5">สถานะราคา</label>
+                    <select id="eco-edit-modal-status" class="w-full px-3 py-2.5 text-sm bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-200 outline-none focus:border-amber-500">
+                        <option value="BUFF">BUFF (ราคาขึ้น)</option>
+                        <option value="NERF">NERF (ราคาลง)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-neutral-400 mb-1.5">หมายเหตุกำกับ (เว้นว่างเพื่อลบ)</label>
+                    <input type="text" id="eco-edit-modal-note" maxlength="60" class="w-full px-3 py-2.5 text-sm bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-200 outline-none focus:border-amber-500" placeholder="เช่น บัฟแค่ 48 ชม. / เฉพาะวันหยุด">
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeEcoEditModal()" class="flex-1 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-bold py-2.5 rounded-xl transition cursor-pointer">ยกเลิก</button>
+                    <button type="button" onclick="submitEcoEditModal()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-neutral-950 text-xs font-black py-2.5 rounded-xl transition cursor-pointer"><i class="fa-solid fa-check mr-1"></i> บันทึกการแก้ไข</button>
                 </div>
             </div>
         </div>
@@ -2348,10 +2476,14 @@
                         <img src="${item.image}" loading="lazy" class="w-full h-full object-cover" onerror="handleImgRetry(this,'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150')">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-xs text-neutral-200 truncate break-words">${item.name}</h4>
+                        <div class="flex items-center gap-1.5">
+                            <h4 class="font-bold text-xs text-neutral-200 truncate break-words flex-1 min-w-0">${item.name}</h4>
+                            ${item.note ? `<span title="${item.note}" style="max-width:45%" class="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none shrink-0"><i class="fa-solid fa-clock text-[8px] shrink-0"></i><span class="truncate min-w-0">${item.note}</span></span>` : ''}
+                        </div>
                         <span class="text-[10px] font-bold ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> ราคาขึ้น' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> ราคาลง'}</span>
                     </div>
                     ${isGolden && isBuff ? `<span class="golden-week-badge absolute top-1 right-1 text-[8px] font-black px-1.5 py-0.5 rounded-full border border-amber-300/60 flex items-center gap-0.5 leading-none"><i class="fa-solid fa-crown text-[7px]"></i>GW</span>` : ''}
+                    ${isAdmin ? `<button onclick="editEcoNote('${key}')" title="แก้ไขรายการนี้" style="right:52px" class="absolute -bottom-1 bg-amber-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-pen"></i></button>` : ''}
                     ${isAdmin ? `<button onclick="toggleEcoStatus('${key}','${item.status}')" title="สลับเป็น ${isBuff ? 'NERF' : 'BUFF'}" class="absolute -bottom-1 -right-7 bg-cyan-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>` : ''}
                     ${isAdmin ? `<button onclick="deleteEcoItem('${key}')" class="absolute -bottom-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-xmark"></i></button>` : ''}
                 `;
@@ -2374,11 +2506,15 @@
                 const card = document.createElement('div');
                 
                 // ล็อกความสูงของการ์ดทุกใบให้เท่ากันเป็นระเบียบ (h-[500px] รองรับภาพสัดส่วน 16:9 แนวนอน)
+                // การ์ดฮอต: ไม่ใส่ overflow-hidden ที่การ์ดชั้นนอก เพื่อให้แสงเรือง (glow) ล้นออกนอกขอบการ์ดได้
+                // ส่วนการตัดขอบรูป/เนื้อหาให้มุมมนจะย้ายไปทำที่ div ชั้นในแทน (ดู hotInnerOpen/hotInnerClose ด้านล่าง)
                 card.className = isHot 
-                    ? "hot-fire-card rounded-2xl overflow-hidden shadow-xl border-2 flex flex-col group transition duration-200 relative h-[500px]"
+                    ? "hot-fire-card rounded-2xl shadow-xl border-2 flex flex-col group transition duration-200 relative h-[500px]"
                     : "bg-neutral-900 rounded-2xl overflow-hidden shadow-sm border border-neutral-800 flex flex-col group hover:border-cyan-500/30 transition duration-200 relative h-[500px]";
                 
-                const fireBadge = isHot ? `<div class="absolute top-2 right-2 max-w-[calc(100%-1rem)] bg-gradient-to-r from-red-600 to-orange-500 text-neutral-950 text-[9px] font-black px-2 py-1 rounded-md z-10 shadow border border-orange-400 flex items-center gap-1 whitespace-nowrap"><i class="fa-solid fa-fire text-[8px]"></i> HOT RECOMMEND</div>` : '';
+                const fireBadge = isHot ? `<div class="hot-ribbon-wrap"><div class="hot-ribbon"><i class="fa-solid fa-fire"></i><span>HOT RECOMMEND</span></div></div>` : '';
+                const hotInnerOpen = isHot ? `<div class="h-full flex flex-col rounded-2xl overflow-hidden relative">` : '';
+                const hotInnerClose = isHot ? `</div>` : '';
 
                 if (job.type === 'งานขาว') {
                     let itemsHTML = `<span class="text-neutral-500 font-normal">ไม่มีไอเทมเงื่อนไข</span>`;
@@ -2391,6 +2527,7 @@
 
                     card.innerHTML = `
                         ${fireBadge}
+                        ${hotInnerOpen}
                         <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img loading="lazy" src="${job.image}" class="w-full h-full object-cover" onerror="handleImgRetry(this,'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500')">
@@ -2428,6 +2565,7 @@
                                 ` : ''}
                             </div>
                         </div>
+                        ${hotInnerClose}
                     `;
                     whiteContainer.appendChild(card);
                 } else {
@@ -2436,6 +2574,7 @@
 
                     card.innerHTML = `
                         ${fireBadge}
+                        ${hotInnerOpen}
                         <!-- ปรับขนาดรูปเป็น aspect-video (16:9) เพื่อให้เห็นแบนเนอร์เต็มใบไม่โดนตัดหัวตัดท้าย -->
                         <div class="w-full aspect-video overflow-hidden relative bg-neutral-950 border-b border-neutral-800 shrink-0">
                             <img loading="lazy" src="${job.image}" class="w-full h-full object-cover" onerror="handleImgRetry(this,'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500')">
@@ -2467,6 +2606,7 @@
                                 ` : ''}
                             </div>
                         </div>
+                        ${hotInnerClose}
                     `;
                     blackContainer.appendChild(card);
                 }
@@ -2632,16 +2772,49 @@
             const name = document.getElementById('input-eco-name').value.trim();
             const image = document.getElementById('input-eco-img').value.trim();
             const status = document.getElementById('input-eco-status').value;
+            const note = document.getElementById('input-eco-note').value.trim();
             if(!name || !image) { alert("กรุณาใส่ข้อมูลให้ครบ!"); return; }
             const id = Date.now().toString();
             if(isFirebaseValid) {
-                set(ref(db, `eco_list/${id}`), { name, image, status }).then(() => { clearEcoInputs(); });
+                set(ref(db, `eco_list/${id}`), { name, image, status, note }).then(() => { clearEcoInputs(); });
             } else {
-                const current = getLocalData('eco_list', {}); current[id] = { name, image, status };
+                const current = getLocalData('eco_list', {}); current[id] = { name, image, status, note };
                 setLocalData('eco_list', current); renderEcoList(current); clearEcoInputs();
             }
         }
-        function clearEcoInputs() { document.getElementById('input-eco-name').value = ''; document.getElementById('input-eco-img').value = ''; }
+        function clearEcoInputs() { document.getElementById('input-eco-name').value = ''; document.getElementById('input-eco-img').value = ''; document.getElementById('input-eco-note').value = ''; }
+
+        // แก้ไขรายการเดิมในบอร์ดราคา (ชื่อ/รูป/สถานะ/หมายเหตุ) ผ่านหน้าต่างโมดัลแทน prompt() — ดึงข้อมูลจากแคชด้วย key เพื่อเลี่ยงปัญหา escape อักขระพิเศษ
+        window.editEcoNote = function(key) {
+            const item = (window.cachedEcoList || {})[key];
+            if(!item) return;
+            document.getElementById('eco-edit-modal-key').value = key;
+            document.getElementById('eco-edit-modal-name').value = item.name || '';
+            document.getElementById('eco-edit-modal-img').value = item.image || '';
+            document.getElementById('eco-edit-modal-status').value = item.status || 'BUFF';
+            document.getElementById('eco-edit-modal-note').value = item.note || '';
+            document.getElementById('eco-edit-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('eco-edit-modal-name').focus(), 50);
+        }
+        window.closeEcoEditModal = function() {
+            document.getElementById('eco-edit-modal').classList.add('hidden');
+        }
+        window.submitEcoEditModal = function() {
+            const key = document.getElementById('eco-edit-modal-key').value;
+            const name = document.getElementById('eco-edit-modal-name').value.trim();
+            const image = document.getElementById('eco-edit-modal-img').value.trim();
+            const status = document.getElementById('eco-edit-modal-status').value;
+            const note = document.getElementById('eco-edit-modal-note').value.trim();
+            if(!name || !image) { alert("กรุณาใส่ข้อมูลให้ครบ!"); return; }
+            const updated = { name, image, status, note };
+            if(isFirebaseValid) {
+                update(ref(db, `eco_list/${key}`), updated);
+            } else {
+                const current = getLocalData('eco_list', {});
+                if(current[key]) { current[key] = { ...current[key], ...updated }; setLocalData('eco_list', current); renderEcoList(current); }
+            }
+            closeEcoEditModal();
+        }
 
         window.deleteEcoItem = function(key) {
             if(!confirm("ต้องการลบออกจากบอร์ดราคา?")) return;
@@ -2992,6 +3165,9 @@
             if(!grid) return;
             const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
             const keys = Object.keys(data||{});
+            // เรียงลำดับตามระดับความแรร์ (Mythic > Legendary > EPIC > Rare > Common) จากสูงสุดไปต่ำสุด
+            const devilRankMap = { 'Mythic':5, 'Legendary':4, 'EPIC':3, 'Rare':2, 'Common':1 };
+            keys.sort((a, b) => (devilRankMap[data[b].tier || 'Common'] || 0) - (devilRankMap[data[a].tier || 'Common'] || 0));
             if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-fire mr-1"></i> ยังไม่มีข้อมูลผลไม้ปีศาจ</div>'; return; }
             grid.innerHTML = '';
             keys.forEach(key => {
@@ -3072,6 +3248,17 @@
             if(!grid) return;
             const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
             const keys = Object.keys(data||{});
+            // เรียงลำดับตามระดับความแรร์ของแฟชั่น (Topdonate > ประมูล > Celebrity > 30k > กิจกรรม > ปกติ) จากสูงสุดไปต่ำสุด
+            function fashionRarityRank(cat) {
+                cat = cat || '';
+                if (cat.includes('Topdonate')) return 6;
+                if (cat.includes('ประมูล')) return 5;
+                if (cat.includes('Celebrity')) return 4;
+                if (cat.includes('30k')) return 3;
+                if (cat.includes('กิจกรรม')) return 2;
+                return 1;
+            }
+            keys.sort((a, b) => fashionRarityRank(data[b].category) - fashionRarityRank(data[a].category));
             if(!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-shirt mr-1"></i> ยังไม่มีข้อมูลแฟชั่น</div>'; return; }
             grid.innerHTML = '';
             keys.forEach(key => {
@@ -3827,6 +4014,9 @@
             if (!grid) return;
             const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
             const keys = Object.keys(data||{});
+            // เรียงลำดับตามระดับความแรร์ของอาหาร (ทอง/Legendary > ม่วง/EPIC > เขียว/Common) จากสูงสุดไปต่ำสุด
+            const foodRankMap = { 'ทอง':3, 'ม่วง':2, 'เขียว':1 };
+            keys.sort((a, b) => (foodRankMap[data[b].tier || 'เขียว'] || 0) - (foodRankMap[data[a].tier || 'เขียว'] || 0));
             if (!keys.length) { grid.innerHTML = '<div class="col-span-full text-center text-neutral-500 py-16 text-sm"><i class="fa-solid fa-utensils mr-1"></i> ยังไม่มีข้อมูลอาหาร</div>'; return; }
             grid.innerHTML = '';
             keys.forEach(key => {
@@ -4221,13 +4411,14 @@
                 ['openGachaCategoryModal', 'gacha-category-modal'],
                 ['openGachaItemModal', 'gacha-item-modal'],
                 ['openAnnouncementListModal', 'announcement-list-modal'],
-                ['openAnnouncementFormModal', 'announcement-form-modal']
+                ['openAnnouncementFormModal', 'announcement-form-modal'],
+                ['editEcoNote', 'eco-edit-modal']
             ];
             const closeModalFns = [
                 'closeCalculatorModal', 'closeJobModal', 'closeDevilModal',
                 'closeFashionModal', 'closeItemModal', 'closeEventModal', 'closeGkeyModal',
                 'closeFoodModal', 'closeGachaPopup', 'closeGachaCategoryModal', 'closeGachaItemModal',
-                'closeAnnouncementListModal', 'closeAnnouncementFormModal'
+                'closeAnnouncementListModal', 'closeAnnouncementFormModal', 'closeEcoEditModal'
             ];
             const deleteFns = ['deleteEcoItem', 'deleteJob', 'deleteDevil', 'deleteFashion', 'deleteItem', 'deleteEvent', 'deleteFood', 'deleteGachaCategory', 'deleteGachaItem', 'deleteAnnouncement'];
 
