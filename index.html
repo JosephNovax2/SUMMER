@@ -177,22 +177,28 @@
             right: -2px;
             z-index: 20;
             filter: drop-shadow(0 6px 10px rgba(0,0,0,0.55));
-            max-width: calc(100% - 0.5rem);
+        }
+        @media (max-width: 420px) {
+            .hot-ribbon-wrap { transform: scale(0.84); transform-origin: top right; }
         }
         .hot-ribbon {
             position: relative;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px 6px 16px;
-            font-size: 10.5px;
+            justify-content: center;
+            gap: 5px;
+            width: 156px;
+            height: 28px;
+            padding: 0 12px 0 20px;
+            font-size: 10px;
             font-weight: 900;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.03em;
             color: #2b0900;
             white-space: nowrap;
             background: linear-gradient(100deg, #ffe27a 0%, #ffb238 28%, #ff7a1a 58%, #e0281c 100%);
             background-size: 240% 100%;
-            clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+            /* ปลายขวาโค้งมนรับกับมุมโค้งของการ์ด ส่วนปลายซ้ายแหลมเป็นทรงริบบิ้น */
+            clip-path: path('M20,0 L142,0 A14,14 0 0 1 156,14 L156,28 L20,28 L0,14 Z');
             box-shadow: 0 0 0 1px rgba(255,224,150,0.55) inset;
             animation: hotRibbonShift 2.6s ease-in-out infinite, hotRibbonPulse 1.8s ease-in-out infinite;
             overflow: hidden;
@@ -1443,13 +1449,13 @@
                         <div class="bg-emerald-950/40 border border-emerald-500/20 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
                             <span><i class="fa-solid fa-arrow-trend-up mr-1"></i> รายการงานที่โดน BUFF ราคา (เงินดีมาก)</span>
                         </div>
-                        <div id="eco-buff-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                        <div id="eco-buff-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"></div>
                     </div>
                     <div id="eco-nerf-section" class="space-y-3">
                         <div class="bg-rose-950/40 border border-rose-500/20 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-bold tracking-wider flex items-center justify-between">
                             <span><i class="fa-solid fa-arrow-trend-down mr-1"></i> รายการงานที่โดน NERF ราคา (รายได้ลดลง)</span>
                         </div>
-                        <div id="eco-nerf-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                        <div id="eco-nerf-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"></div>
                     </div>
                 </div>
             </section>
@@ -2428,7 +2434,6 @@
             // ช่วง GoldenWeek: ซ่อนแถบ NERF แล้ว ให้แถบ BUFF ขยายใช้พื้นที่เต็มฝั่งขวาแทน ไม่ให้โล่ง
             if (buffWrapper) buffWrapper.classList.toggle('col-span-full', window.isGoldenWeekActive);
             if (buffContainer) {
-                buffContainer.classList.toggle('lg:grid-cols-3', window.isGoldenWeekActive);
                 buffContainer.classList.toggle('xl:grid-cols-4', window.isGoldenWeekActive);
             }
             if (goldenTag) {
@@ -2468,19 +2473,19 @@
                 const isAdmin = window.currentUser && window.currentUser.role === 'ADMIN';
                 const isBuff = item.status === 'BUFF';
                 const card = document.createElement('div');
-                card.className = "eco-price-card bg-neutral-950 p-3 rounded-xl border flex items-center gap-3 relative group overflow-hidden "
+                card.className = "eco-price-card bg-neutral-950 p-2 rounded-lg border flex items-center gap-2 relative group overflow-hidden "
                     + (isBuff ? "border-l-4 border-l-emerald-500 " : "border-l-4 border-l-rose-500 ")
                     + (isGolden && isBuff ? "border-amber-500/40" : "border-neutral-800");
                 card.innerHTML = `
-                    <div class="w-14 h-14 bg-neutral-900 rounded-lg overflow-hidden shrink-0 border border-neutral-800">
+                    <div class="w-11 h-11 bg-neutral-900 rounded-md overflow-hidden shrink-0 border border-neutral-800">
                         <img src="${item.image}" loading="lazy" class="w-full h-full object-cover" onerror="handleImgRetry(this,'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150')">
                     </div>
                     <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-1.5">
-                            <h4 class="font-bold text-xs text-neutral-200 truncate break-words flex-1 min-w-0">${item.name}</h4>
-                            ${item.note ? `<span title="${item.note}" style="max-width:45%" class="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none shrink-0"><i class="fa-solid fa-clock text-[8px] shrink-0"></i><span class="truncate min-w-0">${item.note}</span></span>` : ''}
+                        <h4 class="font-bold text-[11px] text-neutral-200 truncate break-words w-full">${item.name}</h4>
+                        <div class="flex items-center justify-between gap-1 mt-0.5">
+                            <span class="text-[10px] font-bold shrink-0 ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> Buff' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> Nerf'}</span>
+                            ${item.note ? `<span title="${item.note}" class="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-0 max-w-[55%]"><i class="fa-solid fa-clock text-[8px] shrink-0"></i><span class="truncate min-w-0">${item.note}</span></span>` : ''}
                         </div>
-                        <span class="text-[10px] font-bold ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> ราคาขึ้น' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> ราคาลง'}</span>
                     </div>
                     ${isGolden && isBuff ? `<span class="golden-week-badge absolute top-1 right-1 text-[8px] font-black px-1.5 py-0.5 rounded-full border border-amber-300/60 flex items-center gap-0.5 leading-none"><i class="fa-solid fa-crown text-[7px]"></i>GW</span>` : ''}
                     ${isAdmin ? `<button onclick="editEcoNote('${key}')" title="แก้ไขรายการนี้" style="right:52px" class="absolute -bottom-1 bg-amber-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-pen"></i></button>` : ''}
