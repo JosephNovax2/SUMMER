@@ -1646,7 +1646,7 @@
                 <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800">
                     <label class="block text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wide"><i class="fa-solid fa-truck-pickup mr-1"></i> ระบุน้ำหนักท้ายรถโลของคุณ (KG):</label>
                     <div class="flex gap-2">
-                        <input type="number" id="input-car-weight" value="200" min="0" class="w-full px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-xl font-bold text-md outline-none text-neutral-100">
+                        <input type="number" id="input-car-weight" value="200" min="0" max="100000000" maxlength="9" oninput="if(this.value.length>9) this.value=this.value.slice(0,9); if(parseFloat(this.value)>100000000) this.value=100000000;" class="w-full px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-xl font-bold text-md outline-none text-neutral-100">
                         <button onclick="runAdvancedCalculator()" class="bg-cyan-500 text-neutral-950 font-black px-6 text-xs rounded-xl hover:bg-cyan-600 transition shrink-0 cursor-pointer">คำนวณสัดส่วน</button>
                     </div>
                 </div>
@@ -3076,8 +3076,13 @@
         function closeCalculatorModal() { document.getElementById('calc-modal').classList.add('hidden'); }
 
         function runAdvancedCalculator() {
-            const trunkKG = parseFloat(document.getElementById('input-car-weight').value);
+            const MAX_WEIGHT = 100000000; // ล็อกไม่ให้เกินหลัก 100 ล้าน ป้องกันตัวเลขล้นจนบัค
+            let trunkKG = parseFloat(document.getElementById('input-car-weight').value);
             if (isNaN(trunkKG) || trunkKG < 0) return;
+            if (trunkKG > MAX_WEIGHT) {
+                trunkKG = MAX_WEIGHT;
+                document.getElementById('input-car-weight').value = MAX_WEIGHT;
+            }
             const wItem = 0.5; const maxPiecesInTrunk = trunkKG / wItem; const targetCount = Math.floor((maxPiecesInTrunk + 180) / 3);
             let bagTomato = 40; let trunkTomato = targetCount - 40;
             let bagChili = 40; let trunkChili = targetCount - 40;
