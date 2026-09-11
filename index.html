@@ -65,6 +65,15 @@
             background-size: cover;
             background-position: center;
         }
+        #bg-scene .bg-vignette {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 18%, transparent 82%, rgba(0,0,0,0.65) 100%);
+            pointer-events: none;
+        }
 
         /* ===== LOGIN / TAB TRANSITION CUTSCENE ===== */
         #sc-cutscene {
@@ -1186,6 +1195,7 @@
     <!-- ================= พื้นหลังเว็บ: ภาพชายหาดพระอาทิตย์ตกที่ผู้ใช้ส่งมา ================= -->
     <div id="bg-scene" aria-hidden="true">
         <div class="bg-photo"></div>
+        <div class="bg-vignette"></div>
     </div>
 
     <!-- ================= คัทซีนคั่นตอนล็อกอิน / เปลี่ยนหมวดหมู่ ================= -->
@@ -1243,7 +1253,7 @@
         <header id="site-header" class="sticky top-0 z-40 shadow-md relative">
             <div class="max-w-7xl mx-auto px-4 max-sm:px-3 py-3 max-sm:py-2 flex justify-between items-center">
                 <div class="flex items-center space-x-3 max-sm:space-x-2 shrink-0 min-w-0">
-                    <div id="admin-login-trigger" onclick="showAdminLogin()" title="" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 cursor-pointer select-none">
+                    <div id="admin-login-trigger" onclick="showAdminLogin()" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 cursor-pointer select-none">
                         <i class="fa-solid fa-sun text-lg max-sm:text-sm text-orange-400"></i>
                         <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500 animate-ping opacity-75"></span>
                     </div>
@@ -1257,14 +1267,19 @@
                 </div>
 
                 <div class="flex items-center gap-2.5 max-sm:gap-1.5 shrink-0">
+                    <!-- ===== ปุ่มเข้าดิสคอร์ด ===== -->
+                    <button type="button" onclick="window.open('https://discord.gg/5x4NxuAZZ','_blank')"
+                       class="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 max-sm:px-2 max-sm:py-1.5 rounded-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 border border-orange-500 shadow-md shadow-rose-500/30 transition shrink-0 select-none cursor-pointer">
+                        <i class="fa-brands fa-discord text-white text-base max-sm:text-sm"></i>
+                        <span class="text-white font-bold text-xs sm:text-sm whitespace-nowrap max-sm:hidden">เข้าดิสคอร์ด</span>
+                    </button>
                     <!-- ===== ปุ่มประกาศ (ซองจดหมายสไตล์เกม) — แสดงตลอด ไม่ว่าจะเป็น USER หรือ ADMIN ===== -->
-                    <div id="announcement-btn" onclick="openAnnouncementListModal()" title="ประกาศจากทีมงาน" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 border border-orange-400 flex items-center justify-center shrink-0 cursor-pointer select-none hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-500/20 transition">
+                    <div id="announcement-btn" onclick="openAnnouncementListModal()" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 border border-orange-400 flex items-center justify-center shrink-0 cursor-pointer select-none hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-500/20 transition">
                         <i id="announcement-icon" class="fa-solid fa-envelope text-base max-sm:text-sm text-white drop-shadow"></i>
                     </div>
                     <!-- ===== CREATOR BADGE: จัดทำโดย — ซ่อนอัตโนมัติเมื่อ Login เป็น ADMIN ===== -->
-                    <a id="creator-badge" href="https://www.facebook.com/joseph.cnv" target="_blank" rel="noopener noreferrer"
-                       title="เยี่ยมชม Facebook ผู้จัดทำเว็บไซต์"
-                       class="group flex items-center gap-2 pl-1.5 pr-3 max-sm:pl-1 max-sm:pr-2 py-1.5 max-sm:py-1 rounded-xl bg-black/30 border border-orange-500/20 hover:border-orange-500/50 hover:bg-orange-500/10 transition shrink-0 select-none">
+                    <button type="button" id="creator-badge" onclick="window.open('https://www.facebook.com/joseph.cnv','_blank')"
+                       class="group flex items-center gap-2 pl-1.5 pr-3 max-sm:pl-1 max-sm:pr-2 py-1.5 max-sm:py-1 rounded-xl bg-black/30 border border-orange-500/20 hover:border-orange-500/50 hover:bg-orange-500/10 transition shrink-0 select-none cursor-pointer">
                         <span class="relative w-11 h-11 max-sm:w-9 max-sm:h-9 shrink-0">
                             <img src="https://raw.githubusercontent.com/JosephNovax2/SUMMER/main/creator-avatar.png"
                                  alt="Creator avatar"
@@ -1279,7 +1294,7 @@
                             <span class="block text-xs font-black text-neutral-200 group-hover:text-orange-400 transition">JOSEPH</span>
                         </span>
                         <i class="fa-brands fa-facebook text-orange-500/70 group-hover:text-orange-400 text-xs transition sm:hidden"></i>
-                    </a>
+                    </button>
 
                     <div id="admin-account-bar" class="flex items-center space-x-3 max-sm:space-x-1.5 shrink-0" style="display:none;">
                         <div class="text-right border-l pl-3 max-sm:pl-1.5 border-orange-500/20 min-w-[80px] max-sm:min-w-0">
@@ -1299,7 +1314,6 @@
             <div class="max-w-7xl mx-auto px-4 max-sm:px-2 py-2 max-sm:py-1.5 flex items-center gap-2 max-sm:gap-1.5">
                 <!-- ปุ่มไอคอน (พระอาทิตย์) — กดเพื่อเปิด/ปิดหมวดข้อมูลงาน -->
                 <button type="button" id="job-nav-toggle-btn" onclick="toggleJobCategoryNav()"
-                    title="แสดง/ซ่อนหมวดข้อมูลงาน"
                     aria-expanded="true"
                     class="relative w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full bg-gradient-to-br from-orange-500/25 to-amber-500/10 border border-orange-500/40 flex items-center justify-center shrink-0 cursor-pointer select-none transition hover:border-orange-400/80 hover:bg-orange-500/20">
                     <i id="job-nav-toggle-icon" class="fa-solid fa-sun text-base max-sm:text-sm text-orange-400 transition-transform duration-200"></i>
