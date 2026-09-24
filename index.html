@@ -3941,6 +3941,29 @@
             if(window._fbRemove) window._fbRemove('events/'+key);
             else { const c = JSON.parse(localStorage.getItem('sc_events')||'{}'); delete c[key]; localStorage.setItem('sc_events',JSON.stringify(c)); renderEvents(c); }
         }
+        // จัดรูปแบบเวลากิจกรรม: แยกเวลาจากข้อความ → เรียงจากน้อยไปมาก → แสดงเป็นช่อง ๆ อ่านง่าย
+        function formatEventTimes(raw) {
+            const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+            const text = String(raw || '').trim();
+            if (!text) return '<div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-2.5 py-1.5 text-[11px] text-emerald-300 font-bold shrink-0"><i class="fa-solid fa-clock mr-1"></i>ยังไม่มีข้อมูลเวลา</div>';
+            const re = /(?<!\d)([01]?\d|2[0-3])[:.]([0-5]\d)(?!\d)/g;
+            const found = new Map();
+            let m;
+            while ((m = re.exec(text)) !== null) {
+                const hh = m[1].padStart(2, '0'), mm = m[2];
+                found.set(hh + ':' + mm, parseInt(hh, 10) * 60 + parseInt(mm, 10));
+            }
+            // ไม่พบรูปแบบเวลาเลย → แสดงข้อความเดิม
+            if (!found.size) return '<div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-2.5 py-1.5 text-[11px] text-emerald-300 font-bold shrink-0 leading-relaxed"><i class="fa-solid fa-clock mr-1"></i>' + esc(text) + '</div>';
+            const times = [...found.entries()].sort((a, b) => a[1] - b[1]).map(e => e[0]);
+            // ข้อความที่เหลือ (เช่น "ทุกวัน") เก็บไว้เป็นหมายเหตุ
+            const note = text.replace(re, ' ').replace(/น\.|[\/,;|]+/g, ' ').replace(/\s+/g, ' ').trim();
+            const chips = times.map(t => '<span style="display:block;text-align:center;font-size:10px;font-weight:900;line-height:1;padding:4px 0;border-radius:6px;color:#6ee7b7;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);font-variant-numeric:tabular-nums">' + t + '</span>').join('');
+            return '<div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-2 py-1.5 shrink-0">'
+                + '<div class="flex items-center justify-between text-[9px] font-bold text-emerald-400/80 mb-1"><span><i class="fa-solid fa-clock mr-1"></i>เวลาจัดกิจกรรม' + (note ? ' · ' + esc(note) : '') + '</span><span>' + times.length + ' รอบ</span></div>'
+                + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:4px">' + chips + '</div>'
+                + '</div>';
+        }
         window.renderEvents = function(data) {
             window.cachedEvents = data || {};
             const grid = document.getElementById('events-grid');
@@ -3956,7 +3979,7 @@
                 card.innerHTML = `
                     <div class="p-3 flex-1 flex flex-col gap-1.5 min-h-0">
                         <h3 class="text-xs font-black text-neutral-100 flex items-center gap-1.5 shrink-0"><span class="text-emerald-400"><i class="fa-solid fa-calendar-days"></i></span>${d.name||'ไม่มีชื่อ'}</h3>
-                        <div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg px-2.5 py-1.5 text-[11px] text-emerald-300 font-bold shrink-0"><i class="fa-solid fa-clock mr-1"></i>${d.time||'ยังไม่มีข้อมูลเวลา'}</div>
+                        ${formatEventTimes(d.time)}
                         <div class="flex-1 flex flex-col min-h-0">
                             <span class="block text-[9px] font-bold text-neutral-400 uppercase tracking-wide mb-1 shrink-0"><i class="fa-solid fa-circle-info"></i> รายละเอียด:</span>
                             <div class="text-[11px] text-neutral-300 bg-neutral-950/80 border border-neutral-800 rounded-xl p-2.5 whitespace-pre-line leading-relaxed overflow-y-auto flex-1 custom-scrollbar">${d.detail||'ยังไม่มีข้อมูล'}</div>
