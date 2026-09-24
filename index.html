@@ -184,7 +184,7 @@
         /* SUMMER สีขาว (ชั้นที่โหลดแล้ว) */
         #sc-cutscene .sc-intro-fill .sc-w {
             color: #fff;
-            -webkit-text-fill-color: #fff;
+            -webkit-text-fill-color: #fff !important;
         }
         /* เส้นแสงตรงขอบที่กำลังไล่สี */
         #sc-cutscene .sc-intro-edge {
@@ -595,6 +595,23 @@
             20%,  24%,  55% { opacity: 0.3; }
         }
         /* ป้ายร้านค้า Gacha — วางอยู่เหนือบอร์ดราคา Economy ตรงกลางหน้า ไม่ใช่ปุ่มลอยติดขอบจอแล้ว */
+        /* หัวข้อหมวด: พื้นหลังโปร่งมืด อ่านง่ายทั้งพื้นหลังสว่าง/มืด */
+        .section-head-glass {
+            background: rgba(10, 10, 16, 0.68);
+            -webkit-backdrop-filter: blur(10px) saturate(1.2);
+            backdrop-filter: blur(10px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.10) !important;
+            border-radius: 16px;
+            padding: 14px 18px !important;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        }
+        .section-head-glass h2 {
+            background: none !important;
+            color: #fff !important;
+            -webkit-text-fill-color: #fff !important;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+        }
+        .section-head-glass h2 i { -webkit-text-fill-color: currentColor; }
         #gacha-shop-banner {
             position: relative;
             background: linear-gradient(135deg, #0f0202 0%, #1c0404 40%, #0a0000 70%, #180308 100%);
@@ -1307,6 +1324,16 @@
             border-radius: 10px; margin-top: 8px;
             border: 1px solid #262626; cursor: zoom-in;
         }
+    
+        /* ===== แถบเลื่อนสีส้ม ===== */
+        ::-webkit-scrollbar { width: 10px; height: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(8,8,12,.85); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#fb923c,#ea580c); border-radius: 10px; border: 2px solid rgba(8,8,12,.85); }
+        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#fdba74,#f97316); }
+        /* ซ่อนแถบเลื่อนตอนคัทซีน (โหลดเว็บ / เปลี่ยนหมวด) */
+        html:has(#sc-cutscene.sc-active)::-webkit-scrollbar { display: none; }
+        html:has(#sc-cutscene.sc-active) { scrollbar-width: none; }
+        @supports not selector(::-webkit-scrollbar) { html { scrollbar-color: #f97316 #0a0a0f; scrollbar-width: thin; } }
     </style>
 </head>
 <body class="text-neutral-200 min-h-screen selection:bg-orange-500 selection:text-neutral-950">
@@ -1384,7 +1411,7 @@
     <!-- ================= 1. หน้า LOGIN ================= -->
     <div id="auth-page" class="hidden fixed inset-0 bg-gradient-to-br from-neutral-950/85 via-neutral-950/80 to-orange-950/55 backdrop-blur-[2px] flex items-center justify-center z-50 p-4">
         <div class="relative bg-neutral-900/90 border border-orange-500/30 p-8 rounded-3xl shadow-2xl w-full max-w-md mx-auto text-center backdrop-blur-md">
-            <button type="button" onclick="closeAdminLogin()" title="ปิด" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800 transition text-xl leading-none cursor-pointer">&times;</button>
+            <button type="button" onclick="closeAdminLogin()" class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800 transition text-xl leading-none cursor-pointer">&times;</button>
             <div class="mb-6">
                 <div class="w-16 h-16 mx-auto mb-2 rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center">
                     <i class="fa-solid fa-sun text-3xl text-orange-400"></i>
@@ -1441,42 +1468,42 @@
             </div>
             <div class="side-scroll custom-scrollbar">
                 <div class="side-list">
-                    <button type="button" onclick="switchTab('farm')" id="tab-farm" class="tab-btn side-item active-tab" title="ข้อมูลงานฟาร์ม">
+                    <button type="button" onclick="switchTab('farm')" id="tab-farm" class="tab-btn side-item active-tab">
                         <i class="fa-solid fa-wheat-awn side-ico"></i><span class="side-label">ข้อมูลงานฟาร์ม</span>
                     </button>
                     <div class="side-group" id="side-group-fooddevil">
-                        <button type="button" class="side-item" onclick="toggleSideGroup()" title="อาหาร และ ผลปีศาจ">
-                            <i class="fa-solid fa-utensils side-ico"></i><span class="side-label">อาหาร และ ผลปีศาจ</span>
+                        <button type="button" class="side-item" onclick="toggleSideGroup()">
+                            <span class="side-ico" style="width:auto;display:inline-flex;align-items:center;gap:3px;font-size:11px;flex-shrink:0"><span style="font-size:13px;display:inline-flex"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="display:block"><ellipse cx="10" cy="6" rx="5.6" ry="4" transform="rotate(-45 10 6)"/><path d="M7 9 3.2 12.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="2.2" cy="12.2" r="1.4"/><circle cx="3.9" cy="13.9" r="1.4"/></svg></span><i class="fa-solid fa-apple-whole"></i></span><span class="side-label">อาหาร และ ผลปีศาจ</span>
                             <i class="fa-solid fa-chevron-down side-group-caret"></i>
                         </button>
                         <div class="side-sub">
-                    <button type="button" onclick="switchTab('food')" id="tab-food" class="tab-btn side-item inactive-tab" title="ข้อมูลอาหาร">
-                        <i class="fa-solid fa-utensils side-ico"></i><span class="side-label">ข้อมูลอาหาร</span>
+                    <button type="button" onclick="switchTab('food')" id="tab-food" class="tab-btn side-item inactive-tab">
+                        <span class="side-ico" style="width:18px;font-size:15px;display:inline-flex;justify-content:center;flex-shrink:0"><svg viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor" aria-hidden="true" style="display:block"><ellipse cx="10" cy="6" rx="5.6" ry="4" transform="rotate(-45 10 6)"/><path d="M7 9 3.2 12.8" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="2.2" cy="12.2" r="1.4"/><circle cx="3.9" cy="13.9" r="1.4"/></svg></span><span class="side-label">ข้อมูลอาหาร</span>
                     </button>
-                    <button type="button" onclick="switchTab('devil')" id="tab-devil" class="tab-btn side-item inactive-tab" title="ผลไม้ปีศาจ">
-                        <i class="fa-solid fa-fire side-ico"></i><span class="side-label">ผลไม้ปีศาจ</span>
+                    <button type="button" onclick="switchTab('devil')" id="tab-devil" class="tab-btn side-item inactive-tab">
+                        <i class="fa-solid fa-apple-whole side-ico"></i><span class="side-label">ผลไม้ปีศาจ</span>
                     </button>
                         </div>
                     </div>
-                    <button type="button" onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn side-item inactive-tab" title="สถานะแฟชั่น">
+                    <button type="button" onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn side-item inactive-tab">
                         <i class="fa-solid fa-shirt side-ico"></i><span class="side-label">สถานะแฟชั่น</span>
                     </button>
-                    <button type="button" onclick="switchTab('items')" id="tab-items" class="tab-btn side-item inactive-tab" title="แหล่งที่มา ITEMS">
+                    <button type="button" onclick="switchTab('items')" id="tab-items" class="tab-btn side-item inactive-tab">
                         <i class="fa-solid fa-cube side-ico"></i><span class="side-label">แหล่งที่มา ITEMS</span>
                     </button>
-                    <button type="button" onclick="switchTab('events')" id="tab-events" class="tab-btn side-item inactive-tab" title="เวลากิจกรรม">
+                    <button type="button" onclick="switchTab('events')" id="tab-events" class="tab-btn side-item inactive-tab">
                         <i class="fa-solid fa-calendar-days side-ico"></i><span class="side-label">เวลากิจกรรม</span>
                     </button>
-                    <button type="button" onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn side-item inactive-tab" title="เมนูลัดปุ่ม G">
+                    <button type="button" onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn side-item inactive-tab">
                         <i class="fa-solid fa-keyboard side-ico"></i><span class="side-label">เมนูลัดปุ่ม G</span>
                     </button>
                 </div>
             </div>
             <div class="side-footer p-3 border-t border-orange-500/15">
-                <button type="button" onclick="toggleSideNav()" class="side-item side-collapse-btn" title="ย่อ/ขยายเมนู" aria-label="ย่อ/ขยายเมนู">
+                <button type="button" onclick="toggleSideNav()" class="side-item side-collapse-btn" aria-label="ย่อ/ขยายเมนู">
                     <i class="fa-solid fa-angles-left side-ico"></i><span class="side-label">ย่อเมนู</span>
                 </button>
-                <button type="button" onclick="window.open('https://discord.gg/5x4NxuAZZ','_blank')" title="เข้าร่วมดิสคอร์ด"
+                <button type="button" onclick="window.open('https://discord.gg/5x4NxuAZZ','_blank')"
                     class="side-discord w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 border border-orange-500 shadow-md shadow-rose-500/30 transition select-none cursor-pointer">
                     <i class="fa-brands fa-discord text-white text-base"></i>
                     <span class="side-label text-white font-bold text-sm whitespace-nowrap">เข้าร่วมดิสคอร์ด</span>
@@ -1662,7 +1689,7 @@
             <!-- ================= SECTION: คู่มือและปุ่มควบคุมหลัก ================= -->
             <section class="space-y-6">
                 
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-neutral-800 pb-4 gap-4">
+                <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4">
                     <h2 class="text-xl font-black text-neutral-100 tracking-wide flex items-center gap-2">
                         <i class="fa-solid fa-briefcase text-cyan-400"></i> ข้อมูลวิธีทำและระบบงานฟาร์มทั้งหมดในประเทศ
                     </h2>
@@ -1716,8 +1743,7 @@
             <!-- ================= PANEL: ผลไม้ปีศาจ ================= -->
             <div id="panel-devil" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
                             <i class="fa-solid fa-fire text-2xl text-orange-400"></i> ข้อมูลผลไม้ปีศาจ
                         </h2>
@@ -1734,8 +1760,7 @@
             <!-- ================= PANEL: สถานะแฟชั่น ================= -->
             <div id="panel-fashion" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
                             <i class="fa-solid fa-shirt text-2xl text-amber-300"></i> ข้อมูลสถานะแฟชั่น
                         </h2>
@@ -1752,8 +1777,7 @@
             <!-- ================= PANEL: แหล่งที่มา ITEMS ================= -->
             <div id="panel-items" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
                             <i class="fa-solid fa-bag-shopping text-2xl text-cyan-400"></i> ข้อมูลแหล่งที่มาของ ITEMS
                         </h2>
@@ -1770,8 +1794,7 @@
             <!-- ================= PANEL: เวลากิจกรรม ================= -->
             <div id="panel-events" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
                             <i class="fa-solid fa-calendar-days text-2xl text-emerald-400"></i> ข้อมูลเวลากิจกรรม
                         </h2>
@@ -1788,8 +1811,7 @@
             <!-- ================= PANEL: เมนูลัดปุ่ม G ================= -->
             <div id="panel-gkey" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-orange-500/50 via-amber-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200 tracking-wide flex items-center gap-2">
                             <i class="fa-solid fa-keyboard text-2xl text-amber-300"></i> เมนูลัดปุ่มตัว G
                         </h2>
@@ -1806,8 +1828,7 @@
             <!-- ================= PANEL: ข้อมูลอาหาร ================= -->
             <div id="panel-food" class="hidden">
                 <section class="space-y-6">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                        <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-emerald-500/50 via-green-400/30 to-transparent"></div>
+                    <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
                         <div>
                             <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-green-300 to-amber-300 tracking-wide flex items-center gap-2">
                                 <i class="fa-solid fa-utensils text-2xl text-emerald-400"></i> ข้อมูลอาหาร
@@ -2682,12 +2703,12 @@
                         <h4 class="font-bold text-[11px] text-neutral-200 truncate break-words w-full">${item.name}</h4>
                         <div class="flex items-center justify-between gap-1 mt-0.5">
                             <span class="text-[10px] font-bold shrink-0 ${item.status === 'BUFF' ? 'text-emerald-400' : 'text-rose-400'}">${item.status === 'BUFF' ? '<i class="fa-solid fa-arrow-up mr-0.5"></i> Buff' : '<i class="fa-solid fa-arrow-down mr-0.5"></i> Nerf'}</span>
-                            ${item.note ? `<span title="${item.note}" class="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-0 max-w-[55%]"><i class="fa-solid fa-clock text-[8px] shrink-0"></i><span class="truncate min-w-0">${item.note}</span></span>` : ''}
+                            ${item.note ? `<span class="inline-flex items-center gap-1 bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none min-w-0 max-w-[55%]"><i class="fa-solid fa-clock text-[8px] shrink-0"></i><span class="truncate min-w-0">${item.note}</span></span>` : ''}
                         </div>
                     </div>
                     ${isGolden && isBuff ? `<span class="golden-week-badge absolute top-1 right-1 text-[8px] font-black px-1.5 py-0.5 rounded-full border border-amber-300/60 flex items-center gap-0.5 leading-none"><i class="fa-solid fa-crown text-[7px]"></i>GW</span>` : ''}
-                    ${isAdmin ? `<button onclick="editEcoNote('${key}')" title="แก้ไขรายการนี้" style="right:52px" class="absolute -bottom-1 bg-amber-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-pen"></i></button>` : ''}
-                    ${isAdmin ? `<button onclick="toggleEcoStatus('${key}','${item.status}')" title="สลับเป็น ${isBuff ? 'NERF' : 'BUFF'}" class="absolute -bottom-1 -right-7 bg-cyan-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>` : ''}
+                    ${isAdmin ? `<button onclick="editEcoNote('${key}')" style="right:52px" class="absolute -bottom-1 bg-amber-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-pen"></i></button>` : ''}
+                    ${isAdmin ? `<button onclick="toggleEcoStatus('${key}','${item.status}')" class="absolute -bottom-1 -right-7 bg-cyan-500 text-neutral-950 w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-arrow-right-arrow-left"></i></button>` : ''}
                     ${isAdmin ? `<button onclick="deleteEcoItem('${key}')" class="absolute -bottom-1 -right-1 bg-rose-600 text-white w-5 h-5 rounded-full text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow cursor-pointer"><i class="fa-solid fa-xmark"></i></button>` : ''}
                 `;
                 if (item.status === 'BUFF') buffContainer.appendChild(card);
@@ -3763,7 +3784,7 @@
             if (!row) return;
             row.innerHTML = GACHA_COLOR_PRESETS.map(c => {
                 const selected = c.hex.toLowerCase() === (selectedHex||'').toLowerCase();
-                return `<button type="button" title="${c.name}" onclick="selectGachaColor('${c.hex}')" class="gacha-color-swatch ${selected ? 'gacha-swatch-selected' : ''}" style="background:${c.hex}; color:${c.hex};"></button>`;
+                return `<button type="button" onclick="selectGachaColor('${c.hex}')" class="gacha-color-swatch ${selected ? 'gacha-swatch-selected' : ''}" style="background:${c.hex}; color:${c.hex};"></button>`;
             }).join('');
         }
         window.selectGachaColor = function(hex) {
@@ -5403,6 +5424,26 @@
             closeSideNav();
             window.scrollTo({ top: 0 });
         };
+    })();
+    </script>
+
+
+    <script>
+    /* ปิด tooltip ของเบราว์เซอร์ (title) ทุกจุด รวมถึงที่ถูกสร้างภายหลังด้วย JS */
+    (function () {
+        function strip(root) {
+            if (!root || root.nodeType !== 1) return;
+            if (root.hasAttribute('title')) root.removeAttribute('title');
+            var els = root.querySelectorAll ? root.querySelectorAll('[title]') : [];
+            for (var i = 0; i < els.length; i++) els[i].removeAttribute('title');
+        }
+        strip(document.body);
+        new MutationObserver(function (muts) {
+            muts.forEach(function (m) {
+                if (m.type === 'attributes') { if (m.target.tagName !== 'TITLE') m.target.removeAttribute('title'); }
+                else m.addedNodes.forEach(strip);
+            });
+        }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['title'] });
     })();
     </script>
 </body>
