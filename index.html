@@ -360,6 +360,15 @@
             pointer-events: none;
         }
 
+        /* ===== HEADER โปร่งใส ไม่มีแถบทึบและเส้น (เหลือแค่ปุ่มจดหมาย + ป้ายผู้จัดทำ) ===== */
+        #site-header {
+            background: transparent !important;
+            -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+            border-bottom: 0 !important; box-shadow: none !important;
+            pointer-events: none;
+        }
+        #site-header::after { display: none !important; }
+        #site-header button, #site-header #announcement-btn, #site-header #admin-account-bar { pointer-events: auto; }
         /* ===== NAV ===== */
         nav {
             background: linear-gradient(180deg, #0a0a0a 0%, #060606 100%) !important;
@@ -374,6 +383,66 @@
         }
         .inactive-tab { color: #737373; background: transparent; }
         .inactive-tab:hover { color: #f97316; background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); }
+
+        /* ===== SIDEBAR (แถบเมนูซ้ายสุด) ===== */
+        .side-burger { display: none; }
+        @media (max-width: 1023px) { .side-burger { display: flex; } }
+        :root { --side-w: 232px; --side-w-collapsed: 72px; }
+        #side-nav {
+            position: fixed; top: 0; left: 0; bottom: 0; width: var(--side-w);
+            z-index: 45; display: flex; flex-direction: column;
+            background: rgba(0,0,0,0.62);
+            -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+            border-right: 1px solid rgba(249,115,22,0.25);
+            transition: width .2s ease, transform .2s ease;
+        }
+        #side-nav .side-brand { border-bottom: 1px solid #ff7a1a !important; box-shadow: 0 1px 8px rgba(255,122,26,0.55); }
+        #side-nav .side-footer { border-top: 1px solid #ff7a1a !important; box-shadow: 0 -1px 8px rgba(255,122,26,0.55); }
+        #side-nav .side-collapse-btn { color: #a3a3a3; font-weight: 600; margin-bottom: 8px; }
+        #side-nav .side-collapse-btn:hover { color: #ff7a1a; }
+        #side-nav .side-collapse-btn i { transition: transform .2s; }
+        @media (min-width: 1024px) { body.side-collapsed #side-nav .side-collapse-btn i { transform: rotate(180deg); } }
+        #side-nav .side-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 8px; }
+        #side-nav .side-item {
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 700;
+            color: #d4d4d4; border: 1px solid transparent; background: transparent;
+            text-align: left; white-space: nowrap; cursor: pointer; transition: background .15s, color .15s;
+        }
+        #side-nav .side-item i.side-ico { width: 18px; text-align: center; flex-shrink: 0; font-size: 14px; }
+        #side-nav .side-item:hover { background: rgba(249,115,22,0.08); color: #f97316; }
+        #side-nav .side-item.active-tab {
+            background: rgba(249,115,22,0.18) !important; color: #fb923c !important;
+            border: 1px solid rgba(249,115,22,0.35); box-shadow: none;
+        }
+        #side-nav .side-item.inactive-tab { color: #d4d4d4; }
+        #side-nav .side-item.inactive-tab:hover { color: #f97316; background: rgba(249,115,22,0.08); border: 1px solid transparent; }
+        #side-nav .side-group-caret { margin-left: auto; font-size: 11px; transition: transform .2s; }
+        #side-nav .side-group.open .side-group-caret { transform: rotate(180deg); }
+        #side-nav .side-sub { display: none; margin: 2px 0 2px 18px; padding-left: 8px; border-left: 1px solid rgba(249,115,22,0.2); }
+        #side-nav .side-group.open .side-sub { display: flex; flex-direction: column; gap: 4px; }
+        #side-nav .side-group.has-active > .side-item { color: #fb923c; }
+        #side-nav .side-list { display: flex; flex-direction: column; gap: 4px; }
+
+        @media (min-width: 1024px) {
+            #main-app { padding-left: var(--side-w); transition: padding-left .2s ease; }
+            body.side-collapsed #side-nav { width: var(--side-w-collapsed); }
+            body.side-collapsed #main-app { padding-left: var(--side-w-collapsed); }
+            body.side-collapsed #side-nav .side-label,
+            body.side-collapsed #side-nav .side-brand-text,
+            body.side-collapsed #side-nav .side-group-caret { display: none; }
+            body.side-collapsed #side-nav .side-item { justify-content: center; padding: 10px 0; }
+            body.side-collapsed #side-nav .side-sub { margin-left: 0; padding-left: 0; border-left: 0; }
+            body.side-collapsed #side-nav .side-brand { justify-content: center; }
+            body.side-collapsed #side-nav .side-discord { border-radius: 12px; padding: 10px 0; }
+            #side-backdrop { display: none !important; }
+        }
+        @media (max-width: 1023px) {
+            #side-nav { transform: translateX(-100%); width: min(280px, 82vw); }
+            body.side-open #side-nav { transform: translateX(0); }
+            #side-backdrop { position: fixed; inset: 0; z-index: 44; background: rgba(0,0,0,.6); display: none; }
+            body.side-open #side-backdrop { display: block; }
+        }
 
         /* ===== FANTASY-CYBER CARD ===== */
         .fantasy-card {
@@ -1353,30 +1422,79 @@
     <!-- ================= 2. หน้าเว็บหลัก ================= -->
     <div id="main-app" class="hidden">
         
+        <!-- ================= SIDEBAR (แถบเมนูซ้ายสุด) ================= -->
+        <div id="side-backdrop" onclick="closeSideNav()"></div>
+        <aside id="side-nav" aria-label="เมนูหลัก">
+            <div class="side-brand flex items-center gap-2.5 px-3 py-3 border-b border-orange-500/15">
+                <button type="button" id="admin-login-trigger" onclick="showAdminLogin()" aria-label="Admin"
+                    class="relative w-10 h-10 shrink-0 rounded-xl border border-orange-500/30 bg-gradient-to-br from-orange-500/20 to-amber-500/10 hover:border-orange-400/70 flex items-center justify-center cursor-pointer select-none transition">
+                    <i class="fa-solid fa-sun text-lg text-orange-400"></i>
+                    <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500 animate-ping opacity-75"></span>
+                </button>
+                <div class="side-brand-text min-w-0 flex-1">
+                    <h1 class="text-[13px] font-black tracking-normal leading-tight whitespace-nowrap">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500">SUMMER CITY</span>
+                        <span class="text-neutral-300"> SS2</span>
+                    </h1>
+                    <p class="text-[10px] text-orange-500/60 font-medium leading-tight whitespace-nowrap">Guide book ผู้เล่นใหม่</p>
+                </div>
+            </div>
+            <div class="side-scroll custom-scrollbar">
+                <div class="side-list">
+                    <button type="button" onclick="switchTab('farm')" id="tab-farm" class="tab-btn side-item active-tab" title="ข้อมูลงานฟาร์ม">
+                        <i class="fa-solid fa-wheat-awn side-ico"></i><span class="side-label">ข้อมูลงานฟาร์ม</span>
+                    </button>
+                    <div class="side-group" id="side-group-fooddevil">
+                        <button type="button" class="side-item" onclick="toggleSideGroup()" title="อาหาร และ ผลปีศาจ">
+                            <i class="fa-solid fa-utensils side-ico"></i><span class="side-label">อาหาร และ ผลปีศาจ</span>
+                            <i class="fa-solid fa-chevron-down side-group-caret"></i>
+                        </button>
+                        <div class="side-sub">
+                    <button type="button" onclick="switchTab('food')" id="tab-food" class="tab-btn side-item inactive-tab" title="ข้อมูลอาหาร">
+                        <i class="fa-solid fa-utensils side-ico"></i><span class="side-label">ข้อมูลอาหาร</span>
+                    </button>
+                    <button type="button" onclick="switchTab('devil')" id="tab-devil" class="tab-btn side-item inactive-tab" title="ผลไม้ปีศาจ">
+                        <i class="fa-solid fa-fire side-ico"></i><span class="side-label">ผลไม้ปีศาจ</span>
+                    </button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn side-item inactive-tab" title="สถานะแฟชั่น">
+                        <i class="fa-solid fa-shirt side-ico"></i><span class="side-label">สถานะแฟชั่น</span>
+                    </button>
+                    <button type="button" onclick="switchTab('items')" id="tab-items" class="tab-btn side-item inactive-tab" title="แหล่งที่มา ITEMS">
+                        <i class="fa-solid fa-cube side-ico"></i><span class="side-label">แหล่งที่มา ITEMS</span>
+                    </button>
+                    <button type="button" onclick="switchTab('events')" id="tab-events" class="tab-btn side-item inactive-tab" title="เวลากิจกรรม">
+                        <i class="fa-solid fa-calendar-days side-ico"></i><span class="side-label">เวลากิจกรรม</span>
+                    </button>
+                    <button type="button" onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn side-item inactive-tab" title="เมนูลัดปุ่ม G">
+                        <i class="fa-solid fa-keyboard side-ico"></i><span class="side-label">เมนูลัดปุ่ม G</span>
+                    </button>
+                </div>
+            </div>
+            <div class="side-footer p-3 border-t border-orange-500/15">
+                <button type="button" onclick="toggleSideNav()" class="side-item side-collapse-btn" title="ย่อ/ขยายเมนู" aria-label="ย่อ/ขยายเมนู">
+                    <i class="fa-solid fa-angles-left side-ico"></i><span class="side-label">ย่อเมนู</span>
+                </button>
+                <button type="button" onclick="window.open('https://discord.gg/5x4NxuAZZ','_blank')" title="เข้าร่วมดิสคอร์ด"
+                    class="side-discord w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 border border-orange-500 shadow-md shadow-rose-500/30 transition select-none cursor-pointer">
+                    <i class="fa-brands fa-discord text-white text-base"></i>
+                    <span class="side-label text-white font-bold text-sm whitespace-nowrap">เข้าร่วมดิสคอร์ด</span>
+                </button>
+            </div>
+        </aside>
+
         <!-- HEADER NAVIGATION -->
         <header id="site-header" class="sticky top-0 z-40 shadow-md relative">
-            <div class="max-w-7xl mx-auto px-4 max-sm:px-3 py-3 max-sm:py-2 flex justify-between items-center">
-                <div class="flex items-center space-x-3 max-sm:space-x-2 shrink-0 min-w-0">
-                    <div id="admin-login-trigger" onclick="showAdminLogin()" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/30 flex items-center justify-center shrink-0 cursor-pointer select-none">
-                        <i class="fa-solid fa-sun text-lg max-sm:text-sm text-orange-400"></i>
-                        <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-orange-500 animate-ping opacity-75"></span>
-                    </div>
-                    <div class="min-w-0">
-                        <h1 class="text-md max-sm:text-sm font-black tracking-wide leading-tight truncate">
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-orange-500">SUMMER CITY</span>
-                            <span class="text-neutral-300"> SS2</span>
-                        </h1>
-                        <p class="text-[10px] max-sm:text-[9px] text-orange-500/60 font-medium tracking-widest uppercase truncate">◈ Guide Book ผู้เล่นใหม่ ◈</p>
-                    </div>
+            <div class="w-full px-4 max-sm:px-3 py-3 max-sm:py-2 flex justify-between items-center">
+                <div class="flex items-center shrink-0">
+                    <button type="button" onclick="toggleSideNav()" aria-label="เปิดเมนู"
+                        class="side-burger w-9 h-9 rounded-xl border border-orange-500/30 bg-black/30 text-orange-400 items-center justify-center cursor-pointer hover:bg-orange-500/10 transition">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                 </div>
 
                 <div class="flex items-center gap-2.5 max-sm:gap-1.5 shrink-0">
-                    <!-- ===== ปุ่มเข้าดิสคอร์ด ===== -->
-                    <button type="button" onclick="window.open('https://discord.gg/5x4NxuAZZ','_blank')"
-                       class="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 max-sm:px-2 max-sm:py-1.5 rounded-full bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 border border-orange-500 shadow-md shadow-rose-500/30 transition shrink-0 select-none cursor-pointer">
-                        <i class="fa-brands fa-discord text-white text-base max-sm:text-sm"></i>
-                        <span class="text-white font-bold text-xs sm:text-sm whitespace-nowrap max-sm:hidden">เข้าดิสคอร์ด</span>
-                    </button>
                     <!-- ===== ปุ่มประกาศ (ซองจดหมายสไตล์เกม) — แสดงตลอด ไม่ว่าจะเป็น USER หรือ ADMIN ===== -->
                     <div id="announcement-btn" onclick="openAnnouncementListModal()" class="relative w-9 h-9 max-sm:w-7 max-sm:h-7 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 border border-orange-400 flex items-center justify-center shrink-0 cursor-pointer select-none hover:from-orange-600 hover:to-amber-600 shadow-md shadow-orange-500/20 transition">
                         <i id="announcement-icon" class="fa-solid fa-envelope text-base max-sm:text-sm text-white drop-shadow"></i>
@@ -1413,44 +1531,6 @@
             </div>
         </header>
 
-        <!-- ================= TAB NAVIGATION BAR ================= -->
-        <nav id="tab-nav" class="bg-neutral-900 border-b border-neutral-800 sticky z-30 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 max-sm:px-2 py-2 max-sm:py-1.5 flex items-center gap-2 max-sm:gap-1.5">
-                <!-- ปุ่มไอคอน (พระอาทิตย์) — กดเพื่อเปิด/ปิดหมวดข้อมูลงาน -->
-                <button type="button" id="job-nav-toggle-btn" onclick="toggleJobCategoryNav()"
-                    aria-expanded="true"
-                    class="relative w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full bg-gradient-to-br from-orange-500/25 to-amber-500/10 border border-orange-500/40 flex items-center justify-center shrink-0 cursor-pointer select-none transition hover:border-orange-400/80 hover:bg-orange-500/20">
-                    <i id="job-nav-toggle-icon" class="fa-solid fa-sun text-base max-sm:text-sm text-orange-400 transition-transform duration-200"></i>
-                </button>
-
-                <!-- แคปซูลหมวดข้อมูลงาน — เปิด/ปิดได้ด้วยปุ่มไอคอนด้านซ้าย -->
-                <div id="job-category-buttons-wrap" class="overflow-x-auto flex-1 transition-all duration-200" style="-webkit-overflow-scrolling:touch;">
-                    <div class="flex items-center gap-1.5 max-sm:gap-1 py-1 min-w-max bg-neutral-950 border border-neutral-800 rounded-full px-1.5 max-sm:px-1">
-                        <button onclick="switchTab('farm')" id="tab-farm" class="tab-btn active-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-wheat-awn mr-1"></i> ข้อมูลงานฟาร์ม
-                        </button>
-                        <button onclick="switchTab('food')" id="tab-food" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-utensils mr-1"></i> ข้อมูลอาหาร
-                        </button>
-                        <button onclick="switchTab('devil')" id="tab-devil" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-fire mr-1"></i> ผลไม้ปีศาจ
-                        </button>
-                        <button onclick="switchTab('fashion')" id="tab-fashion" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-shirt mr-1"></i> สถานะแฟชั่น
-                        </button>
-                        <button onclick="switchTab('items')" id="tab-items" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-bag-shopping mr-1"></i> แหล่งที่มา ITEMS
-                        </button>
-                        <button onclick="switchTab('events')" id="tab-events" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-calendar-days mr-1"></i> เวลากิจกรรม
-                        </button>
-                        <button onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn inactive-tab px-4 max-sm:px-2.5 py-2 max-sm:py-1.5 rounded-full text-xs max-sm:text-[11px] font-bold transition whitespace-nowrap cursor-pointer">
-                            <i class="fa-solid fa-keyboard mr-1"></i> เมนูลัดปุ่ม G
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
         <!-- TAB STYLES MOVED TO MAIN STYLE BLOCK -->
 
         <main class="max-w-7xl mx-auto px-4 max-sm:px-3 py-8 max-sm:py-5">
@@ -1461,12 +1541,12 @@
 
             <!-- ===== ป้ายร้านค้า GACHA — อยู่กลางหน้า เหนือบอร์ดราคา Economy (ไม่ใช่ปุ่มลอยติดขอบจอแล้ว) ===== -->
             <!-- wrapper div สำหรับกัน SALE tag ล้นออกจากพื้นที่ -->
-            <div class="w-full max-w-2xl mx-auto mb-6 relative" style="padding-top:18px">
+            <div class="w-full mx-auto mb-6 relative" style="padding-top:18px;max-width:860px">
                 <span id="gacha-sale-tag-el" class="gacha-sale-tag text-[10px] font-black px-2 py-0.5 rounded-md text-white absolute top-0 left-3 shadow-lg z-10 leading-tight" style="background:linear-gradient(135deg,#dc2626,#991b1b);box-shadow:0 0 10px rgba(239,68,68,0.75);letter-spacing:0.05em">
                     <i class="fa-solid fa-tag mr-0.5 text-[9px]"></i>SALE
                 </span>
                 <button id="gacha-shop-banner" onclick="openGachaPopup()" type="button"
-                    class="w-full block rounded-2xl cursor-pointer relative overflow-hidden" style="height:220px;">
+                    class="w-full block rounded-2xl cursor-pointer relative overflow-hidden" style="height:clamp(220px,32vw,260px);">
                     <span class="gacha-shine"></span>
                     <img id="gacha-banner-image-el" src="" alt="" class="hidden absolute inset-0 w-full h-full object-cover">
                     <span id="gacha-banner-noimg-icon" class="gacha-cart-icon absolute top-1/2 left-1/2 w-11 h-11 rounded-xl flex items-center justify-center" style="transform:translate(-50%,-50%);background:linear-gradient(145deg,#7f1d1d,#ef4444);box-shadow:0 0 18px rgba(239,68,68,0.7),0 0 36px rgba(239,68,68,0.25)">
@@ -5286,6 +5366,44 @@
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
+    </script>
+
+    <script>
+    /* ===== SIDEBAR CONTROL ===== */
+    function isDesktopSide() { return window.matchMedia('(min-width:1024px)').matches; }
+    function toggleSideNav() {
+        if (isDesktopSide()) {
+            document.body.classList.toggle('side-collapsed');
+            try { localStorage.setItem('sideCollapsed', document.body.classList.contains('side-collapsed') ? '1' : '0'); } catch (e) {}
+        } else {
+            document.body.classList.toggle('side-open');
+        }
+    }
+    function closeSideNav() { document.body.classList.remove('side-open'); }
+    function toggleSideGroup(force) {
+        var g = document.getElementById('side-group-fooddevil');
+        if (!g) return;
+        if (document.body.classList.contains('side-collapsed') && isDesktopSide()) {
+            document.body.classList.remove('side-collapsed');
+        }
+        g.classList.toggle('open', typeof force === 'boolean' ? force : undefined);
+    }
+    (function () {
+        try { if (localStorage.getItem('sideCollapsed') === '1') document.body.classList.add('side-collapsed'); } catch (e) {}
+        /* หลังกดสลับแท็บ: อัปเดตสถานะกลุ่ม + ปิด drawer บนมือถือ + เลื่อนขึ้นบนสุด */
+        var _orig = window.switchTab;
+        window.switchTab = function (tab) {
+            _orig(tab);
+            var g = document.getElementById('side-group-fooddevil');
+            if (g) {
+                var inGroup = (tab === 'food' || tab === 'devil');
+                g.classList.toggle('has-active', inGroup);
+                if (inGroup) g.classList.add('open');
+            }
+            closeSideNav();
+            window.scrollTo({ top: 0 });
+        };
+    })();
     </script>
 </body>
 </html>
