@@ -2282,7 +2282,7 @@
     <section class="card res stale" id="cx-res">
       <div class="cols"><span>วัตถุดิบที่ต้องใช้</span><span>ในกระเป๋า</span><span>ท้ายรถโล</span></div>
       <div id="cx-rows"></div>
-      <div class="tot"><span>ยอดรวมการฟาร์ม<br><small style="color:var(--mut);font-size:12px">จะได้ปลากระป๋องทั้งหมด</small></span><b id="cx-total">-</b></div>
+      <div class="tot"><div class="tot-l"><div class="ic" id="cx-can-ic"></div><span>ยอดรวมการฟาร์ม<br><small style="color:var(--mut);font-size:12px">จะได้ปลากระป๋องทั้งหมด</small></span></div><b id="cx-total">-</b></div>
       <div class="hint" id="cx-hint">ยังไม่ได้คำนวณ — ใส่น้ำหนักแล้วกดปุ่ม “คำนวณ”</div>
     </section>
   </main>
@@ -2426,6 +2426,7 @@ width:100%;max-width:980px;font-family:var(--ccf);color:var(--tx);
 #calc-modal .ccx .v{text-align:center;font-size:21px;font-weight:700;color:var(--ok);font-variant-numeric:tabular-nums}
 #calc-modal .ccx .v.bag{color:var(--or)}
 #calc-modal .ccx .v small{font-size:12px;font-weight:400;color:var(--mut);margin-left:3px}
+#calc-modal .ccx .tot-l{display:flex;align-items:center;gap:12px}
 #calc-modal .ccx .tot{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#3a2208,#1f1409);border:1px solid #6b4310;border-radius:14px;padding:12px 16px;margin-top:auto}
 #calc-modal .ccx .tot b{font-size:30px;color:var(--or);font-variant-numeric:tabular-nums}
 #calc-modal .ccx .tot span{font-size:14px;color:#ffc77a}
@@ -2473,6 +2474,7 @@ width:100%;max-width:980px;font-family:var(--ccf);color:var(--tx);
 (function(){
 
 const ITEMS=[{id:'tomato',name:'มะเขือเทศ',bag:40,bagKey:'T'},{id:'chili',name:'พริก',bag:40},{id:'fish',name:'ปลา',bag:100}];
+const CAN={id:'can',name:'ปลากระป๋อง'}, ADMIN_ITEMS=[...ITEMS,CAN];
 const MAX=100000000; let val='',icons={},draft={};
 let actx=null;
 function chime(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;actx=actx||new AC();if(actx.state==='suspended')actx.resume();
@@ -2505,6 +2507,7 @@ async function saveIcons(obj){
 // ---------- แสดงผล ----------
 function iconHTML(it,u){return u?`<img src="${u}" alt="${it.name}" onerror="this.parentNode.textContent='${it.name[0]}'">`:it.name[0]}
 function renderRows(){
+  $('#cx-can-ic').innerHTML=iconHTML(CAN,icons.can);
   $('#cx-rows').innerHTML=ITEMS.map(it=>`<div class="row" style="margin-bottom:10px"><div class="who"><div class="ic">${iconHTML(it,icons[it.id])}</div>${it.name}</div>
   <div class="v bag" id="b-${it.id}">-</div><div class="v" id="t-${it.id}">-</div></div>`).join('');
   if(lastCalc)paint(lastCalc);
@@ -2564,12 +2567,12 @@ function isAdmin(){return !!(window.currentUser&&window.currentUser.role==='ADMI
 function syncGear(){$('#cx-gear').classList.toggle('on',isAdmin())}
 setInterval(()=>{const m=document.getElementById('calc-modal');if(m&&!m.classList.contains('hidden'))syncGear()},1000);
 $('#cx-gear').onclick=()=>{draft={...icons};$('#cx-msg').textContent='';
-  $('#cx-adminRows').innerHTML=ITEMS.map(it=>`<div class="ar"><div class="ic" id="p-${it.id}">${iconHTML(it,draft[it.id])}</div>
+  $('#cx-adminRows').innerHTML=ADMIN_ITEMS.map(it=>`<div class="ar"><div class="ic" id="p-${it.id}">${iconHTML(it,draft[it.id])}</div>
   <div class="f"><b style="font-size:14px">${it.name}</b><input class="u" id="u-${it.id}" placeholder="วางลิงก์รูป https://..." value="${(draft[it.id]||'').startsWith('data:')?'':(draft[it.id]||'')}">
   <div><label class="sm">อัปโหลดไฟล์<input type="file" accept="image/*" hidden data-f="${it.id}"></label> <button class="sm" data-x="${it.id}">ลบรูป</button></div></div></div>`).join('');
   $('#cx-modal').classList.add('on')};
 $('#cx-close').onclick=()=>$('#cx-modal').classList.remove('on');
-function setPrev(id){const it=ITEMS.find(i=>i.id===id);$('#p-'+id).innerHTML=iconHTML(it,draft[id])}
+function setPrev(id){const it=ADMIN_ITEMS.find(i=>i.id===id);$('#p-'+id).innerHTML=iconHTML(it,draft[id])}
 $('#cx-adminRows').addEventListener('input',e=>{if(e.target.id?.startsWith('u-')){const id=e.target.id.slice(2);draft[id]=e.target.value.trim();setPrev(id)}});
 $('#cx-adminRows').addEventListener('click',e=>{const x=e.target.dataset.x;if(x){draft[x]='';$('#u-'+x).value='';setPrev(x)}});
 $('#cx-adminRows').addEventListener('change',e=>{
