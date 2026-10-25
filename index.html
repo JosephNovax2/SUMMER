@@ -1872,9 +1872,7 @@
                     <button type="button" onclick="switchTab('gkey')" id="tab-gkey" class="tab-btn side-item inactive-tab">
                         <i class="fa-solid fa-keyboard side-ico"></i><span class="side-label">เมนูลัดปุ่ม G</span>
                     </button>
-                    <button type="button" onclick="switchTab('carup')" id="tab-carup" class="tab-btn side-item inactive-tab">
-                         <i class="fa-solid fa-car-burst side-ico"></i><span class="side-label">UPDATE เรื่องรถ</span>
-                     </button>
+
                 </div>
             </div>
             <div class="side-footer p-3 border-t border-orange-500/15">
@@ -2086,7 +2084,7 @@
                         </button>
                     </div>
 
-                    <button onclick="openCalculatorModal()" class="w-full md:w-auto bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-neutral-950 px-6 py-2.5 rounded-xl text-xs font-black shadow-lg shadow-cyan-500/10 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <button onclick="openCalculatorModal()" class="w-full md:w-auto bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-neutral-950 px-6 py-2.5 rounded-xl text-xs font-black shadow-lg shadow-orange-500/20 transition flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-calculator text-sm"></i> <i class="fa-solid fa-truck-pickup mr-1"></i> เปิดเครื่องคำนวณรถโล (งานปลากระป๋อง)
                     </button>
                 </div>
@@ -2232,27 +2230,7 @@
                 </section>
             </div>
 
-             <!-- ================= PANEL: UPDATE เรื่องรถ ================= -->
-             <div id="panel-carup" class="hidden">
-                 <section class="space-y-6">
-                     <div class="section-head-glass flex flex-col md:flex-row justify-between items-start md:items-center pb-4 gap-4 relative">
-                         <div>
-                             <h2 class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-amber-200 tracking-wide flex items-center gap-2">
-                                 <i class="fa-solid fa-car-burst text-2xl text-orange-400"></i> UPDATE เรื่องรถ
-                             </h2>
-                         </div>
-                         <div class="flex items-center gap-2 shrink-0">
-                             <span id="cu-count" class="cu-count" style="display:none">0/10</span>
-                             <button id="admin-add-carup-btn" type="button" onclick="openCarUpdateEdit()" class="cu-btn hidden">
-                                 <i class="fa-solid fa-plus"></i> เพิ่มอัปเดตรถ
-                             </button>
-                         </div>
-                     </div>
-                     <div id="carup-display" class="cu-table">
-                         <div class="text-center text-neutral-500 py-16 text-sm" style="grid-column:1/-1"><i class="fa-solid fa-circle-notch fa-spin mr-2"></i>กำลังโหลดข้อมูล...</div>
-                     </div>
-                 </section>
-             </div>
+             
 
             <!-- ================= PANEL: ข้อมูลอาหาร ================= -->
             <div id="panel-food" class="hidden">
@@ -2277,66 +2255,340 @@
     </div>
 
 
-    <!-- ================= MODAL: เครื่องคำนวณรถโล ================= -->
-    <div id="calc-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
-        <div class="bg-neutral-900 border border-cyan-500/30 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
-            <div class="bg-neutral-950 border-b border-neutral-800 text-neutral-100 p-5 font-bold flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-calculator text-2xl text-cyan-500"></i>
-                    <div>
-                        <h3 class="text-md font-black text-cyan-500">เครื่องคำนวณสัดส่วนฟาร์มรอบเมือง (งานปลากระป๋อง)</h3>
-                    </div>
-                </div>
-                <button onclick="closeCalculatorModal()" class="text-neutral-400 hover:text-neutral-200 cursor-pointer"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            </div>
-            
-            <div class="p-6 space-y-6">
-                <div class="bg-neutral-950 p-4 rounded-xl border border-neutral-800">
-                    <label class="block text-xs font-bold text-cyan-400 mb-2 uppercase tracking-wide"><i class="fa-solid fa-truck-pickup mr-1"></i> ระบุน้ำหนักท้ายรถโลของคุณ (KG):</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="input-car-weight" value="200" min="0" max="100000000" maxlength="9" oninput="if(this.value.length>9) this.value=this.value.slice(0,9); if(parseFloat(this.value)>100000000) this.value=100000000;" class="w-full px-4 py-2 bg-neutral-900 border border-neutral-800 rounded-xl font-bold text-md outline-none text-neutral-100">
-                        <button onclick="runAdvancedCalculator()" class="bg-cyan-500 text-neutral-950 font-black px-6 text-xs rounded-xl hover:bg-cyan-600 transition shrink-0 cursor-pointer">คำนวณสัดส่วน</button>
-                    </div>
-                </div>
+    <!-- ================= MODAL: เครื่องคำนวณสัดส่วนฟาร์มท้ายรถโล (แนวนอน) ================= -->
+    <div id="calc-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-3 backdrop-blur-md" onmousedown="if(event.target===this) closeCalculatorModal()">
+        <div class="ccx" role="dialog" aria-modal="true">
+<div class="app">
+  <div class="hd">
+    <span class="dot"></span><span class="brand">SUMMER CITY</span>
+    <h1>เครื่องคำนวณสัดส่วนฟาร์มท้ายรถโล<small>งานปลากระป๋อง · ใส่น้ำหนักแล้วกด “คำนวณ”</small></h1>
+    <button class="gear" id="cx-gear">⚙ จัดการรูป</button><button class="xc" onclick="closeCalculatorModal()" aria-label="ปิด">✕</button>
+  </div>
 
-                <div class="space-y-4">
-                    <div class="bg-neutral-950 border border-neutral-800 rounded-xl overflow-hidden text-xs">
-                        <div class="bg-neutral-900 px-4 py-2.5 font-bold text-neutral-300 grid grid-cols-3 text-center border-b border-neutral-800">
-                            <span>วัตถุดิบจำเป็น</span>
-                            <span>จำนวนในกระเป๋า</span>
-                            <span>จำนวนเก็บไว้ท้ายรถโล</span>
-                        </div>
-                        <div class="p-2 space-y-1 font-bold text-center">
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-rose-400 text-left pl-4"><i class="fa-solid fa-apple-whole mr-1"></i> มะเขือเทศ</span>
-                                <span id="res-bag-tomato" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-tomato" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-emerald-400 text-left pl-4"><i class="fa-solid fa-pepper-hot mr-1"></i> พริก</span>
-                                <span id="res-bag-chili" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-chili" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                            <div class="grid grid-cols-3 py-2.5 bg-neutral-900/50 rounded border border-neutral-800/40 items-center">
-                                <span class="text-blue-400 text-left pl-4"><i class="fa-solid fa-fish mr-1"></i> ปลา</span>
-                                <span id="res-bag-fish" class="text-orange-400 text-sm">- ชิ้น</span>
-                                <span id="res-trunk-fish" class="text-neutral-200 text-sm">- ชิ้น</span>
-                            </div>
-                        </div>
-                    </div>
+  <main>
+    <section class="card">
+      <div class="lcd-top"><span>น้ำหนักท้ายรถโล</span><span class="unit">KG</span></div>
+      <div class="lcd" id="cx-lcd">0</div>
+      <div class="keys" id="cx-keys">
+        <button class="k" data-k="7">7</button><button class="k" data-k="8">8</button><button class="k" data-k="9">9</button>
+        <button class="k" data-k="4">4</button><button class="k" data-k="5">5</button><button class="k" data-k="6">6</button>
+        <button class="k" data-k="1">1</button><button class="k" data-k="2">2</button><button class="k" data-k="3">3</button>
+        <button class="k zero" data-k="0">0</button><button class="k fn" data-k="B" aria-label="ลบ">⌫</button>
+        <button class="k fn" data-k="C" style="grid-column:span 3;height:42px">ล้างค่า</button>
+        <button class="go" id="cx-go">คำนวณสัดส่วน</button>
+      </div>
+    </section>
 
-                    <div class="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4 flex items-center justify-between">
-                        <div>
-                            <span class="block text-[11px] font-bold text-orange-400 uppercase tracking-wide"><i class="fa-solid fa-box-open mr-1"></i> สรุปผลยอดวัตถุดิบสุทธิ</span>
-                        </div>
-                        <div class="text-right bg-neutral-950 px-4 py-2 rounded-xl border border-neutral-800">
-                            <span id="res-total-final" class="text-xl font-black text-orange-500">- ชิ้น</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="card res stale" id="cx-res">
+      <div class="cols"><span>วัตถุดิบที่ต้องใช้</span><span>ในกระเป๋า</span><span>ท้ายรถโล</span></div>
+      <div id="cx-rows"></div>
+      <div class="tot"><span>ยอดรวมการฟาร์ม<br><small style="color:var(--mut);font-size:12px">จะได้ปลากระป๋องทั้งหมด</small></span><b id="cx-total">-</b></div>
+      <div class="hint" id="cx-hint">ยังไม่ได้คำนวณ — ใส่น้ำหนักแล้วกดปุ่ม “คำนวณ”</div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="cx-modal">
+  <div class="box">
+    <h2>จัดการรูปวัตถุดิบ (แอดมิน)</h2>
+    <p>วางลิงก์รูป หรืออัปโหลดไฟล์ได้ รูปจะถูกย่อให้พอดี (128×128) อัตโนมัติ</p>
+    <div id="cx-adminRows"></div>
+    <div id="cx-msg"></div>
+    <div class="acts"><button class="sm" id="cx-close">ปิด</button><button class="go" id="cx-save">บันทึก</button></div>
+  </div>
+</div>
         </div>
     </div>
+
+    <style id="jd-hot-style">
+        /* ===== หน้ารายละเอียดงาน: เวอร์ชัน "งานยอดฮิต" ให้ต่างจากงานปกติ ===== */
+        #job-detail-box .jd-hot-only { display: none; }
+        #job-detail-box.jd-hot .jd-hot-only { display: flex; }
+        #job-detail-box.jd-hot {
+            border-color: rgba(249,115,22,0.75) !important;
+            background: linear-gradient(180deg, #1f0e04 0%, #140a05 45%, #0c0806 100%) !important;
+            animation: fireGlow 2s infinite ease-in-out;
+        }
+        #job-detail-box.jd-hot #job-detail-hero { border-bottom: 2px solid rgba(249,115,22,0.7); }
+        #job-detail-box .jd-hot-fade {
+            position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(ellipse at 50% 125%, rgba(249,115,22,0.6), transparent 62%),
+                        linear-gradient(to top, rgba(24,8,2,0.85), transparent 48%);
+        }
+        #job-detail-box .jd-embers { position: absolute; inset: 0; pointer-events: none; overflow: hidden; display: none; }
+        #job-detail-box.jd-hot .jd-embers { display: block; }
+        #job-detail-box .jd-embers span {
+            position: absolute; bottom: 24px; width: 5px; height: 5px; border-radius: 50%;
+            background: #ffb238; box-shadow: 0 0 8px 2px rgba(255,122,26,0.9); opacity: 0;
+            animation: jdEmber 3.2s ease-in infinite;
+        }
+        #job-detail-box .jd-embers span:nth-child(1) { left: 8%;  animation-delay: 0s; }
+        #job-detail-box .jd-embers span:nth-child(2) { left: 22%; animation-delay: 1.1s; width: 4px; height: 4px; }
+        #job-detail-box .jd-embers span:nth-child(3) { left: 37%; animation-delay: .5s; }
+        #job-detail-box .jd-embers span:nth-child(4) { left: 52%; animation-delay: 2s; width: 4px; height: 4px; }
+        #job-detail-box .jd-embers span:nth-child(5) { left: 67%; animation-delay: 1.6s; }
+        #job-detail-box .jd-embers span:nth-child(6) { left: 80%; animation-delay: .8s; width: 4px; height: 4px; }
+        #job-detail-box .jd-embers span:nth-child(7) { left: 92%; animation-delay: 2.4s; }
+        @keyframes jdEmber {
+            0%   { transform: translateY(0) scale(1); opacity: 0; }
+            15%  { opacity: 1; }
+            100% { transform: translateY(-190px) translateX(14px) scale(0.3); opacity: 0; }
+        }
+        #job-detail-box.jd-hot #job-detail-hot-badge { box-shadow: 0 0 14px rgba(249,115,22,0.7); animation: hotRibbonPulse 1.8s ease-in-out infinite; }
+        #job-detail-box.jd-hot .text-cyan-400 { color: #ffb238 !important; }
+        #job-detail-box.jd-hot .job-step-card { background: rgba(34,14,4,0.7) !important; border-color: rgba(249,115,22,0.3) !important; }
+        #job-detail-box.jd-hot .job-step-number { background: linear-gradient(135deg,#ffb238,#e0281c) !important; color: #2b0900 !important; box-shadow: 0 0 10px rgba(249,115,22,0.65); }
+
+        /* ===== ดีไซน์ 3 มิติ ===== */
+        #job-detail-box.jd-hot {
+            position: relative;
+            transform: perspective(1100px) rotateX(var(--jx, 0deg)) rotateY(var(--jy, 0deg));
+            transition: transform 0.18s ease-out;
+            will-change: transform;
+            filter: drop-shadow(0 28px 36px rgba(0,0,0,0.75));
+        }
+        #job-detail-box.jd-hot::after {
+            content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 30;
+            box-shadow: inset 0 2px 0 rgba(255,225,170,0.45), inset 0 -4px 10px rgba(0,0,0,0.65),
+                        inset 2px 0 0 rgba(255,200,130,0.12), inset -2px 0 0 rgba(0,0,0,0.4), inset 0 0 46px rgba(249,115,22,0.14);
+        }
+        #job-detail-box.jd-hot #job-detail-difficulty-badge,
+        #job-detail-box.jd-hot #job-detail-items span {
+            box-shadow: 0 4px 0 rgba(0,0,0,0.55), 0 7px 10px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.28);
+            transform: translateY(-1px);
+        }
+        #job-detail-box.jd-hot .job-step-card {
+            background: linear-gradient(160deg, rgba(52,22,7,0.85), rgba(22,9,3,0.92)) !important;
+            box-shadow: 0 12px 22px rgba(0,0,0,0.6), 0 3px 0 rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,130,0.22), inset 0 -2px 6px rgba(0,0,0,0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #job-detail-box.jd-hot .job-step-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 30px rgba(0,0,0,0.7), 0 3px 0 rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,200,130,0.3), inset 0 -2px 6px rgba(0,0,0,0.5);
+        }
+        #job-detail-box.jd-hot .job-step-number {
+            background: radial-gradient(circle at 30% 25%, #fff3c4 0%, #ffb238 38%, #e0281c 100%) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.65), inset 0 -3px 5px rgba(120,20,0,0.55), inset 0 2px 3px rgba(255,255,255,0.6), 0 0 12px rgba(249,115,22,0.6);
+        }
+        #job-detail-box.jd-hot .job-step-img { box-shadow: 0 14px 26px rgba(0,0,0,0.7), 0 0 0 1px rgba(249,115,22,0.25); }
+        @media (prefers-reduced-motion: reduce) { #job-detail-box.jd-hot { transform: none !important; } }
+        @media (prefers-reduced-motion: reduce) { #job-detail-box, #job-detail-box * { animation: none !important; } }
+    </style>
+    <script id="jd-tilt-script">
+    (function () {
+        if (!window.matchMedia || !matchMedia('(hover: hover)').matches) return;
+        function box() { return document.getElementById('job-detail-box'); }
+        document.addEventListener('mousemove', function (e) {
+            var bx = box(); if (!bx || !bx.classList.contains('jd-hot')) return;
+            var m = document.getElementById('job-detail-modal'); if (!m || m.classList.contains('hidden')) return;
+            var r = bx.getBoundingClientRect();
+            var x = Math.max(-0.5, Math.min(0.5, (e.clientX - r.left) / r.width - 0.5));
+            var y = Math.max(-0.5, Math.min(0.5, (e.clientY - r.top) / r.height - 0.5));
+            bx.style.setProperty('--jy', (x * 5).toFixed(2) + 'deg');
+            bx.style.setProperty('--jx', (-y * 4).toFixed(2) + 'deg');
+        });
+    })();
+    </script>
+
+
+    <style id="cc-style">
+#calc-modal .ccx{--bg:#0b0805;--panel:#17110b;--panel2:#1f1710;--line:#4a3014;--or:#ff9a1f;--or2:#f07300;--tx:#fff4e6;--mut:#a38b6e;--ok:#ffd37a;--ccf:var(--default-font-family,system-ui,'Noto Sans Thai',sans-serif);
+width:100%;max-width:980px;font-family:var(--ccf);color:var(--tx);
+}
+#calc-modal .ccx *{box-sizing:border-box;margin:0}
+#calc-modal .ccx .app{width:100%;max-height:calc(100vh - 24px);overflow:auto;max-width:980px;background:linear-gradient(160deg,#22170b,#120d07);border:1px solid var(--line);border-radius:22px;padding:22px 24px;box-shadow:0 20px 60px #000a}
+#calc-modal .ccx .hd{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:6px 6px 14px;border-bottom:1px solid #3a2509;background:none}
+#calc-modal .ccx .dot{width:9px;height:9px;border-radius:50%;background:var(--or);box-shadow:0 0 10px var(--or)}
+#calc-modal .ccx .brand{font-size:11px;letter-spacing:.25em;color:var(--or);font-weight:600}
+#calc-modal .ccx h1{line-height:1.35;font-size:19px;font-weight:600;color:var(--or);flex:1;margin-left:6px}
+#calc-modal .ccx h1 small{display:block;font-size:12px;color:var(--mut);font-weight:400}
+#calc-modal .ccx .gear{display:none;background:#2a1d0e;border:1px solid var(--line);color:var(--or);border-radius:10px;padding:7px 12px;font:500 13px var(--ccf);cursor:pointer}
+#calc-modal .ccx .gear.on{display:block}
+#calc-modal .ccx main{display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:14px}
+#calc-modal .ccx .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+#calc-modal .ccx .lcd-top{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);margin-bottom:6px}
+#calc-modal .ccx .unit{background:var(--or2);color:#1a0f02;font-weight:700;font-size:11px;padding:1px 8px;border-radius:6px}
+#calc-modal .ccx .lcd{font-size:40px;font-weight:700;text-align:right;color:var(--or);text-shadow:0 0 16px #ff8a0066;background:#0a0704;border:1px solid #3a2509;border-radius:12px;padding:6px 14px;min-height:62px;overflow:hidden;font-variant-numeric:tabular-nums}
+#calc-modal .ccx .keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+#calc-modal .ccx .k{height:54px;border-radius:12px;border:1px solid #3b3022;background:linear-gradient(#2e2820,#1c1813);color:var(--tx);font:600 20px var(--ccf);cursor:pointer;transition:.1s}
+#calc-modal .ccx .k:active{transform:scale(.95);background:#3a2f22}
+#calc-modal .ccx .k.fn{color:var(--or);background:linear-gradient(#2c1d0d,#1a1108);border-color:var(--line)}
+#calc-modal .ccx .k.zero{grid-column:span 2}
+#calc-modal .ccx .go{grid-column:span 3;height:58px;border:0;border-radius:14px;background:linear-gradient(#ffb04a,#e86a00);color:#1c0e00;font:700 18px var(--ccf);cursor:pointer;box-shadow:0 8px 22px #e86a0055}
+#calc-modal .ccx .go:active{transform:scale(.98)}
+#calc-modal .ccx .res{display:flex;flex-direction:column;gap:10px}
+#calc-modal .ccx .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;font-size:12px;color:var(--mut);padding:0 12px}
+#calc-modal .ccx .cols span:not(:first-child){text-align:center}
+#calc-modal .ccx .row{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;align-items:center;background:var(--panel2);border:1px solid #33230f;border-radius:14px;padding:10px 12px}
+#calc-modal .ccx .who{display:flex;align-items:center;gap:12px;font-weight:600;font-size:17px}
+#calc-modal .ccx .ic{width:56px;height:56px;border-radius:14px;flex:none;background:#0d0905 center/cover no-repeat;border:1px solid var(--line);display:grid;place-items:center;color:var(--or);font-size:22px;font-weight:700;overflow:hidden}
+#calc-modal .ccx .ic img{width:100%;height:100%;object-fit:cover;display:block}
+#calc-modal .ccx .v{text-align:center;font-size:21px;font-weight:700;color:var(--ok);font-variant-numeric:tabular-nums}
+#calc-modal .ccx .v.bag{color:var(--or)}
+#calc-modal .ccx .v small{font-size:12px;font-weight:400;color:var(--mut);margin-left:3px}
+#calc-modal .ccx .tot{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#3a2208,#1f1409);border:1px solid #6b4310;border-radius:14px;padding:12px 16px;margin-top:auto}
+#calc-modal .ccx .tot b{font-size:30px;color:var(--or);font-variant-numeric:tabular-nums}
+#calc-modal .ccx .tot span{font-size:14px;color:#ffc77a}
+#calc-modal .ccx .res.stale .v,#calc-modal .ccx .res.stale .tot b{opacity:.35}
+#calc-modal .ccx .hint{text-align:center;font-size:13px;color:var(--mut)}
+#calc-modal .ccx .modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:16px;z-index:9}
+#calc-modal .ccx .modal.on{display:grid}
+#calc-modal .ccx .box{width:100%;max-width:520px;background:#17110b;border:1px solid var(--line);border-radius:18px;padding:18px;max-height:90vh;overflow:auto}
+#calc-modal .ccx .box h2{font-size:17px;color:var(--or);margin-bottom:4px}
+#calc-modal .ccx .box p{font-size:12px;color:var(--mut);margin-bottom:12px}
+#calc-modal .ccx .ar{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+#calc-modal .ccx .ar .ic{width:56px;height:56px}
+#calc-modal .ccx .ar .f{flex:1;display:flex;flex-direction:column;gap:6px}
+#calc-modal .ccx input.u{width:100%;background:#0a0704;border:1px solid #3a2509;border-radius:8px;color:var(--tx);padding:7px 10px;font:14px var(--ccf)}
+#calc-modal .ccx .sm{background:#2a1d0e;border:1px solid var(--line);color:var(--or);border-radius:8px;padding:5px 10px;font:500 12px var(--ccf);cursor:pointer}
+#calc-modal .ccx .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+#calc-modal .ccx .acts .go{grid-column:auto;height:42px;padding:0 20px;font-size:15px}
+#calc-modal .ccx #msg{font-size:12px;color:var(--ok);min-height:16px}
+#calc-modal .ccx .go{position:relative;overflow:hidden}
+#calc-modal .ccx .go.busy{pointer-events:none;filter:saturate(.8)}
+#calc-modal .ccx .go.busy::before{content:"";display:inline-block;width:16px;height:16px;margin-right:8px;vertical-align:-2px;border:3px solid #1c0e0055;border-top-color:#1c0e00;border-radius:50%;animation:spin .7s linear infinite}
+#calc-modal .ccx .go.busy::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#fff6 50%,transparent 70%);animation:sweep .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes sweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+#calc-modal .ccx .res.loading .row{position:relative;overflow:hidden}
+#calc-modal .ccx .res.loading .row::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,#ff9a1f33 50%,transparent 70%);animation:sweep 1s linear infinite}
+#calc-modal .ccx .res.loading .v,#calc-modal .ccx .res.loading .tot b{opacity:.2;filter:blur(3px)}
+#calc-modal .ccx .res.pop .row{animation:pop .5s cubic-bezier(.2,1.3,.4,1) both}
+#calc-modal .ccx .res.pop #cx-rows .row:nth-child(2){animation-delay:.1s}
+#calc-modal .ccx .res.pop #cx-rows .row:nth-child(3){animation-delay:.2s}
+#calc-modal .ccx .res.pop .tot{animation:pop .5s .3s cubic-bezier(.2,1.3,.4,1) both,glow 1s .3s}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes glow{50%{box-shadow:0 0 28px #ff9a1f88}}
+@media (prefers-reduced-motion:reduce){#calc-modal .ccx *{animation-duration:.01ms!important}}
+@media (max-width:720px){#calc-modal .ccx main{grid-template-columns:1fr}
+#calc-modal .ccx .lcd{font-size:34px}}
+@media (max-width:480px){#calc-modal .ccx .cols{display:none}
+#calc-modal .ccx .row{grid-template-columns:1fr 1fr;row-gap:6px}
+#calc-modal .ccx .who{grid-column:span 2}}
+#calc-modal .ccx .xc{flex:none;background:#2a1d0e;border:1px solid var(--line);color:var(--or);border-radius:10px;width:38px;height:38px;margin-left:4px;font-size:15px;cursor:pointer}
+#calc-modal .ccx .xc:hover{background:#3a2610}
+    </style>
+
+    <script id="cc-script">
+(function(){
+
+const ITEMS=[{id:'tomato',name:'มะเขือเทศ',bag:40,bagKey:'T'},{id:'chili',name:'พริก',bag:40},{id:'fish',name:'ปลา',bag:100}];
+const MAX=100000000; let val='',icons={},draft={};
+let actx=null;
+function chime(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;actx=actx||new AC();if(actx.state==='suspended')actx.resume();
+  const t=actx.currentTime;[[523.25,0],[783.99,.09],[1046.5,.18]].forEach(([f,d])=>{const o=actx.createOscillator(),g=actx.createGain();
+  o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(.07,t+d+.015);g.gain.exponentialRampToValueAtTime(.0001,t+d+.5);
+  o.connect(g);g.connect(actx.destination);o.start(t+d);o.stop(t+d+.55)})}catch(e){}}
+function snd(){try{if(window.SCSound&&window.SCSound.click)window.SCSound.click()}catch(e){}}
+const $=s=>document.querySelector('#calc-modal '+s), fmt=n=>n.toLocaleString('th-TH');
+
+// ---------- icon storage (Firebase เมื่ออยู่บนเว็บจริง / localStorage สำรอง) ----------
+let fb=null;
+const LS='calc_icons_v1';
+function lsGet(){try{return JSON.parse(localStorage.getItem(LS)||'{}')}catch(e){return {}}}
+async function initStore(){
+  icons=lsGet(); renderRows();
+  try{
+    const cfg={apiKey:"AIzaSyDRMwSLQHZOfzAo8MwXsH4bBcO5cLiGSvQ",authDomain:"summer-city-6ddec.firebaseapp.com",databaseURL:"https://summer-city-6ddec-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"summer-city-6ddec",appId:"1:278037090920:web:0d6e75fcc521537aece1dd"};
+    const A=await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+    const D=await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js");
+    const app=A.getApps().length?A.getApp():A.initializeApp(cfg); const db=D.getDatabase(app);
+    fb={db,D}; D.onValue(D.ref(db,'calc_icons'),s=>{icons=s.val()||{};renderRows()});
+  }catch(e){fb=null}
+}
+async function saveIcons(obj){
+  try{localStorage.setItem(LS,JSON.stringify(obj))}catch(e){}
+  if(fb){await fb.D.set(fb.D.ref(fb.db,'calc_icons'),obj)}
+  icons=obj; renderRows();
+}
+
+// ---------- แสดงผล ----------
+function iconHTML(it,u){return u?`<img src="${u}" alt="${it.name}" onerror="this.parentNode.textContent='${it.name[0]}'">`:it.name[0]}
+function renderRows(){
+  $('#cx-rows').innerHTML=ITEMS.map(it=>`<div class="row" style="margin-bottom:10px"><div class="who"><div class="ic">${iconHTML(it,icons[it.id])}</div>${it.name}</div>
+  <div class="v bag" id="b-${it.id}">-</div><div class="v" id="t-${it.id}">-</div></div>`).join('');
+  if(lastCalc)paint(lastCalc);
+}
+let lastCalc=null;
+function paint(c){
+  ITEMS.forEach(it=>{const r=c[it.id];$('#b-'+it.id).innerHTML=fmt(r.bag)+'<small>ชิ้น</small>';$('#t-'+it.id).innerHTML=fmt(r.trunk)+'<small>ชิ้น</small>'});
+  $('#cx-total').innerHTML=fmt(c.total)+' <span style="font-size:14px">กระป๋อง</span>';
+}
+function show(){$('#cx-lcd').textContent=val===''?'0':Number(val).toLocaleString('en-US')}
+
+// ---------- คำนวณ (สูตรเดิม) ----------
+function calc(){
+  let kg=parseFloat(val); if(isNaN(kg)||kg<0)kg=0; if(kg>MAX)kg=MAX;
+  const target=Math.floor((kg/0.5+180)/3), c={};
+  ITEMS.forEach(it=>{let bag=it.bag,trunk=target-bag; if(trunk<0){trunk=0; if(it.id==='fish')bag=target}
+    c[it.id]={bag,trunk}});
+  c.total=target; lastCalc=c; countUp(c);
+  $('#cx-res').classList.remove('stale'); $('#cx-hint').textContent='';
+}
+$('#cx-keys').addEventListener('click',e=>{
+  const b=e.target.closest('[data-k]'); if(!b)return; snd(); const k=b.dataset.k;
+  if(k==='C')val=''; else if(k==='B')val=val.slice(0,-1);
+  else if(val.length<9){val=(val+k).replace(/^0+(?=\d)/,''); if(Number(val)>MAX)val=String(MAX)}
+  show(); if(lastCalc){$('#cx-res').classList.add('stale');$('#cx-hint').textContent='ค่าเปลี่ยนแล้ว — กด “คำนวณ” เพื่ออัปเดตผล'}
+});
+function countUp(c){const t0=performance.now(),D=700;
+  (function step(now){const p=Math.min(1,(now-t0)/D),e=1-Math.pow(1-p,3),s={total:Math.round(c.total*e)};
+    ITEMS.forEach(it=>s[it.id]={bag:Math.round(c[it.id].bag*e),trunk:Math.round(c[it.id].trunk*e)});
+    paint(s); if(p<1)requestAnimationFrame(step)})(t0)}
+let busy=false;
+function run(){
+  if(busy)return; busy=true; snd();
+  const go=$('#cx-go'),res=$('#cx-res');
+  go.classList.add('busy'); go.textContent='กำลังคำนวณ...';
+  res.classList.remove('pop'); res.classList.add('loading'); $('#cx-hint').textContent='กำลังคำนวณสัดส่วน...';
+  setTimeout(()=>{
+    calc(); chime(); res.classList.remove('loading'); void res.offsetWidth; res.classList.add('pop');
+    go.classList.remove('busy'); go.textContent='คำนวณสัดส่วน'; busy=false;
+    setTimeout(()=>res.classList.remove('pop'),1000);
+  },900);
+}
+$('#cx-go').onclick=run;
+document.addEventListener('keydown',e=>{
+  const m=document.getElementById('calc-modal'); if(!m||m.classList.contains('hidden'))return;
+  const dlg=document.getElementById('sc-dlg'); if(dlg&&dlg.classList.contains('sc-on'))return;
+  const am=$('#cx-modal');
+  if(e.key==='Escape'){e.preventDefault(); if(am.classList.contains('on'))am.classList.remove('on'); else window.closeCalculatorModal(); return}
+  if(am.classList.contains('on')||e.target.tagName==='INPUT')return;
+  if(/^\d$/.test(e.key)&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();$('[data-k="'+e.key+'"]').click()}
+  else if(e.key==='Backspace'){e.preventDefault();$('[data-k="B"]').click()}
+  else if(e.key==='Enter'&&document.activeElement.tagName!=='BUTTON'){e.preventDefault();run()}
+});
+
+// ---------- แอดมิน ----------
+function isAdmin(){return !!(window.currentUser&&window.currentUser.role==='ADMIN')}
+function syncGear(){$('#cx-gear').classList.toggle('on',isAdmin())}
+setInterval(()=>{const m=document.getElementById('calc-modal');if(m&&!m.classList.contains('hidden'))syncGear()},1000);
+$('#cx-gear').onclick=()=>{draft={...icons};$('#cx-msg').textContent='';
+  $('#cx-adminRows').innerHTML=ITEMS.map(it=>`<div class="ar"><div class="ic" id="p-${it.id}">${iconHTML(it,draft[it.id])}</div>
+  <div class="f"><b style="font-size:14px">${it.name}</b><input class="u" id="u-${it.id}" placeholder="วางลิงก์รูป https://..." value="${(draft[it.id]||'').startsWith('data:')?'':(draft[it.id]||'')}">
+  <div><label class="sm">อัปโหลดไฟล์<input type="file" accept="image/*" hidden data-f="${it.id}"></label> <button class="sm" data-x="${it.id}">ลบรูป</button></div></div></div>`).join('');
+  $('#cx-modal').classList.add('on')};
+$('#cx-close').onclick=()=>$('#cx-modal').classList.remove('on');
+function setPrev(id){const it=ITEMS.find(i=>i.id===id);$('#p-'+id).innerHTML=iconHTML(it,draft[id])}
+$('#cx-adminRows').addEventListener('input',e=>{if(e.target.id?.startsWith('u-')){const id=e.target.id.slice(2);draft[id]=e.target.value.trim();setPrev(id)}});
+$('#cx-adminRows').addEventListener('click',e=>{const x=e.target.dataset.x;if(x){draft[x]='';$('#u-'+x).value='';setPrev(x)}});
+$('#cx-adminRows').addEventListener('change',e=>{
+  const id=e.target.dataset.f,f=e.target.files?.[0]; if(!id||!f)return;
+  const img=new Image(); img.onload=()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');
+    const s=Math.min(img.width,img.height),sx=(img.width-s)/2,sy=(img.height-s)/2;g.drawImage(img,sx,sy,s,s,0,0,128,128);
+    draft[id]=c.toDataURL('image/webp',.85);$('#u-'+id).value='';setPrev(id)};
+  img.src=URL.createObjectURL(f)});
+$('#cx-save').onclick=async()=>{$('#cx-msg').textContent='กำลังบันทึก...';
+  try{await saveIcons(draft);$('#cx-msg').textContent=fb?'บันทึกแล้ว (ทุกคนเห็นรูปใหม่)':'บันทึกแล้ว (เก็บในเครื่องนี้ — บนเว็บจริงจะซิงก์ผ่าน Firebase)'}
+  catch(err){$('#cx-msg').textContent='บันทึกไม่สำเร็จ: ตรวจสิทธิ์ Firebase'}};
+
+renderRows(); show(); initStore();
+window.ccRun=run; window.ccOnOpen=syncGear;
+
+})();
+    </script>
+
+
 
 
     <!-- ================= MODAL: แก้ไขรายการในบอร์ดราคา Economy ================= -->
@@ -2459,9 +2711,11 @@
 
     <!-- ================= MODAL: รายละเอียดงานฟาร์มเต็ม (กดจากการ์ดเพื่อดู ขั้นตอน+รูปประกอบ) ================= -->
     <div id="job-detail-modal" class="hidden fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-3 sm:p-4 backdrop-blur-md" onclick="if(event.target===this) closeJobDetailModal()">
-        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
+        <div id="job-detail-box" class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl flex flex-col">
             <div id="job-detail-hero" class="w-full aspect-video bg-neutral-950 border-b border-neutral-800 shrink-0 relative overflow-hidden">
                 <img id="job-detail-image" src="" loading="lazy" class="w-full h-full object-cover" onerror="handleImgRetry(this,'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800')">
+                <div class="jd-hot-only jd-hot-fade" aria-hidden="true"></div>
+                <div class="jd-hot-only jd-embers" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
                 <button type="button" onclick="closeJobDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 text-neutral-200 flex items-center justify-center backdrop-blur-sm border border-white/10 cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -2484,6 +2738,43 @@
             </div>
         </div>
     </div>
+
+    <!-- ================= POPUP: ขยายรูปประกอบ (แทนการเปิดแท็บใหม่) ================= -->
+    <div id="img-lightbox" aria-hidden="true" onclick="if(event.target===this) closeImageLightbox()">
+        <button type="button" id="img-lightbox-close" onclick="closeImageLightbox()" aria-label="ปิดรูป"><i class="fa-solid fa-xmark"></i></button>
+        <img id="img-lightbox-img" src="" alt="">
+    </div>
+    <style id="img-lightbox-style">
+        #img-lightbox { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; padding: 16px;
+            background: rgba(0,0,0,0.92); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); cursor: zoom-out; }
+        #img-lightbox.on { display: flex; animation: imgLbFade 0.18s ease-out; }
+        #img-lightbox-img { max-width: min(96vw, 1400px); max-height: 92vh; object-fit: contain; border-radius: 12px; cursor: default;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.12); animation: imgLbPop 0.22s cubic-bezier(.2,1.2,.4,1); }
+        #img-lightbox-close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            background: rgba(0,0,0,0.65); border: 1px solid rgba(255,255,255,0.2); color: #e5e5e5; display: flex; align-items: center; justify-content: center; }
+        #img-lightbox-close:hover { background: rgba(0,0,0,0.9); }
+        @keyframes imgLbFade { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes imgLbPop { from { transform: scale(0.94); opacity: 0; } to { transform: none; opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { #img-lightbox.on, #img-lightbox-img { animation: none; } }
+    </style>
+    <script id="img-lightbox-script">
+        window.openImageLightbox = function (src) {
+            if (!src) return;
+            var lb = document.getElementById('img-lightbox');
+            document.getElementById('img-lightbox-img').src = src;
+            lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false');
+        };
+        window.closeImageLightbox = function () {
+            var lb = document.getElementById('img-lightbox');
+            lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true');
+            document.getElementById('img-lightbox-img').src = '';
+        };
+        // Esc ปิดรูปก่อน (ไม่ให้ไปปิดหน้าต่างรายละเอียดงานด้านหลังพร้อมกัน)
+        document.addEventListener('keydown', function (e) {
+            var lb = document.getElementById('img-lightbox');
+            if (e.key === 'Escape' && lb && lb.classList.contains('on')) { e.preventDefault(); e.stopImmediatePropagation(); window.closeImageLightbox(); }
+        }, true);
+    </script>
 
     <!-- ================= MODAL: ขยายดูการ์ดเดี่ยว (ผลไม้ปีศาจ / สถานะแฟชั่น / แหล่งที่มา ITEMS) ================= -->
     <!-- ใช้วิธี clone เนื้อหาการ์ดเดิมมาแสดงขยายใหญ่ขึ้นกลางจอ ไม่ใช่หน้ารายละเอียดแยก เพื่อให้ "เหมือนแค่ขยายการ์ดใบนั้น" -->
@@ -2862,53 +3153,9 @@
         </div>
     </div>
 
-    <div id="cu-detail-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md" style="overscroll-behavior:contain" onclick="if(event.target===this) closeCarUpdate()">
-        <div class="cuh-card">
-            <button type="button" class="evi-close" onclick="closeCarUpdate()" aria-label="ปิด"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="cuh-media">
-                <img id="cu-d-img" alt="" referrerpolicy="no-referrer" style="display:none">
-                <div id="cu-d-ph" class="cuh-ph"><i class="fa-solid fa-car-side"></i></div>
-                <div class="cuh-nameplate">
-                    <span class="cuh-kicker"><i class="fa-solid fa-car"></i> ข้อมูลรถ</span>
-                    <div id="cu-d-title" class="cuh-name"></div>
-                </div>
-            </div>
-            <div class="cuh-main">
-                <div class="cuh-top">
-                    <div class="cuh-heading"><i class="fa-solid fa-screwdriver-wrench"></i> สิ่งที่ปรับเปลี่ยน <span id="cu-d-count" class="cuh-count"></span></div>
-                    <div class="cuh-chips"><span class="cuh-chip"><i class="fa-regular fa-calendar"></i> <span id="cu-d-date"></span></span><span class="cuh-chip"><i class="fa-regular fa-clock"></i> <span id="cu-d-time"></span></span></div>
-                </div>
-                <div id="cu-d-changes" class="cuh-list custom-scrollbar"></div>
-                <div id="cu-d-admin" class="hidden flex gap-2 shrink-0">
-                    <button type="button" onclick="editCarFromDetail()" class="flex-1 text-xs bg-neutral-950 text-orange-300 font-bold py-2 rounded-xl border border-neutral-800 cursor-pointer"><i class="fa-solid fa-pen-to-square mr-1"></i> แก้ไข</button>
-                    <button type="button" onclick="deleteCarFromDetail()" class="flex-1 text-xs bg-rose-950 text-rose-400 font-bold py-2 rounded-xl border border-rose-900 cursor-pointer"><i class="fa-solid fa-trash mr-1"></i> ลบ</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
-    <div id="cu-edit-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
-        <div class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full max-w-md p-5 space-y-3 max-h-[92vh] overflow-y-auto custom-scrollbar">
-            <div class="flex items-center justify-between">
-                <h3 id="cu-edit-title" class="text-base font-black text-orange-400"><i class="fa-solid fa-car-burst mr-1"></i> เพิ่มอัปเดตรถ</h3>
-                <button type="button" onclick="closeCarUpdateEdit()" class="text-neutral-500 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <input type="hidden" id="cu-id">
-            <div>
-                <label class="block text-xs font-bold text-neutral-400 mb-1">ชื่อรถ</label>
-                <input type="text" id="cu-name" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500" placeholder="เช่น Lamborghini Aventador">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-neutral-400 mb-1">ลิงก์รูปรถ</label>
-                <input type="text" id="cu-image" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500" placeholder="https://...jpg / png">
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-neutral-400 mb-1">สิ่งที่แก้ไข (1 บรรทัด = 1 รายการ)</label>
-                <textarea id="cu-changes" rows="5" class="w-full px-3 py-2 bg-neutral-950 border border-neutral-800 rounded-xl text-sm text-neutral-200 outline-none focus:border-orange-500 resize-none" placeholder="ปรับความเร็วสูงสุดเพิ่ม&#10;แก้สีตัวถัง&#10;ลดราคา"></textarea>
-            </div>
-            <button type="button" onclick="executeSaveCarUpdate()" class="cu-btn" style="width:100%; justify-content:center; padding:11px 16px; font-size:14px;"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button>
-        </div>
-    </div>
+    
 
     <!-- ================= MODAL: รูปประกอบของแต่ละช่วงเวลา (แอดมิน) ================= -->
     <div id="slot-img-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-md">
@@ -3198,7 +3445,7 @@
             onValue(ref(db, 'fashions'), (snap) => renderFashions(snap.val() || {})); onValue(ref(db, 'runes'), (snap) => renderRunes(snap.val() || {}));
             onValue(ref(db, 'items'), (snap) => renderItems(snap.val() || {}));
             onValue(ref(db, 'events'), (snap) => renderEvents(snap.val() || {})); onValue(ref(db, 'event_slot_images'), (snap) => { window.cachedSlotImages = snap.val() || {}; if (window.renderEvents) renderEvents(); });
-            onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {})); onValue(ref(db, 'car_updates'), (snap) => { if (window.renderCarUpdates) window.renderCarUpdates(snap.val() || {}); });
+            onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {})); 
             onValue(ref(db, 'gacha_categories'), (snap) => renderGachaCategories(snap.val() || {}));
             onValue(ref(db, 'gacha_items'), (snap) => renderGachaItems(snap.val() || {}));
             onValue(ref(db, 'announcements'), (snap) => renderAnnouncementList(snap.val() || {}));
@@ -3212,7 +3459,7 @@
                 renderFashions(JSON.parse(localStorage.getItem('fashions')||'{}')); renderRunes(JSON.parse(localStorage.getItem('runes')||'{}'));
                 renderItems(JSON.parse(localStorage.getItem('sc_items')||'{}'));
                 renderEvents(JSON.parse(localStorage.getItem('sc_events')||'{}'));
-                renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}')); if (window.renderCarUpdates) window.renderCarUpdates(JSON.parse(localStorage.getItem('sc_carup')||'{}'));
+                renderGkey(JSON.parse(localStorage.getItem('gkey')||'{}'));
                 renderFoods(JSON.parse(localStorage.getItem('sc_foods')||'{}'));
                 renderGachaCategories(JSON.parse(localStorage.getItem('gacha_categories')||'{}'));
                 renderGachaItems(JSON.parse(localStorage.getItem('gacha_items')||'{}'));
@@ -3507,7 +3754,7 @@
                 document.getElementById('admin-add-item-btn').classList.remove('hidden');
                 document.getElementById('admin-add-event-btn').classList.remove('hidden');
                 { const ib=document.getElementById('admin-import-event-btn'); if(ib) ib.classList.remove('hidden'); const cb=document.getElementById('admin-copy-event-btn'); if(cb) cb.classList.remove('hidden'); if(window.renderEvents) renderEvents(); }
-                document.getElementById('admin-edit-gkey-btn').classList.remove('hidden'); { const cb=document.getElementById('admin-add-carup-btn'); if(cb) cb.classList.remove('hidden'); if(window.renderCarUpdates) window.renderCarUpdates(); }
+                document.getElementById('admin-edit-gkey-btn').classList.remove('hidden'); 
                 document.getElementById('admin-add-food-btn').classList.remove('hidden');
                 document.getElementById('gacha-add-category-btn').classList.remove('hidden');
                 document.getElementById('admin-add-announcement-btn').classList.remove('hidden');
@@ -3525,7 +3772,7 @@
                 document.getElementById('admin-add-item-btn').classList.add('hidden');
                 document.getElementById('admin-add-event-btn').classList.add('hidden');
                 { const ib=document.getElementById('admin-import-event-btn'); if(ib) ib.classList.add('hidden'); const cb=document.getElementById('admin-copy-event-btn'); if(cb) cb.classList.add('hidden'); if(window.renderEvents) renderEvents(); }
-                document.getElementById('admin-edit-gkey-btn').classList.add('hidden'); { const cb=document.getElementById('admin-add-carup-btn'); if(cb) cb.classList.add('hidden'); if(window.renderCarUpdates) window.renderCarUpdates(); }
+                document.getElementById('admin-edit-gkey-btn').classList.add('hidden'); 
                 document.getElementById('admin-add-food-btn').classList.add('hidden');
                 document.getElementById('gacha-add-category-btn').classList.add('hidden');
                 document.getElementById('admin-add-announcement-btn').classList.add('hidden');
@@ -3541,7 +3788,7 @@
                 onValue(ref(db, 'fashions'), (snap) => renderFashions(snap.val() || {})); onValue(ref(db, 'runes'), (snap) => renderRunes(snap.val() || {}));
                 onValue(ref(db, 'items'), (snap) => renderItems(snap.val() || {}));
                 onValue(ref(db, 'events'), (snap) => renderEvents(snap.val() || {})); onValue(ref(db, 'event_slot_images'), (snap) => { window.cachedSlotImages = snap.val() || {}; if (window.renderEvents) renderEvents(); });
-                onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {})); onValue(ref(db, 'car_updates'), (snap) => { if (window.renderCarUpdates) window.renderCarUpdates(snap.val() || {}); });
+                onValue(ref(db, 'gkey'), (snap) => renderGkey(snap.val() || {})); 
                 onValue(ref(db, 'foods'), (snap) => renderFoods(snap.val() || {}));
                 onValue(ref(db, 'gacha_categories'), (snap) => renderGachaCategories(snap.val() || {}));
                 onValue(ref(db, 'gacha_items'), (snap) => renderGachaItems(snap.val() || {}));
@@ -3628,8 +3875,8 @@
             closeEcoEditModal();
         }
 
-        window.deleteEcoItem = function(key) {
-            if(!confirm("ต้องการลบออกจากบอร์ดราคา?")) return;
+        window.deleteEcoItem = async function(key) {
+            if(!await scConfirm("ต้องการลบออกจากบอร์ดราคา?")) return;
             if(isFirebaseValid) remove(ref(db, `eco_list/${key}`));
             else { const current = getLocalData('eco_list', {}); delete current[key]; setLocalData('eco_list', current); renderEcoList(current); }
         }
@@ -3683,8 +3930,8 @@
             }
         }
 
-        window.deleteJob = function(key) {
-            if (!confirm("ต้องการลบคู่มือชุดนี้ถาวร?")) return;
+        window.deleteJob = async function(key) {
+            if (!await scConfirm("ต้องการลบคู่มือชุดนี้ถาวร?")) return;
             if(isFirebaseValid) remove(ref(db, `jobs/${key}`));
             else { const current = getLocalData('jobs', {}); delete current[key]; setLocalData('jobs', current); renderJobs(current); }
         }
@@ -3840,6 +4087,7 @@
 
             const hotBadge = document.getElementById('job-detail-hot-badge');
             hotBadge.classList.toggle('hidden', job.isHot !== true);
+            const jdBox = document.getElementById('job-detail-box'); if (jdBox) { jdBox.classList.toggle('jd-hot', job.isHot === true); const sc = jdBox.querySelector('.overflow-y-auto'); if (sc) sc.scrollTop = 0; }
 
             const itemsSection = document.getElementById('job-detail-items-section');
             const itemsWrap = document.getElementById('job-detail-items');
@@ -3866,7 +4114,7 @@
                         <span class="job-step-number">${idx + 1}</span>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm text-neutral-300 whitespace-pre-line leading-relaxed break-words" style="overflow-wrap:anywhere;">${st.text || ''}</p>
-                            ${st.image ? `<img loading="lazy" src="${st.image}" class="job-step-img" onclick="window.open(this.src, '_blank')" onerror="handleImgRetry(this)">` : ''}
+                            ${st.image ? `<img loading="lazy" src="${st.image}" class="job-step-img" onclick="openImageLightbox(this.src)" style="cursor:zoom-in" onerror="handleImgRetry(this)">` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -3879,31 +4127,10 @@
             document.getElementById('job-detail-modal').classList.add('hidden');
         }
 
-        function openCalculatorModal() { document.getElementById('calc-modal').classList.remove('hidden'); runAdvancedCalculator(); }
+        function openCalculatorModal() { document.getElementById('calc-modal').classList.remove('hidden'); if (window.ccOnOpen) window.ccOnOpen(); }
         function closeCalculatorModal() { document.getElementById('calc-modal').classList.add('hidden'); }
 
-        function runAdvancedCalculator() {
-            const MAX_WEIGHT = 100000000; // ล็อกไม่ให้เกินหลัก 100 ล้าน ป้องกันตัวเลขล้นจนบัค
-            let trunkKG = parseFloat(document.getElementById('input-car-weight').value);
-            if (isNaN(trunkKG) || trunkKG < 0) return;
-            if (trunkKG > MAX_WEIGHT) {
-                trunkKG = MAX_WEIGHT;
-                document.getElementById('input-car-weight').value = MAX_WEIGHT;
-            }
-            const wItem = 0.5; const maxPiecesInTrunk = trunkKG / wItem; const targetCount = Math.floor((maxPiecesInTrunk + 180) / 3);
-            let bagTomato = 40; let trunkTomato = targetCount - 40;
-            let bagChili = 40; let trunkChili = targetCount - 40;
-            let bagFish = 100; let trunkFish = targetCount - 100;
-            if (trunkTomato < 0) trunkTomato = 0; if (trunkChili < 0) trunkChili = 0;
-            if (trunkFish < 0) { trunkFish = 0; bagFish = targetCount; }
-            document.getElementById('res-bag-tomato').innerText = bagTomato.toLocaleString() + " ชิ้น";
-            document.getElementById('res-trunk-tomato').innerText = trunkTomato.toLocaleString() + " ชิ้น";
-            document.getElementById('res-bag-chili').innerText = bagChili.toLocaleString() + " ชิ้น";
-            document.getElementById('res-trunk-chili').innerText = trunkChili.toLocaleString() + " ชิ้น";
-            document.getElementById('res-bag-fish').innerText = bagFish.toLocaleString() + " ชิ้น";
-            document.getElementById('res-trunk-fish').innerText = trunkFish.toLocaleString() + " ชิ้น";
-            document.getElementById('res-total-final').innerText = (bagTomato + trunkTomato).toLocaleString() + " ชิ้น";
-        }
+        function runAdvancedCalculator() { if (window.ccRun) window.ccRun(); } // เครื่องคำนวณใหม่อยู่ใน #cc-script
     </script>
     <!-- ================= NEW SECTIONS JS ================= -->
     <script>
@@ -3925,7 +4152,7 @@
 
         // ===== TAB SWITCHING =====
         function switchTab(tab) {
-            const panels = ['farm','devil','rune','fashion','items','events','gkey','food','carup'];
+            const panels = ['farm','devil','rune','fashion','items','events','gkey','food'];
             panels.forEach(p => {
                 document.getElementById('panel-'+p).classList.add('hidden');
                 const btn = document.getElementById('tab-'+p);
@@ -3971,8 +4198,8 @@
             if(window._fbSet) window._fbSet('devils/'+id, data).then(() => { closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('devils')||'{}'); c[id]=data; localStorage.setItem('devils',JSON.stringify(c)); renderDevils(c); closeDevilModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
-        window.deleteDevil = function(key) {
-            if(!confirm("ต้องการลบผลไม้ปีศาจนี้ถาวร?")) return;
+        window.deleteDevil = async function(key) {
+            if(!await scConfirm("ต้องการลบผลไม้ปีศาจนี้ถาวร?")) return;
             if(window._fbRemove) window._fbRemove('devils/'+key);
             else { const c = JSON.parse(localStorage.getItem('devils')||'{}'); delete c[key]; localStorage.setItem('devils',JSON.stringify(c)); renderDevils(c); }
         }
@@ -4054,8 +4281,8 @@
             if(window._fbSet) window._fbSet('fashions/'+id, data).then(() => { closeFashionModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('fashions')||'{}'); c[id]=data; localStorage.setItem('fashions',JSON.stringify(c)); renderFashions(c); closeFashionModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
-        window.deleteFashion = function(key) {
-            if(!confirm("ต้องการลบแฟชั่นนี้ถาวร?")) return;
+        window.deleteFashion = async function(key) {
+            if(!await scConfirm("ต้องการลบแฟชั่นนี้ถาวร?")) return;
             if(window._fbRemove) window._fbRemove('fashions/'+key);
             else { const c = JSON.parse(localStorage.getItem('fashions')||'{}'); delete c[key]; localStorage.setItem('fashions',JSON.stringify(c)); renderFashions(c); }
         }
@@ -4131,8 +4358,8 @@
             if(window._fbSet) window._fbSet('runes/'+id, data).then(() => { closeRuneModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('runes')||'{}'); c[id]=data; localStorage.setItem('runes',JSON.stringify(c)); renderRunes(c); closeRuneModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
-        window.deleteRune = function(key) {
-            if(!confirm("ต้องการลบรูนนี้ถาวร?")) return;
+        window.deleteRune = async function(key) {
+            if(!await scConfirm("ต้องการลบรูนนี้ถาวร?")) return;
             if(window._fbRemove) window._fbRemove('runes/'+key);
             else { const c = JSON.parse(localStorage.getItem('runes')||'{}'); delete c[key]; localStorage.setItem('runes',JSON.stringify(c)); renderRunes(c); }
         }
@@ -4196,8 +4423,8 @@
             if(window._fbSet) window._fbSet('items/'+id, data).then(() => { closeItemModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('sc_items')||'{}'); c[id]=data; localStorage.setItem('sc_items',JSON.stringify(c)); renderItems(c); closeItemModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
-        window.deleteItem = function(key) {
-            if(!confirm("ต้องการลบ ITEM นี้ถาวร?")) return;
+        window.deleteItem = async function(key) {
+            if(!await scConfirm("ต้องการลบ ITEM นี้ถาวร?")) return;
             if(window._fbRemove) window._fbRemove('items/'+key);
             else { const c = JSON.parse(localStorage.getItem('sc_items')||'{}'); delete c[key]; localStorage.setItem('sc_items',JSON.stringify(c)); renderItems(c); }
         }
@@ -4493,9 +4720,9 @@
                 alert("บันทึกหมวดหมู่เรียบร้อย!");
             }
         }
-        window.deleteGachaCategory = function(key) {
+        window.deleteGachaCategory = async function(key) {
             if (!key) return;
-            if (!confirm("ลบหมวดหมู่นี้ถาวร? (ไอเทมทั้งหมดในหมวดนี้จะถูกลบไปด้วย)")) return;
+            if (!await scConfirm("ลบหมวดหมู่นี้ถาวร? (ไอเทมทั้งหมดในหมวดนี้จะถูกลบไปด้วย)")) return;
             const itemKeysToDelete = Object.keys(window.cachedGachaItems||{}).filter(k => window.cachedGachaItems[k] && window.cachedGachaItems[k].categoryId === key);
             if (window._fbRemove) {
                 window._fbRemove('gacha_categories/'+key);
@@ -4552,8 +4779,8 @@
                 renderGachaItems(c); closeGachaItemModal(); alert("บันทึกไอเทมเรียบร้อย!");
             }
         }
-        window.deleteGachaItem = function(key) {
-            if (!confirm("ต้องการลบไอเทมนี้ถาวร?")) return;
+        window.deleteGachaItem = async function(key) {
+            if (!await scConfirm("ต้องการลบไอเทมนี้ถาวร?")) return;
             if (window._fbRemove) window._fbRemove('gacha_items/'+key);
             else { const c = JSON.parse(localStorage.getItem('gacha_items')||'{}'); delete c[key]; localStorage.setItem('gacha_items', JSON.stringify(c)); renderGachaItems(c); }
         }
@@ -4631,104 +4858,11 @@
             if(window._fbSet) window._fbSet('events/'+id, data).then(() => { closeEventModal(); alert("บันทึกข้อมูลเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('sc_events')||'{}'); c[id]=data; localStorage.setItem('sc_events',JSON.stringify(c)); renderEvents(c); closeEventModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
-        window.deleteEvent = function(key) {
-            if(!confirm("ต้องการลบกิจกรรมนี้ถาวร?")) return;
+        window.deleteEvent = async function(key) {
+            if(!await scConfirm("ต้องการลบกิจกรรมนี้ถาวร?")) return;
             if(window._fbRemove) window._fbRemove('events/'+key);
             else { const c = JSON.parse(localStorage.getItem('sc_events')||'{}'); delete c[key]; localStorage.setItem('sc_events',JSON.stringify(c)); renderEvents(c); }
         }
-        // ===== UPDATE เรื่องรถ (บอร์ดล่าสุด จำกัด 10 คัน) =====
-        const CU_MAX = 10;
-        function cuIsAdmin() { return !!(window.currentUser && window.currentUser.role === 'ADMIN'); }
-        function cuLines(t) { return String(t || '').split(/\r?\n/).map(x => x.trim()).filter(Boolean); }
-        function cuDate(ts) { try { return new Date(ts).toLocaleString('th-TH', { day:'numeric', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }); } catch (e) { return ''; } }
-        function cuSorted(data) { return Object.keys(data || {}).map(k => Object.assign({ _k: k }, data[k])).filter(d => d && d.name).sort((a, b) => (b.ts || 0) - (a.ts || 0)); }
-        function cuSetImg(img, ph, url) {
-            img.style.display = 'none'; ph.style.display = 'flex';
-            if (/^https?:\/\//i.test(url || '')) { img.onload = () => { img.style.display = 'block'; ph.style.display = 'none'; }; img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; }; img.src = url; }
-        }
-        window.renderCarUpdates = function(data) {
-            if (data) window.cachedCarUpdates = data;
-            const wrap = document.getElementById('carup-display'); if (!wrap) return;
-            const admin = cuIsAdmin();
-            const list = cuSorted(window.cachedCarUpdates).slice(0, CU_MAX);
-            const cnt = document.getElementById('cu-count');
-            if (cnt) { cnt.style.display = admin ? '' : 'none'; cnt.textContent = list.length + '/' + CU_MAX; cnt.classList.toggle('cu-full', list.length >= CU_MAX); }
-            const addb = document.getElementById('admin-add-carup-btn');
-            if (addb) addb.classList.toggle('cu-btn-off', list.length >= CU_MAX);
-            wrap.classList.toggle('cu-admin', admin);
-            if (!list.length) { wrap.innerHTML = '<div class="cu-empty"><i class="fa-solid fa-car-burst mr-1"></i> ยังไม่มีการอัปเดตรถ</div>'; return; }
-            const head = '<div class="cu-row cu-head"><div class="cu-h-ico"><i class="fa-solid fa-car"></i></div><div>ข้อมูลรถ</div><div>รายการที่ปรับเปลี่ยน</div><div>วันที่อัปเดต</div>' + (admin ? '<div>จัดการ</div>' : '') + '</div>';
-            wrap.innerHTML = head + list.map((d, i) => {
-                const k = evEsc(d._k), ls = cuLines(d.changes);
-                const img = /^https?:\/\//i.test(d.image || '') ? '<img loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' + evEsc(d.image) + '" alt="" onerror="this.style.display=\'none\'">' : '';
-                let mon = '', day = '', tm = '';
-                try { const o = new Date(d.ts || 0); day = o.getDate(); mon = o.toLocaleDateString('th-TH', { month:'short' }) + ' ' + String((o.getFullYear() + 543) % 100).padStart(2, '0'); tm = o.toLocaleTimeString('th-TH', { hour:'2-digit', minute:'2-digit', hour12:false }) + ' น.'; } catch (e) {}
-                return '<div class="cu-row cu-data' + (i === 0 ? ' cu-latest' : '') + '" onclick="openCarUpdate(\'' + k + '\')">'
-                    + '<div class="cu-no"><span>' + (i + 1) + '</span></div>'
-                    + '<div class="cu-car"><div class="cu-thumb"><i class="fa-solid fa-car-side"></i>' + img + '</div><div class="cu-carinfo"><div class="cu-carname">' + evEsc(d.name) + '</div>' + (i === 0 ? '<span class="cu-tag-new">ล่าสุด</span>' : '') + '</div></div>'
-                    + '<div class="cu-changes-cell"><ul class="cu-changes-ul">' + (ls.slice(0, 4).map(x => '<li>' + evEsc(x) + '</li>').join('') || '<li style="color:#737373">ไม่มีรายละเอียด</li>') + '</ul>' + (ls.length > 4 ? '<div class="cu-more">+ อีก ' + (ls.length - 4) + ' รายการ · กดแถวเพื่อดูทั้งหมด</div>' : '') + '</div>'
-                    + '<div class="cu-dt"><div class="cu-cal"><div class="cu-cal-mon">' + evEsc(mon) + '</div><div class="cu-cal-day">' + evEsc(day) + '</div></div><span class="cu-time"><i class="fa-regular fa-clock"></i> ' + evEsc(tm) + '</span></div>'
-                    + '<div class="cu-act"><button type="button" class="cu-e" onclick="event.stopPropagation();openCarUpdateEdit(\'' + k + '\')"><i class="fa-solid fa-pen-to-square"></i></button><button type="button" class="cu-x" onclick="event.stopPropagation();deleteCarUpdate(\'' + k + '\')"><i class="fa-solid fa-trash"></i></button></div>'
-                    + '</div>';
-            }).join('');
-        };
-        window.openCarUpdate = function(key) {
-            const d = (window.cachedCarUpdates || {})[key]; if (!d) return;
-            document.getElementById('cu-d-title').textContent = d.name || '';
-            let dd = '', tt = '';
-            try { const o = new Date(d.ts || 0); dd = o.toLocaleDateString('th-TH', { day:'numeric', month:'long', year:'numeric' }); tt = o.toLocaleTimeString('th-TH', { hour:'2-digit', minute:'2-digit', hour12:false }) + ' น.'; } catch (e) {}
-            document.getElementById('cu-d-date').textContent = dd;
-            document.getElementById('cu-d-time').textContent = tt;
-            const ls = cuLines(d.changes);
-            document.getElementById('cu-d-count').textContent = ls.length + ' รายการ';
-            const lb = document.getElementById('cu-d-changes');
-            lb.innerHTML = ls.length ? ls.map((x, i) => '<div class="cuh-item"><span class="cuh-n">' + String(i + 1).padStart(2, '0') + '</span><span>' + evEsc(x) + '</span></div>').join('') : '<span class="text-neutral-500">ยังไม่มีรายละเอียด</span>';
-            lb.scrollTop = 0;
-            cuSetImg(document.getElementById('cu-d-img'), document.getElementById('cu-d-ph'), d.image);
-            const ad = document.getElementById('cu-d-admin'); ad.dataset.key = key; ad.classList.toggle('hidden', !cuIsAdmin());
-            if (!window._cuLocked) { window._cuLocked = true; if (typeof scLockScroll === 'function') scLockScroll(); }
-            document.getElementById('cu-detail-modal').classList.remove('hidden');
-        };
-        window.closeCarUpdate = function() {
-            document.getElementById('cu-detail-modal').classList.add('hidden');
-            if (window._cuLocked) { window._cuLocked = false; if (typeof scUnlockScroll === 'function') scUnlockScroll(); }
-        };
-        window.editCarFromDetail = function() { const k = document.getElementById('cu-d-admin').dataset.key; closeCarUpdate(); openCarUpdateEdit(k); };
-        window.deleteCarFromDetail = function() { const k = document.getElementById('cu-d-admin').dataset.key; if (deleteCarUpdate(k)) closeCarUpdate(); };
-        window.openCarUpdateEdit = function(key) {
-            if (!key && cuSorted(window.cachedCarUpdates).length >= CU_MAX) { alert('บอร์ดเต็ม ' + CU_MAX + '/' + CU_MAX + ' แล้ว กรุณาลบรายการเก่าก่อนเพิ่มใหม่'); return; }
-            const d = key && window.cachedCarUpdates ? window.cachedCarUpdates[key] : null;
-            document.getElementById('cu-edit-title').innerHTML = '<i class="fa-solid fa-car-burst mr-1"></i> ' + (d ? 'แก้ไขอัปเดตรถ' : 'เพิ่มอัปเดตรถ');
-            document.getElementById('cu-id').value = d ? key : '';
-            document.getElementById('cu-name').value = d ? (d.name || '') : '';
-            document.getElementById('cu-image').value = d ? (d.image || '') : '';
-            document.getElementById('cu-changes').value = d ? (d.changes || '') : '';
-            document.getElementById('cu-edit-modal').classList.remove('hidden');
-        };
-        window.closeCarUpdateEdit = function() { document.getElementById('cu-edit-modal').classList.add('hidden'); };
-        window.executeSaveCarUpdate = function() {
-            const old = document.getElementById('cu-id').value;
-            const id = old || Date.now().toString();
-            const prev = old && window.cachedCarUpdates ? window.cachedCarUpdates[old] : null;
-            const data = { name: document.getElementById('cu-name').value.trim(), image: document.getElementById('cu-image').value.trim(), changes: document.getElementById('cu-changes').value.trim(), ts: prev && prev.ts ? prev.ts : Date.now() };
-            if (!data.name) { alert('กรุณาใส่ชื่อรถ!'); return; }
-            // เต็ม 10/10 แล้ว ต้องให้แอดมินลบเองก่อนถึงจะเพิ่มใหม่ได้ (ไม่ลบอัตโนมัติ)
-            if (!old && cuSorted(window.cachedCarUpdates).length >= CU_MAX) { alert('บอร์ดเต็ม ' + CU_MAX + '/' + CU_MAX + ' แล้ว กรุณาลบรายการเก่าก่อนเพิ่มใหม่'); return; }
-            const finish = () => { closeCarUpdateEdit(); alert('บันทึกข้อมูลเรียบร้อย!'); };
-            if (window._fbSet) {
-                window._fbSet('car_updates/' + id, data).then(finish);
-            } else {
-                const all = Object.assign({}, window.cachedCarUpdates || {}); all[id] = data;
-                localStorage.setItem('sc_carup', JSON.stringify(all)); renderCarUpdates(all); finish();
-            }
-        };
-        window.deleteCarUpdate = function(key) {
-            if (!confirm('ต้องการลบอัปเดตรถนี้ถาวร?')) return false;
-            if (window._fbRemove) window._fbRemove('car_updates/' + key);
-            else { const c = JSON.parse(localStorage.getItem('sc_carup') || '{}'); delete c[key]; localStorage.setItem('sc_carup', JSON.stringify(c)); renderCarUpdates(c); }
-            return true;
-        };
-
         // ===== หน้าเวลากิจกรรม (ไทม์ไลน์) =====
         const EV_COLORS = ['#ef4444','#3b82f6','#f59e0b','#10b981','#a855f7','#ec4899','#14b8a6','#f97316','#84cc16','#06b6d4'];
         function evEsc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -5079,9 +5213,9 @@
             if (window._fbSet) window._fbSet('announcements/'+id, data).then(() => { closeAnnouncementFormModal(); alert("เผยแพร่ประกาศเรียบร้อย!"); });
             else { const c = JSON.parse(localStorage.getItem('sc_announcements')||'{}'); c[id]=data; localStorage.setItem('sc_announcements',JSON.stringify(c)); renderAnnouncementList(c); closeAnnouncementFormModal(); alert("เผยแพร่ประกาศเรียบร้อย!"); }
         }
-        window.deleteAnnouncement = function(key) {
+        window.deleteAnnouncement = async function(key) {
             if (!(window.currentUser && window.currentUser.role === 'ADMIN')) return;
-            if (!confirm("ต้องการลบประกาศนี้ถาวร?")) return;
+            if (!await scConfirm("ต้องการลบประกาศนี้ถาวร?")) return;
             if (window._fbRemove) window._fbRemove('announcements/'+key);
             else { const c = JSON.parse(localStorage.getItem('sc_announcements')||'{}'); delete c[key]; localStorage.setItem('sc_announcements',JSON.stringify(c)); renderAnnouncementList(c); }
         }
@@ -5175,8 +5309,8 @@
             else { const c = JSON.parse(localStorage.getItem('sc_foods')||'{}'); c[id]=data; localStorage.setItem('sc_foods',JSON.stringify(c)); renderFoods(c); closeFoodModal(); alert("บันทึกข้อมูลเรียบร้อย!"); }
         }
 
-        window.deleteFood = function(key) {
-            if (!confirm("ต้องการลบอาหารนี้ถาวร?")) return;
+        window.deleteFood = async function(key) {
+            if (!await scConfirm("ต้องการลบอาหารนี้ถาวร?")) return;
             if (window._fbRemove) window._fbRemove('foods/'+key);
             else { const c = JSON.parse(localStorage.getItem('sc_foods')||'{}'); delete c[key]; localStorage.setItem('sc_foods',JSON.stringify(c)); renderFoods(c); }
         }
@@ -5282,8 +5416,8 @@
             if (d.ingredientImgs && d.ingredientImgs.length) {
                 ingrWrap.classList.remove('hidden');
                 ingrGrid.innerHTML = d.ingredientImgs.map(url => `
-                    <div class="rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-zoom-in" onclick="window.open('${url}','_blank')">
-                        <img loading="lazy" src="${url}" class="w-full h-28 object-cover" onerror="handleImgRetry(this)">
+                    <div class="rounded-xl overflow-hidden border border-neutral-800 bg-neutral-950 cursor-default select-none">
+                        <img loading="lazy" src="${url}" draggable="false" class="w-full h-28 object-cover pointer-events-none" onerror="handleImgRetry(this)">
                     </div>
                 `).join('');
             } else {
@@ -6408,6 +6542,499 @@
         }).observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['title'] });
     })();
     </script>
+
+<!-- ===== SCROLL REVEAL: อนิเมชันการ์ดเลื่อนเข้าทีละใบ (ทุกหมวด) ===== -->
+<style id="sr-style">
+    /* ซ่อนการ์ดไว้ก่อนจนกว่าจะเลื่อนมาถึงสายตา (ใช้ visibility เพื่อไม่ให้ชนกับ transition เดิมของการ์ด) */
+    .sr-pending { visibility: hidden !important; }
+    @media (prefers-reduced-motion: reduce) {
+        .sr-pending { visibility: visible !important; }
+    }
+</style>
+<script id="sr-script">
+(function () {
+    'use strict';
+
+    /* ผู้ใช้ปิดแอนิเมชันในระบบ / เบราว์เซอร์เก่า → ไม่ทำอะไร การ์ดแสดงตามปกติ */
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+
+    var E_OUT  = 'cubic-bezier(.22,1,.36,1)';      /* หน่วงท้ายนุ่ม ๆ แบบเว็บมืออาชีพ */
+    var E_BACK = 'cubic-bezier(.34,1.45,.64,1)';   /* เด้งเกินนิดหนึ่งแล้วกลับ */
+
+    /* ===== ลูกเล่นแต่ละแบบ ===== */
+    var FX = {
+        rise: function () { return { d: 850, e: E_OUT, f: [
+            { opacity: 0, transform: 'perspective(900px) translate3d(0,64px,0) rotateX(12deg) scale(.94)', filter: 'blur(8px)' },
+            { opacity: 1, transform: 'perspective(900px) translate3d(0,0,0) rotateX(0deg) scale(1)',      filter: 'blur(0px)' } ] }; },
+        flip: function () { return { d: 850, e: E_OUT, f: [
+            { opacity: 0, transform: 'perspective(900px) translate3d(-26px,34px,0) rotateY(-34deg) scale(.92)', filter: 'blur(6px)' },
+            { opacity: 1, transform: 'perspective(900px) translate3d(0,0,0) rotateY(0deg) scale(1)',            filter: 'blur(0px)' } ] }; },
+        pop: function () { return { d: 650, e: E_BACK, f: [
+            { opacity: 0, transform: 'translate3d(0,28px,0) scale(.72)' },
+            { opacity: 1, transform: 'translate3d(0,0,0) scale(1)' } ] }; },
+        spin: function () { return { d: 800, e: E_BACK, f: [
+            { opacity: 0, transform: 'translate3d(0,30px,0) scale(.55) rotate(-9deg)' },
+            { opacity: 1, transform: 'translate3d(0,0,0) scale(1) rotate(0deg)' } ] }; },
+        zoom: function () { return { d: 800, e: E_OUT, f: [
+            { opacity: 0, transform: 'translate3d(0,38px,0) scale(.82)', filter: 'blur(10px)' },
+            { opacity: 1, transform: 'translate3d(0,0,0) scale(1)',      filter: 'blur(0px)' } ] }; },
+        slideL: function () { return { d: 700, e: E_OUT, f: [
+            { opacity: 0, transform: 'translate3d(-58px,0,0)', filter: 'blur(4px)' },
+            { opacity: 1, transform: 'translate3d(0,0,0)',     filter: 'blur(0px)' } ] }; },
+        slideR: function () { return { d: 700, e: E_OUT, f: [
+            { opacity: 0, transform: 'translate3d(58px,0,0)', filter: 'blur(4px)' },
+            { opacity: 1, transform: 'translate3d(0,0,0)',    filter: 'blur(0px)' } ] }; },
+        slideAlt: function (col) { var s = (col % 2) ? 1 : -1; return { d: 800, e: E_OUT, f: [
+            { opacity: 0, transform: 'translate3d(' + (s * 72) + 'px,26px,0) rotate(' + (s * 2.5) + 'deg) scale(.94)', filter: 'blur(5px)' },
+            { opacity: 1, transform: 'translate3d(0,0,0) rotate(0deg) scale(1)',                                       filter: 'blur(0px)' } ] }; },
+        head: function () { return { d: 600, e: E_OUT, f: [
+            { opacity: 0, transform: 'translate3d(0,-20px,0)', filter: 'blur(4px)' },
+            { opacity: 1, transform: 'translate3d(0,0,0)',     filter: 'blur(0px)' } ] }; }
+    };
+
+    /* ===== กำหนดว่าหมวดไหนใช้ลูกเล่นอะไร ===== */
+    var CONTAINERS = [
+        { id: 'eco-buff-container', fx: 'slideL' },   /* บอร์ดราคา: BUFF เลื่อนจากซ้าย */
+        { id: 'eco-nerf-container', fx: 'slideR' },   /* NERF เลื่อนจากขวา */
+        { id: 'job-white-container', fx: 'rise'  },   /* งานขาว */
+        { id: 'job-black-container', fx: 'flip'  },   /* งานดำ */
+        { id: 'devil-grid',   fx: 'pop'      },       /* ผลไม้ปีศาจ */
+        { id: 'fashion-grid', fx: 'rise'     },       /* แฟชั่น */
+        { id: 'items-grid',   fx: 'slideAlt' },       /* ITEMS สลับซ้าย-ขวา */
+        { id: 'rune-grid',    fx: 'spin'     },       /* รูน */
+        { id: 'events-grid',  fx: 'slideL'   },       /* เวลากิจกรรม */
+        { id: 'gkey-display', fx: 'rise'     },       /* เมนูลัดปุ่ม G */
+        { id: 'food-grid',    fx: 'zoom'     }        /* อาหาร */
+    ];
+    var STATICS = [
+        { sel: '.section-head-glass', fx: 'head' },
+        { sel: '#eco-board-section', fx: 'rise' },
+        { sel: '#section-white-jobs > div:first-child', fx: 'slideL' },
+        { sel: '#section-black-jobs > div:first-child', fx: 'slideL' },
+        { sel: '.ev-hero', fx: 'zoom' },
+        { sel: '#gacha-shop-banner', fx: 'zoom', parent: true }
+    ];
+    var WATCH_IDS = ['panel-farm', 'panel-devil', 'panel-fashion', 'panel-items', 'panel-rune',
+                     'panel-events', 'panel-gkey', 'panel-food',
+                     'section-white-jobs', 'section-black-jobs'];
+
+    var seen = Object.create(null);     /* ลายเซ็นของการ์ดที่เล่นแอนิเมชันไปแล้ว (กัน Firebase รีเรนเดอร์แล้วเล่นซ้ำ) */
+    var playing = Object.create(null);  /* แอนิเมชันที่กำลังเล่น (ส่งต่อให้การ์ดใบใหม่ที่มาแทนที่) */
+    var queue = [];
+    var timer = 0, holdUntil = 0;
+
+    function hash(s) { var h = 5381, i = s.length; while (i) h = (h * 33) ^ s.charCodeAt(--i); return (h >>> 0).toString(36) + ':' + s.length; }
+    function sigOf(el, T) {
+        var k;
+        if (el.classList.contains('ev-row')) { var t = el.querySelector('.ev-time'); k = 'ev:' + (t ? t.textContent : ''); }
+        else if (el.classList.contains('ev-group-head')) k = 'evh:' + el.textContent;
+        else k = hash(el.innerHTML);
+        return T.key + '|' + k;
+    }
+    function skip(el) {
+        return el.matches('.col-span-full, .cu-empty, .text-center.py-16') || !!el.querySelector(':scope > .fa-circle-notch, .fa-circle-notch');
+    }
+    function covered() { var c = document.getElementById('sc-cutscene'); return !!(c && c.classList.contains('sc-active')); }
+
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) { io.unobserve(e.target); queue.push(e.target); }
+        });
+        if (queue.length) schedule(40);
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+
+    function schedule(ms) { if (timer) return; timer = setTimeout(flush, ms); }
+
+    function flush() {
+        timer = 0;
+        /* รอให้คัทซีนเปลี่ยนหน้าจางหายก่อน แล้วค่อยเล่น ไม่งั้นแอนิเมชันไปเล่นอยู่ใต้ฉากดำ */
+        if (covered()) { holdUntil = Date.now() + 240; schedule(100); return; }
+        if (Date.now() < holdUntil) { schedule(60); return; }
+
+        var batch = queue.splice(0).filter(function (el) { return el.isConnected && el.classList.contains('sr-pending'); });
+        if (!batch.length) return;
+        var items = batch.map(function (el) { var r = el.getBoundingClientRect(); return { el: el, top: r.top, left: r.left }; });
+        /* เรียงเป็นแถวจากบนลงล่าง ซ้ายไปขวา → เกิดเป็นคลื่นไล่ทีละใบ */
+        items.sort(function (a, b) { return Math.abs(a.top - b.top) > 24 ? a.top - b.top : a.left - b.left; });
+        var rowTop = null, col = 0;
+        items.forEach(function (it, i) {
+            if (rowTop === null || Math.abs(it.top - rowTop) > 24) { rowTop = it.top; col = 0; } else { col++; }
+            var delay = Math.min(i * 70, 700 + Math.max(0, i - 10) * 25, 1100);
+            play(it.el, delay, col);
+        });
+    }
+
+    function play(el, delay, col, resumeAt) {
+        var T = el.__srT; if (!T) return;
+        var fx = FX[T.fx](col);
+        el.classList.remove('sr-pending');
+        el.__sr = 'done';
+        seen[el.__srSig] = 1;
+        var a;
+        try { a = el.animate(fx.f, { duration: fx.d, delay: delay, easing: fx.e, fill: 'backwards' }); } catch (err) { return; }
+        if (resumeAt != null) a.currentTime = resumeAt;
+        var sig = el.__srSig;
+        playing[sig] = { anim: a, col: col };
+        a.onfinish = a.oncancel = function () { if (playing[sig] && playing[sig].anim === a) delete playing[sig]; };
+    }
+
+    function hide(el) {
+        el.__sr = 0;
+        el.classList.add('sr-pending');
+        io.observe(el);
+    }
+
+    function register(el, T) {
+        if (!el || el.nodeType !== 1 || el.__srT || skip(el)) return;
+        el.__srT = T;
+        el.__srSig = sigOf(el, T);
+        var run = playing[el.__srSig];
+        if (run && run.anim.playState !== 'finished' && run.anim.currentTime != null) {
+            /* การ์ดเดิมกำลังเล่นอยู่แล้วโดนรีเรนเดอร์ทับ → เล่นต่อจากจุดเดิม ไม่ให้กะพริบ */
+            var ct = run.anim.currentTime;
+            el.__sr = 'done';
+            play(el, 0, run.col, ct);
+            return;
+        }
+        if (seen[el.__srSig]) { el.__sr = 'done'; return; }   /* เคยโชว์แล้ว (รีเรนเดอร์ข้อมูลซ้ำ) → ไม่เล่นอีก */
+        hide(el);
+    }
+
+    function unregister(el) { if (el && el.nodeType === 1) { try { io.unobserve(el); } catch (e) {} } }
+
+    /* ===== เฝ้าดูการ์ดที่ถูกสร้างทีหลังด้วย JS (ข้อมูลจาก Firebase) ===== */
+    var tracked = [];
+    CONTAINERS.forEach(function (c) {
+        var box = document.getElementById(c.id);
+        if (!box) return;
+        var T = { fx: c.fx, key: c.id, box: box };
+        tracked.push(T);
+        Array.prototype.forEach.call(box.children, function (el) { register(el, T); });
+        new MutationObserver(function (muts) {
+            muts.forEach(function (m) {
+                Array.prototype.forEach.call(m.removedNodes, unregister);
+                Array.prototype.forEach.call(m.addedNodes, function (el) { register(el, T); });
+            });
+        }).observe(box, { childList: true });
+    });
+    STATICS.forEach(function (s) {
+        Array.prototype.forEach.call(document.querySelectorAll(s.sel), function (el, idx) {
+            if (s.parent) el = el.parentElement;
+            register(el, { fx: s.fx, key: 'static:' + s.sel + ':' + idx });
+        });
+    });
+
+    /* ===== เล่นซ้ำทุกครั้งที่เปิดหมวด/สลับกรองงานขาว-งานดำ ===== */
+    function collect(root) {
+        var out = [];
+        tracked.forEach(function (T) {
+            if (root === T.box || root.contains(T.box)) {
+                Array.prototype.forEach.call(T.box.children, function (el) { if (el.__srT) out.push(el); });
+            }
+        });
+        Array.prototype.forEach.call(root.querySelectorAll('.section-head-glass, #eco-board-section, .ev-hero, #section-white-jobs > div:first-child, #section-black-jobs > div:first-child'), function (el) { if (el.__srT) out.push(el); });
+        return out;
+    }
+    function replay(root) {
+        collect(root).forEach(function (el) {
+            delete seen[el.__srSig];
+            delete playing[el.__srSig];
+            if (el.getAnimations) el.getAnimations().forEach(function (an) { if (an.effect && an.effect.getTiming && an.effect.getTiming().fill === 'backwards') an.cancel(); });
+            hide(el);
+        });
+    }
+    var wasHidden = new WeakMap();
+    var viewObs = new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+            var el = m.target, now = el.classList.contains('hidden');
+            if (wasHidden.get(el) && !now) replay(el);
+            wasHidden.set(el, now);
+        });
+    });
+    WATCH_IDS.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        wasHidden.set(el, el.classList.contains('hidden'));
+        viewObs.observe(el, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    /* เปิดให้เรียกใช้จากข้างนอกได้ เช่น SCReveal.replay(document.getElementById('panel-devil')) */
+    window.SCReveal = { replay: replay };
+})();
+</script>
+
+<!-- ===== SC DIALOG: กล่องยืนยัน/แจ้งเตือน ตรงกลางจอ ตกแต่งให้เข้ากับธีมเว็บ (แทน confirm/alert ของเบราว์เซอร์) ===== -->
+<style id="sc-dlg-style">
+    #sc-dlg {
+        position: fixed; inset: 0; z-index: 10050;
+        display: none; align-items: center; justify-content: center;
+        padding: 16px;
+        background: rgba(0,0,0,0.78);
+        -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+        overscroll-behavior: contain; touch-action: none;
+        font-family: 'Kanit', sans-serif;
+    }
+    #sc-dlg.sc-on { display: flex; animation: scDlgFade .22s ease both; }
+    #sc-dlg.sc-out { animation: scDlgFadeOut .16s ease both; }
+    @keyframes scDlgFade    { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scDlgFadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+    #sc-dlg .sc-dlg-card {
+        --sc-a: #f97316; --sc-b: #fbbf24; --sc-glow: rgba(249,115,22,0.16); --sc-line: rgba(249,115,22,0.32);
+        position: relative; overflow: hidden;
+        width: min(100%, 392px);
+        padding: 30px 26px 22px;
+        border-radius: 22px;
+        text-align: center;
+        background: linear-gradient(165deg, #1a1a1a 0%, #0c0c0c 100%);
+        border: 1px solid var(--sc-line);
+        box-shadow: 0 28px 70px rgba(0,0,0,0.75), 0 0 46px var(--sc-glow), inset 0 1px 0 rgba(255,255,255,0.04);
+        animation: scDlgPop .42s cubic-bezier(.2,1.1,.3,1) both;
+    }
+    #sc-dlg.sc-out .sc-dlg-card { animation: scDlgPopOut .16s ease both; }
+    @keyframes scDlgPop    { from { opacity: 0; transform: translateY(18px) scale(.9); } to { opacity: 1; transform: none; } }
+    @keyframes scDlgPopOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px) scale(.96); } }
+
+    #sc-dlg .sc-dlg-card::before {              /* เส้นไฟด้านบน เหมือนการ์ดอื่นในเว็บ */
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: linear-gradient(90deg, transparent, var(--sc-a), var(--sc-b), var(--sc-a), transparent);
+    }
+    #sc-dlg .sc-dlg-card::after {               /* แสงฟุ้งหลังไอคอน */
+        content: ''; position: absolute; left: 50%; top: -60px; width: 220px; height: 160px; transform: translateX(-50%);
+        background: radial-gradient(ellipse at center, var(--sc-glow), transparent 70%); pointer-events: none;
+    }
+    #sc-dlg .sc-danger  { --sc-a: #ef4444; --sc-b: #f97316; --sc-glow: rgba(239,68,68,0.20);  --sc-line: rgba(239,68,68,0.38); }
+    #sc-dlg .sc-success { --sc-a: #10b981; --sc-b: #34d399; --sc-glow: rgba(16,185,129,0.18); --sc-line: rgba(16,185,129,0.36); }
+    #sc-dlg .sc-warn    { --sc-a: #f59e0b; --sc-b: #fbbf24; --sc-glow: rgba(245,158,11,0.18); --sc-line: rgba(245,158,11,0.38); }
+    #sc-dlg .sc-info    { --sc-a: #22d3ee; --sc-b: #38bdf8; --sc-glow: rgba(34,211,238,0.15); --sc-line: rgba(34,211,238,0.34); }
+
+    #sc-dlg .sc-dlg-icon {
+        position: relative; z-index: 1;
+        width: 64px; height: 64px; margin: 0 auto 16px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 26px; color: var(--sc-b);
+        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.08), transparent 55%), rgba(255,255,255,0.03);
+        border: 1.5px solid var(--sc-line);
+        box-shadow: 0 0 26px var(--sc-glow), inset 0 0 18px var(--sc-glow);
+        animation: scDlgIcon .6s .08s cubic-bezier(.2,1.3,.3,1) both;
+    }
+    @keyframes scDlgIcon { from { transform: scale(.4) rotate(-14deg); opacity: 0; } to { transform: none; opacity: 1; } }
+    #sc-dlg .sc-dlg-title {
+        position: relative; z-index: 1;
+        margin: 0 0 8px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: #fafafa;
+    }
+    #sc-dlg .sc-dlg-msg {
+        position: relative; z-index: 1;
+        margin: 0; font-size: 14px; line-height: 1.6; color: #d4d4d4; white-space: pre-line; word-break: break-word;
+    }
+    #sc-dlg .sc-dlg-note {
+        position: relative; z-index: 1;
+        margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: #8a8a8a; white-space: pre-line;
+    }
+    #sc-dlg .sc-dlg-actions {
+        position: relative; z-index: 1;
+        display: flex; gap: 10px; margin-top: 22px;
+    }
+    #sc-dlg .sc-dlg-btn {
+        flex: 1; min-height: 44px; padding: 10px 14px;
+        border-radius: 14px; border: 1px solid transparent;
+        font-family: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+        transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+    }
+    #sc-dlg .sc-dlg-btn:active { transform: scale(.96); }
+    #sc-dlg .sc-dlg-btn:focus-visible { outline: 2px solid var(--sc-b); outline-offset: 2px; }
+    #sc-dlg .sc-dlg-cancel { background: #0a0a0a; color: #d4d4d4; border-color: #3a3a3a; }
+    #sc-dlg .sc-dlg-cancel:hover { border-color: rgba(249,115,22,0.6); color: #fff; }
+    #sc-dlg .sc-dlg-ok {
+        color: #0a0a0a; background: linear-gradient(135deg, var(--sc-a), var(--sc-b));
+        box-shadow: 0 6px 22px var(--sc-glow);
+    }
+    #sc-dlg .sc-dlg-ok:hover { box-shadow: 0 8px 30px var(--sc-line); transform: translateY(-1px); }
+    #sc-dlg .sc-danger .sc-dlg-ok { color: #fff; background: linear-gradient(135deg, #dc2626, #ef4444 55%, #f97316); }
+    #sc-dlg .sc-dlg-timer {                      /* แถบนับถอยหลังปิดอัตโนมัติ (เฉพาะแจ้งสำเร็จ) */
+        position: absolute; left: 0; bottom: 0; height: 3px; width: 100%;
+        background: linear-gradient(90deg, var(--sc-a), var(--sc-b)); transform-origin: left; opacity: .85;
+    }
+    @media (max-width: 420px) {
+        #sc-dlg .sc-dlg-card { padding: 26px 20px 18px; }
+        #sc-dlg .sc-dlg-actions { flex-direction: column-reverse; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        #sc-dlg.sc-on, #sc-dlg.sc-out, #sc-dlg .sc-dlg-card, #sc-dlg .sc-dlg-icon { animation-duration: .01s !important; animation-delay: 0s !important; }
+    }
+</style>
+<script id="sc-dlg-script">
+(function () {
+    'use strict';
+    var nativeAlert = window.alert ? window.alert.bind(window) : function () {};
+    var root, card, iconEl, titleEl, msgEl, noteEl, actionsEl, active = null, queue = [], lastFocus = null;
+
+    function snd(name) { try { if (window.SCSound && typeof window.SCSound[name] === 'function') window.SCSound[name](); } catch (e) {} }
+
+    function build() {
+        if (root) return;
+        root = document.createElement('div');
+        root.id = 'sc-dlg';
+        root.setAttribute('role', 'alertdialog');
+        root.setAttribute('aria-modal', 'true');
+        root.setAttribute('aria-labelledby', 'sc-dlg-title');
+        root.setAttribute('aria-describedby', 'sc-dlg-msg');
+        root.innerHTML =
+            '<div class="sc-dlg-card">' +
+                '<div class="sc-dlg-icon"><i></i></div>' +
+                '<h3 class="sc-dlg-title" id="sc-dlg-title"></h3>' +
+                '<p class="sc-dlg-msg" id="sc-dlg-msg"></p>' +
+                '<p class="sc-dlg-note"></p>' +
+                '<div class="sc-dlg-actions"></div>' +
+            '</div>';
+        document.body.appendChild(root);
+        card = root.firstChild;
+        iconEl = card.querySelector('.sc-dlg-icon i');
+        titleEl = card.querySelector('.sc-dlg-title');
+        msgEl = card.querySelector('.sc-dlg-msg');
+        noteEl = card.querySelector('.sc-dlg-note');
+        actionsEl = card.querySelector('.sc-dlg-actions');
+
+        /* คลิกพื้นหลัง = ยกเลิก/ปิด */
+        root.addEventListener('mousedown', function (e) { if (e.target === root && active) finish(active.kind === 'confirm' ? false : true); });
+        root.addEventListener('wheel', function (e) { e.preventDefault(); }, { passive: false });
+        /* คีย์ลัด: Esc = ยกเลิก, Enter = ยืนยัน, Tab วนอยู่ในกล่อง */
+        document.addEventListener('keydown', function (e) {
+            if (!active) return;
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(active.kind === 'confirm' ? false : true); }
+            else if (e.key === 'Enter') {
+                var t = document.activeElement;
+                if (t && t.classList && t.classList.contains('sc-dlg-cancel')) return; /* ให้ปุ่มที่โฟกัสทำงานเอง */
+                e.preventDefault(); e.stopPropagation(); finish(true);
+            } else if (e.key === 'Tab') {
+                var btns = actionsEl.querySelectorAll('button');
+                if (!btns.length) return;
+                var first = btns[0], last = btns[btns.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        }, true);
+    }
+
+    function esc(v) { return String(v == null ? '' : v); }
+
+    /* แยกข้อความในวงเล็บท้ายประโยคออกเป็นหมายเหตุตัวเล็ก */
+    function splitNote(msg) {
+        var m = msg.match(/^([\s\S]*?)\s*\(([^()]+)\)\s*$/);
+        return m ? { main: m[1], note: m[2] } : { main: msg, note: '' };
+    }
+
+    function kindOfAlert(msg) {
+        if (/ไม่สำเร็จ|ไม่ถูกต้อง|ไม่สามารถ|ผิดพลาด|ล้มเหลว/.test(msg)) return 'error';
+        if (/กรุณา|เต็ม|ไม่พบ|ยังไม่มี/.test(msg)) return 'warn';
+        if (/เรียบร้อย|สำเร็จ|คัดลอก/.test(msg)) return 'success';
+        return 'info';
+    }
+
+    var THEMES = {
+        danger:  { cls: 'sc-danger',  icon: 'fa-trash-can',          title: 'ยืนยันการลบ' },
+        ask:     { cls: 'sc-warn',    icon: 'fa-circle-question',    title: 'ยืนยันการทำรายการ' },
+        success: { cls: 'sc-success', icon: 'fa-circle-check',       title: 'สำเร็จ' },
+        error:   { cls: 'sc-danger',  icon: 'fa-circle-xmark',       title: 'เกิดข้อผิดพลาด' },
+        warn:    { cls: 'sc-warn',    icon: 'fa-triangle-exclamation', title: 'แจ้งเตือน' },
+        info:    { cls: 'sc-info',    icon: 'fa-circle-info',        title: 'แจ้งให้ทราบ' }
+    };
+
+    function next() {
+        if (active || !queue.length) return;
+        build();
+        active = queue.shift();
+        var o = active, th = THEMES[o.theme] || THEMES.info;
+        var parts = splitNote(esc(o.msg));
+        var note = parts.note || (o.kind === 'confirm' && o.theme === 'danger' && /ถาวร/.test(parts.main) ? 'ข้อมูลที่ลบแล้วจะไม่สามารถกู้คืนได้' : '');
+
+        lastFocus = document.activeElement;
+        card.className = 'sc-dlg-card ' + th.cls;
+        iconEl.className = 'fa-solid ' + th.icon;
+        titleEl.textContent = o.title || th.title;
+        msgEl.textContent = parts.main;
+        noteEl.textContent = note;
+        noteEl.style.display = note ? '' : 'none';
+
+        actionsEl.innerHTML = '';
+        var oldTimer = card.querySelector('.sc-dlg-timer'); if (oldTimer) oldTimer.remove();
+        var ok = document.createElement('button');
+        ok.type = 'button'; ok.className = 'sc-dlg-btn sc-dlg-ok';
+        ok.innerHTML = o.kind === 'confirm'
+            ? (o.theme === 'danger' ? '<i class="fa-solid fa-trash-can" style="margin-right:6px"></i>' : '') + esc(o.okText)
+            : esc(o.okText);
+        ok.onclick = function () { finish(true); };
+        if (o.kind === 'confirm') {
+            var cancel = document.createElement('button');
+            cancel.type = 'button'; cancel.className = 'sc-dlg-btn sc-dlg-cancel';
+            cancel.textContent = o.cancelText;
+            cancel.onclick = function () { finish(false); };
+            actionsEl.appendChild(cancel);
+        }
+        actionsEl.appendChild(ok);
+
+        root.classList.remove('sc-out');
+        root.classList.add('sc-on');
+        snd(o.theme === 'danger' || o.theme === 'error' || o.theme === 'warn' ? 'cardOpen' : 'click');
+
+        /* ยืนยันการลบ: โฟกัสปุ่มยกเลิกก่อน กันกดลบพลาด / อย่างอื่นโฟกัสปุ่มตกลง */
+        var focusBtn = (o.kind === 'confirm' && o.theme === 'danger') ? actionsEl.querySelector('.sc-dlg-cancel') : ok;
+        setTimeout(function () { try { focusBtn.focus({ preventScroll: true }); } catch (e) {} }, 30);
+
+        /* แจ้งสำเร็จ: ปิดเองอัตโนมัติ พร้อมแถบนับถอยหลัง */
+        if (o.kind === 'alert' && o.theme === 'success') {
+            var bar = document.createElement('div'); bar.className = 'sc-dlg-timer'; card.appendChild(bar);
+            var dur = 2600;
+            if (bar.animate) bar.animate([{ transform: 'scaleX(1)' }, { transform: 'scaleX(0)' }], { duration: dur, easing: 'linear', fill: 'forwards' });
+            else bar.style.display = 'none';
+            o.timer = setTimeout(function () { if (active === o) finish(true); }, dur);
+        }
+    }
+
+    function finish(val) {
+        var o = active; if (!o) return;
+        active = null;
+        if (o.timer) clearTimeout(o.timer);
+        root.classList.add('sc-out');
+        setTimeout(function () {
+            root.classList.remove('sc-on', 'sc-out');
+            if (queue.length) next();
+            else if (lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (e) {} }
+        }, 160);
+        o.resolve(val);
+    }
+
+    function open(o) {
+        return new Promise(function (resolve) {
+            o.resolve = resolve;
+            queue.push(o);
+            next();
+        });
+    }
+
+    /* ใช้: if (!await scConfirm('ต้องการลบ...?')) return;  */
+    window.scConfirm = function (msg, opts) {
+        opts = opts || {};
+        var m = esc(msg), danger = opts.danger != null ? opts.danger : /ลบ/.test(m);
+        return open({
+            kind: 'confirm', msg: m, theme: danger ? 'danger' : 'ask', title: opts.title,
+            okText: opts.okText || (danger ? 'ลบเลย' : 'ยืนยัน'),
+            cancelText: opts.cancelText || 'ยกเลิก'
+        });
+    };
+    window.scAlert = function (msg, opts) {
+        opts = opts || {};
+        var m = esc(msg);
+        return open({ kind: 'alert', msg: m, theme: opts.type || kindOfAlert(m), title: opts.title, okText: opts.okText || 'ตกลง' });
+    };
+
+    /* แทน alert() เดิมทั้งเว็บ (48 จุด) ด้วยกล่องใหม่โดยไม่ต้องแก้ทีละจุด */
+    window.alert = function (msg) { window.scAlert(msg); };
+    window.nativeAlert = nativeAlert;
+})();
+</script>
 
 </body>
 </html>
