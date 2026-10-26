@@ -1,0 +1,21 @@
+{
+  "name": "summer-city-guidebook",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "seed:fixture": "node supabase/make-fixture.mjs",
+    "migrate:images": "node supabase/migrate-images.mjs"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.0",
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}
