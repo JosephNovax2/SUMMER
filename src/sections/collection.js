@@ -102,7 +102,7 @@ export function createCollection(cfg) {
         const el = h('article', {
             role: zoomed ? null : 'button', tabindex: zoomed ? null : '0',
             class: ['info-card', v.glow && 'is-glow', zoomed && 'is-zoomed'],
-            dataset: { tone: v.tone || cfg.tone || 'orange' },
+            dataset: { tone: v.tone || cfg.tone || 'orange', ...(v.rarity && { rarity: v.rarity }) },
             'aria-label': zoomed ? null : `ดู${cfg.noun} ${item.name || ''}`,
             onclick: zoomed ? null : () => (cfg.onOpen ? cfg.onOpen(key, item) : zoom(key, item)),
         },

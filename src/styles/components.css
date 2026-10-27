@@ -98,8 +98,48 @@
 .info-card__name i { color: var(--tone-text); flex: none; }
 .info-card__name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .info-card__label { font-size: 9px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--tone-text); }
+/* ===== ความหายากของการ์ด: แสงนีออนตามสีของระดับ (data-rarity 1–5, ตั้งใน cards.js) =====
+   2 ขอบนีออน · 3 + เรืองแสงหายใจ, แสงหลังรูป · 4 + ขอบหนา, ชื่อเรือง · 5 + เรืองแรงสุด, ประกายลอย (ไม่มีเส้นวิ่ง/แสงกวาด — ลายตา) */
+.info-card[data-rarity="2"] { border-color: rgb(var(--tone) / 0.6); box-shadow: 0 0 0 1px rgb(var(--tone) / 0.12), 0 0 14px rgb(var(--tone) / 0.2); }
+.info-card:is([data-rarity="3"], [data-rarity="4"], [data-rarity="5"]) { border-color: rgb(var(--tone) / 0.75); animation: neon-breathe 3s ease-in-out infinite; }
+.info-card:is([data-rarity="4"], [data-rarity="5"]) { animation-duration: 2.4s; }
+@keyframes neon-breathe {
+    0%, 100% { box-shadow: 0 0 10px rgb(var(--tone) / 0.3), inset 0 0 12px rgb(var(--tone) / 0.08); }
+    50% { box-shadow: 0 0 22px rgb(var(--tone) / 0.55), 0 0 44px rgb(var(--tone) / 0.18), inset 0 0 20px rgb(var(--tone) / 0.15); }
+}
+.info-card:is([data-rarity="3"], [data-rarity="4"], [data-rarity="5"]) .info-card__media { background: radial-gradient(circle at 50% 62%, rgb(var(--tone) / 0.4), rgb(0 0 0 / 0.6) 70%); }
+.info-card:is([data-rarity="3"], [data-rarity="4"], [data-rarity="5"]) .info-card__media img { filter: drop-shadow(0 0 8px rgb(var(--tone) / 0.6)); }
+.info-card:is([data-rarity="3"], [data-rarity="4"], [data-rarity="5"]) .chip { color: #fff; border-color: rgb(var(--tone)); background: rgb(var(--tone) / 0.22); box-shadow: 0 0 10px rgb(var(--tone) / 0.55), inset 0 0 6px rgb(var(--tone) / 0.3); text-shadow: 0 0 6px rgb(var(--tone)); }
+
+/* 4–5: ขอบหนาขึ้น เรืองแรงขึ้น */
+.info-card:is([data-rarity="4"], [data-rarity="5"]) { border-width: 2px; border-color: rgb(var(--tone)); }
+.info-card[data-rarity="5"] { animation-name: neon-breathe-max; }
+@keyframes neon-breathe-max {
+    0%, 100% { box-shadow: 0 0 14px rgb(var(--tone) / 0.45), 0 0 30px rgb(var(--tone) / 0.15), inset 0 0 16px rgb(var(--tone) / 0.12); }
+    50% { box-shadow: 0 0 26px rgb(var(--tone) / 0.7), 0 0 56px rgb(var(--tone) / 0.28), inset 0 0 26px rgb(var(--tone) / 0.2); }
+}
+.info-card:is([data-rarity="4"], [data-rarity="5"]) .info-card__name { color: #fff; text-shadow: 0 0 6px rgb(var(--tone)), 0 0 16px rgb(var(--tone) / 0.6); }
+.info-card:is([data-rarity="4"], [data-rarity="5"]) .info-card__name i { color: #fff; filter: drop-shadow(0 0 5px rgb(var(--tone))); }
+.info-card[data-rarity="5"] .info-card__media { position: relative; overflow: hidden; }
+/* ประกายลอยขึ้น (เฉพาะ 5) */
+.info-card[data-rarity="5"] .info-card__media::before {
+    content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image:
+        radial-gradient(2px 2px at 12% 70%, #fff, transparent), radial-gradient(1.5px 1.5px at 28% 30%, rgb(var(--tone)), transparent),
+        radial-gradient(2px 2px at 46% 85%, rgb(var(--tone)), transparent), radial-gradient(1.5px 1.5px at 64% 45%, #fff, transparent),
+        radial-gradient(2px 2px at 80% 75%, #fff, transparent), radial-gradient(1.5px 1.5px at 92% 20%, rgb(var(--tone)), transparent);
+    background-size: 100% 120px; animation: sparkle-rise 5s linear infinite, sparkle-blink 1.6s ease-in-out infinite;
+}
+@keyframes sparkle-rise { to { background-position: 0 -120px; } }
+@keyframes sparkle-blink { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) {
+    .info-card[data-rarity], .info-card[data-rarity] .info-card__media::before { animation: none; }
+}
+
+/* การ์ดในหน้ารวมสูงเท่ากันทุกใบ ข้อความยาวเลื่อนอ่านในกล่อง (ตอนกดขยายแสดงเต็ม) */
+.info-card:not(.is-zoomed) { height: 340px; min-height: 0; }
 .info-card__text {
-    flex: 1; min-height: 60px; padding: 8px; border-radius: var(--radius);
+    flex: 1; min-height: 48px; padding: 8px; border-radius: var(--radius); overscroll-behavior: contain;
     font-size: 11px; line-height: 1.6; color: var(--text-2);
     background: rgb(0 0 0 / 0.35); border: 1px solid rgb(var(--tone) / 0.22);
 }
