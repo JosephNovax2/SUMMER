@@ -1,0 +1,146 @@
+/* ===== ธีมตามเทศกาล — เปิดด้วย <html data-season="..."> (ดู ui/season.js, config.js SEASON) ===== */
+
+/* ---------- Halloween: ส้มฟักทอง + ม่วงแม่มด + เขียวผี ---------- */
+[data-season="halloween"] {
+    --hw-purple: #a855f7;
+    --hw-lime: #a3e635;
+    --grad-brand: linear-gradient(135deg, #f97316, #c026d3);
+    --grad-text: linear-gradient(90deg, #fb923c, #f0abfc, #a855f7, #fb923c);
+    --glow-orange: 0 0 24px rgb(168 85 247 / 0.22);
+}
+
+/* ท้องฟ้า: โทนม่วงมืด + พระจันทร์เต็มดวงมุมขวาบน */
+[data-season="halloween"] .bg-scene::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+        radial-gradient(circle at 86% 24%, #fff7d6 0 38px, rgb(254 240 138 / 0.6) 40px, rgb(250 204 21 / 0.2) 80px, transparent 180px),
+        linear-gradient(to bottom, rgb(46 16 101 / 0.55), rgb(30 10 50 / 0.35) 45%, rgb(10 5 20 / 0.55));
+}
+
+/* หัวเว็บ/หัวข้อ: ขอบม่วงเรือง */
+[data-season="halloween"] .appbar { border-bottom-color: rgb(168 85 247 / 0.45); box-shadow: 0 1px 18px rgb(168 85 247 / 0.18); }
+[data-season="halloween"] .section-head { border-color: rgb(168 85 247 / 0.35); box-shadow: 0 6px 24px rgb(0 0 0 / 0.35), inset 0 0 22px rgb(168 85 247 / 0.08); }
+[data-season="halloween"] .section-head h2 i { color: #fb923c; filter: drop-shadow(0 0 6px rgb(249 115 22 / 0.7)); }
+[data-season="halloween"] .brand__text small { color: rgb(216 180 254 / 0.85); }
+
+/* ฟักทองข้างโลโก้ แกว่งเบาๆ */
+.hw-pumpkin { display: inline-block; margin-left: 6px; font-size: 15px; filter: drop-shadow(0 0 6px rgb(249 115 22 / 0.8)); animation: hw-sway 3s ease-in-out infinite; transform-origin: 50% 90%; }
+@keyframes hw-sway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@media (max-width: 640px) { .hw-pumpkin { display: none; } }
+
+/* ดวงไฟลอย: เปลี่ยนเป็นวิญญาณม่วง/เขียว */
+[data-season="halloween"] .embers span { background: #d8b4fe; box-shadow: 0 0 8px 3px rgb(168 85 247 / 0.65); }
+[data-season="halloween"] .embers span:nth-child(3n) { background: #d9f99d; box-shadow: 0 0 8px 3px rgb(163 230 53 / 0.55); }
+
+/* ค้างคาว */
+/* ค้างคาวบินผ่านหน้าเนื้อหา (ใต้หัวเว็บ/หน้าต่าง) ตัวเล็กและกดทะลุได้ / ของตกแต่งอื่นอยู่หลังเนื้อหา */
+.hw-bats { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+.hw-bat {
+    position: absolute; top: var(--y); left: 0; width: 52px; opacity: .9;
+    animation: hw-fly var(--dur) linear var(--delay) infinite;
+}
+.hw-bat svg { display: block; width: 100%; fill: #0b0613; stroke: rgb(168 85 247 / 0.55); stroke-width: 1; filter: drop-shadow(0 0 4px rgb(168 85 247 / 0.5)); animation: hw-flap .32s ease-in-out infinite alternate; }
+@keyframes hw-fly {
+    0% { transform: translate(-80px, 0) scale(var(--scale)); }
+    25% { transform: translate(25vw, var(--bob)) scale(var(--scale)); }
+    50% { transform: translate(50vw, 0) scale(var(--scale)); }
+    75% { transform: translate(75vw, calc(var(--bob) * -1)) scale(var(--scale)); }
+    100% { transform: translate(calc(100vw + 80px), 0) scale(var(--scale)); }
+}
+@keyframes hw-flap { to { transform: scaleY(0.45); } }
+
+/* แมงมุมห้อยใยจากใต้แถบหัวเว็บ (มุมขวา) */
+.hw-spider { position: fixed; top: 0; right: clamp(70px, 9vw, 160px); z-index: 39; pointer-events: none; display: flex; flex-direction: column; align-items: center; animation: hw-dangle 6s ease-in-out infinite; }
+.hw-spider__thread { width: 1px; height: 120px; background: linear-gradient(rgb(255 255 255 / 0), rgb(255 255 255 / 0.5)); }
+.hw-spider__body { margin-top: -2px; font-size: 22px; color: #1a1025; filter: drop-shadow(0 0 3px rgb(216 180 254 / 0.9)) drop-shadow(0 0 8px rgb(168 85 247 / 0.6)); }
+@keyframes hw-dangle { 0%, 100% { transform: translateY(-40px); } 50% { transform: translateY(10px); } }
+@media (max-width: 640px) { .hw-spider { right: 18px; } .hw-spider__thread { height: 90px; } }
+
+/* ใยแมงมุมมุมซ้ายบน (ใต้หัวเว็บ) */
+.hw-web { position: fixed; top: 0; left: 0; z-index: -1; width: clamp(130px, 16vw, 220px); color: rgb(226 232 240 / 0.22); pointer-events: none; }
+.hw-web svg { display: block; width: 100%; }
+
+/* หมอกเรี่ยพื้น */
+.hw-fog { position: fixed; left: 0; right: 0; bottom: 0; height: 26vh; z-index: -1; pointer-events: none; overflow: hidden; }
+.hw-fog span {
+    position: absolute; bottom: -20%; left: 0; width: 200%; height: 120%;
+    background:
+        radial-gradient(ellipse 18% 45% at 10% 70%, rgb(196 181 253 / 0.16), transparent 70%),
+        radial-gradient(ellipse 22% 40% at 35% 80%, rgb(167 139 250 / 0.14), transparent 70%),
+        radial-gradient(ellipse 20% 50% at 60% 75%, rgb(196 181 253 / 0.15), transparent 70%),
+        radial-gradient(ellipse 24% 42% at 85% 82%, rgb(167 139 250 / 0.13), transparent 70%);
+    animation: hw-fog 38s linear infinite;
+}
+.hw-fog span:last-child { opacity: .7; animation-duration: 55s; animation-direction: reverse; bottom: -30%; }
+@keyframes hw-fog { to { transform: translateX(-50%); } }
+
+/* ชื่อเว็บเรืองแสงม่วงเป็นจังหวะ */
+[data-season="halloween"] .brand__text strong { animation: hw-title 3.2s ease-in-out infinite; }
+@keyframes hw-title { 0%, 100% { filter: drop-shadow(0 0 4px rgb(168 85 247 / 0.5)); } 50% { filter: drop-shadow(0 0 10px rgb(249 115 22 / 0.8)); } }
+
+/* เมือกเขียวหยดจากขอบล่างหัวเว็บ */
+.hw-slime { position: absolute; left: 0; right: 0; top: 100%; height: 32px; margin-top: -1px; pointer-events: none; }
+.hw-slime svg { display: block; width: 100%; height: 100%; fill: #65a30d; filter: drop-shadow(0 0 6px rgb(163 230 53 / 0.7)) drop-shadow(0 3px 3px rgb(0 0 0 / 0.5)); }
+.hw-slime__drop {
+    position: absolute; width: 7px; height: 9px; margin-left: -3.5px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    background: #84cc16; box-shadow: 0 0 6px rgb(163 230 53 / 0.8); opacity: 0;
+    animation: hw-drop 6s ease-in var(--delay) infinite;
+}
+@keyframes hw-drop {
+    0% { transform: translateY(0) scale(.4); opacity: 0; }
+    8% { transform: translateY(0) scale(1); opacity: 1; }
+    30% { transform: translateY(160px) scale(.9, 1.2); opacity: .9; }
+    36%, 100% { transform: translateY(220px) scale(.6); opacity: 0; }
+}
+@media (max-width: 640px) { .hw-slime { height: 20px; } }
+
+/* ฟักทองแกะสลักมุมล่าง */
+.hw-lantern { position: fixed; bottom: -8px; z-index: -1; width: clamp(80px, 10vw, 150px); pointer-events: none; }
+.hw-lantern--left { left: 12px; transform: rotate(-6deg); }
+.hw-lantern--right { right: 12px; transform: rotate(5deg) scale(.82); transform-origin: bottom right; }
+.hw-lantern::before { content: ''; position: absolute; inset: -40% -30% -10%; background: radial-gradient(circle at 50% 62%, rgb(249 115 22 / 0.45), transparent 62%); animation: hw-candle 2.4s ease-in-out infinite; }
+.hw-lantern svg { position: relative; display: block; width: 100%; filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.6)); }
+.hw-lantern__stem { fill: #3f6212; }
+.hw-lantern__b1 { fill: #c2410c; }
+.hw-lantern__b2 { fill: #ea580c; }
+.hw-lantern__b3 { fill: #f97316; }
+.hw-lantern__face { fill: #fde047; filter: drop-shadow(0 0 4px #facc15) drop-shadow(0 0 10px #f97316); animation: hw-candle 2.4s steps(1) infinite; }
+@keyframes hw-candle { 0%, 100% { opacity: 1; } 12% { opacity: .75; } 18% { opacity: 1; } 47% { opacity: .85; } 52% { opacity: .6; } 58% { opacity: 1; } 80% { opacity: .9; } }
+@media (max-width: 640px) { .hw-lantern { opacity: .55; } }
+
+/* ผีลอย */
+.hw-ghost { position: fixed; z-index: -1; width: var(--size); pointer-events: none; opacity: .22; animation: hw-haunt var(--dur) ease-in-out var(--delay) infinite; }
+.hw-ghost svg { display: block; width: 100%; fill: #f5f3ff; filter: drop-shadow(0 0 12px rgb(216 180 254 / 0.9)); }
+.hw-ghost__eye { fill: #1e1b4b; }
+@keyframes hw-haunt {
+    0%, 100% { transform: translate(0, 0) rotate(-4deg); opacity: .14; }
+    25% { transform: translate(22px, -26px) rotate(3deg); opacity: .3; }
+    50% { transform: translate(-8px, -44px) rotate(-2deg); opacity: .2; }
+    75% { transform: translate(-26px, -18px) rotate(4deg); opacity: .32; }
+}
+
+/* แม่มดบินผ่านพระจันทร์ */
+.hw-witch { position: fixed; top: 0; left: 0; z-index: -1; width: clamp(90px, 9vw, 140px); color: #0b0613; pointer-events: none; animation: hw-witch 32s linear 3s infinite; opacity: 0; }
+.hw-witch svg { display: block; width: 100%; fill: currentColor; filter: drop-shadow(0 0 3px rgb(168 85 247 / 0.9)); }
+@keyframes hw-witch {
+    0% { transform: translate(105vw, 30vh) rotate(-8deg); opacity: 1; }
+    30% { transform: translate(-25vw, 10vh) rotate(-4deg); opacity: 1; }
+    30.1%, 100% { transform: translate(-25vw, 10vh); opacity: 0; }
+}
+
+/* ฟ้าแลบ */
+.hw-flash { position: fixed; inset: 0; z-index: 29; pointer-events: none; opacity: 0; background: radial-gradient(ellipse at 70% 0%, rgb(233 213 255 / 0.55), rgb(168 85 247 / 0.15) 50%, transparent 80%); }
+.hw-flash.is-on { animation: hw-flash 1.1s ease-out; }
+@keyframes hw-flash { 0% { opacity: 0; } 4% { opacity: .9; } 10% { opacity: .1; } 16% { opacity: .65; } 40%, 100% { opacity: 0; } }
+
+/* ประกายตามเมาส์ */
+.hw-spark {
+    position: fixed; z-index: 60; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; pointer-events: none;
+    background: var(--c); box-shadow: 0 0 8px 2px var(--c); animation: hw-spark .8s ease-out forwards;
+}
+@keyframes hw-spark { to { transform: translate(var(--dx), -28px) scale(.2); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .hw-pumpkin, .hw-bat, .hw-bat svg, .hw-spider, .hw-fog span, .hw-lantern::before, .hw-lantern__face,
+    [data-season="halloween"] .brand__text strong { animation: none; }
+}

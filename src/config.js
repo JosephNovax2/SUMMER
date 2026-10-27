@@ -17,5 +17,11 @@ export const ADMIN_EMAIL = 'admin@summercity.app';
 export const REPO_IMAGE_PATTERN =
     /^https?:\/\/(?:cdn\.jsdelivr\.net\/gh\/JosephNovax2\/SUMMER@main|raw\.githubusercontent\.com\/JosephNovax2\/SUMMER\/(?:refs\/heads\/)?main)\/([^?#]+)/i;
 
+// ธีมตามเทศกาล: 'auto' = เปิดเองตามช่วงวันที่ใน SEASONS / 'halloween' = บังคับเปิด / 'none' = ปิด
+export const SEASON = 'auto';
+export const SEASONS = {
+    halloween: { from: '10-15', to: '11-02' }, // เดือน-วัน (รวมวันสุดท้าย)
+};
+
 export const INTRO_MS = { first: 1600, repeat: 800 };
 export const TAB_CUTSCENE_MS = 280;

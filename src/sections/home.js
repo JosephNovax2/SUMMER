@@ -1,11 +1,10 @@
 // ===== หน้าแรก: สรุปทุกอย่างที่ต้องรู้ =====
-// ป้ายร้านกาชา (เต็มความกว้าง) / แถบประกาศตัววิ่ง / กิจกรรมรอบถัดไป / บอร์ดราคา / ทางลัดไปทุกหมวด
+// ป้ายร้านกาชา (เต็มความกว้าง) / แถบประกาศตัววิ่ง / กิจกรรมรอบถัดไป / ทางลัดไปทุกหมวด (บอร์ดราคาอยู่หน้างานฟาร์ม)
 import { $, h, icon, mount } from '../lib/dom.js';
 import { on } from '../lib/bus.js';
 import { subscribe } from '../lib/store.js';
 import { TABS, currentTab, goTo } from '../ui/router.js';
 import { createShopBanner } from './gacha.js';
-import { createEcoBoard } from './eco.js';
 import { buildSlots, createEventHero, nowSeconds } from './events.js';
 import { countUp } from '../ui/effects.js';
 import { hasUnread, openMail } from './mail.js';
@@ -17,7 +16,6 @@ export function initHome() {
         h('div', { class: 'home-banner' }, createShopBanner()),
         newsTicker(),
         nextEventHero(),
-        createEcoBoard(),
         shortcuts());
 }
 

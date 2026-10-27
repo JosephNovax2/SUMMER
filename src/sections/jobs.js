@@ -9,6 +9,7 @@ import { openLightbox } from '../ui/lightbox.js';
 import { reveal } from '../ui/reveal.js';
 import { loading } from './collection.js';
 import { openCalculator } from './calculator.js';
+import { createEcoBoard } from './eco.js';
 
 const WHITE = 'งานขาว';
 const BLACK = 'งานดำ';
@@ -64,6 +65,7 @@ export function createJobs() {
             h('h2', null, icon('briefcase'), 'ข้อมูลวิธีทำและระบบงานฟาร์มทั้งหมดในประเทศ'),
             h('div', { class: 'section-head__actions admin-only' },
                 h('button', { type: 'button', class: 'btn btn--primary', onclick: () => edit() }, icon('plus'), 'เพิ่มข้อมูลงานฟาร์มใหม่'))),
+        createEcoBoard(),
         h('div', { class: 'jobs__toolbar' },
             h('div', { class: 'segmented', role: 'group', 'aria-label': 'กรองประเภทงาน' }, filters),
             h('button', { type: 'button', class: 'btn btn--primary', onclick: openCalculator }, icon('calculator'), icon('truck-pickup'), 'เปิดเครื่องคำนวณรถโล (งานปลากระป๋อง)')),

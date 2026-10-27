@@ -484,6 +484,14 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 
 /* กล่องรอบถัดไป (ตัวเดียวกับหน้าเวลากิจกรรม) + ลิงก์ไปตารางทั้งวัน */
 .ev-media__more { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 20px; color: #fff; background: rgb(0 0 0 / 0.6); }
+/* บรรทัด "ต่อจากนั้น" ใต้ตัวนับถอยหลัง */
+.ev-after { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 14px; padding: 8px 12px; border-radius: var(--radius); background: rgb(0 0 0 / 0.3); border: 1px dashed rgb(245 158 11 / 0.3); }
+.ev-after[hidden] { display: none; }
+.ev-after__label { font-size: 12px; font-weight: 800; color: var(--text-3); }
+.ev-after__label i { color: var(--amber); }
+.ev-after__time { font-family: var(--font-display); font-size: 18px; color: #fff; font-variant-numeric: tabular-nums; }
+.ev-after__names { display: flex; flex-wrap: wrap; gap: 5px; }
+.ev-after__in { font-size: 12px; font-weight: 700; color: var(--orange-2); }
 .ev-hero__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--text-3); transition: color .15s, gap .15s; }
 .ev-hero__more:hover { color: var(--amber); gap: 10px; }
 

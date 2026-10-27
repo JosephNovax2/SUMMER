@@ -133,9 +133,10 @@ export function createEventHero({ extra } = {}) {
     const [cdS, segS] = seg('วินาที');
     const cdCap = h('span', { class: 'ev-cd__cap' }, 'นับถอยหลัง');
     const cd = h('div', { class: 'ev-cd', hidden: true }, cdCap, h('div', { class: 'ev-cd__segs' }, segH, h('i', null, ':'), segM, h('i', null, ':'), segS));
+    const after = h('div', { class: 'ev-after', hidden: true });
     const el = h('div', { class: 'ev-hero' },
         h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))),
-        h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), label), body, cd, extra),
+        h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), label), body, cd, after, extra),
         media,
         imgs);
 
@@ -158,6 +159,18 @@ export function createEventHero({ extra } = {}) {
             cur = { live: !!live, start: target.mins * 60, target: (target.mins + (live || upcoming ? 0 : 1440)) * 60 };
             mount(body, h('span', { class: 'ev-hero__time' }, target.t),
                 h('div', { class: 'ev-hero__names' }, target.items.map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name))));
+        }
+
+        // รอบที่ต่อจาก target (วนไปรอบแรกของวันถ้าหมดแล้ว)
+        const idx = all.indexOf(target);
+        const nxt = all.length > 1 ? all[(idx + 1) % all.length] : null;
+        after.hidden = !nxt;
+        if (nxt) {
+            mount(after,
+                h('span', { class: 'ev-after__label' }, icon('forward'), ' ต่อจากนั้น'),
+                h('b', { class: 'ev-after__time' }, nxt.t),
+                h('span', { class: 'ev-after__names' }, nxt.items.map((i) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key) } }, i.name))),
+                h('span', { class: 'ev-after__in' }, countdown(nxt.mins + (nxt.mins > now ? 0 : 1440), now)));
         }
 
         // รูปของช่วงเวลา (แถบยาวใต้กล่อง สลับทุก 5 วิ): เปลี่ยนเฉพาะตอนรายการรูปเปลี่ยน
