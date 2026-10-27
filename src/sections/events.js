@@ -77,16 +77,16 @@ export function eventArt(key, d, slotImages, cls = '') {
         url ? img(url, { alt: '', referrerpolicy: 'no-referrer' }) : icon(iconOf(d?.name)));
 }
 
-/** แถบภาพของรอบ: ถ้ามีรูปประจำช่วงเวลาใช้รูปนั้น ไม่งั้นเรียงภาพกิจกรรมในรอบ (สูงสุด 3) */
-export function slotMedia(slot, events, slotImages, { useSlot = true } = {}) {
+/** แถบภาพของรอบ: ถ้ามีรูปประจำช่วงเวลาใช้รูปนั้น ไม่งั้นเรียงภาพกิจกรรมในรอบ (สูงสุด max ช่อง) */
+export function slotMedia(slot, events, slotImages, { useSlot = true, max = 3 } = {}) {
     const slotUrl = useSlot && (slotImages[slot.t.replace(':', '')] || []).find((u) => safeUrl(u));
     if (slotUrl) return h('div', { class: 'ev-media' }, h('span', { class: 'ev-art' }, img(slotUrl, { alt: '', referrerpolicy: 'no-referrer' })));
-    // เกิน 3 กิจกรรม: ช่องสุดท้ายขึ้น "+N"
-    const more = slot.items.length - 3;
-    return h('div', { class: 'ev-media', dataset: { n: Math.min(slot.items.length, 3) } },
-        slot.items.slice(0, 3).map((i, k) => {
+    // เกิน max กิจกรรม: ช่องสุดท้ายขึ้น "+N"
+    const more = slot.items.length - max;
+    return h('div', { class: 'ev-media', dataset: { n: Math.min(slot.items.length, max) } },
+        slot.items.slice(0, max).map((i, k) => {
             const art = eventArt(i.key, events[i.key], slotImages);
-            if (k === 2 && more > 0) art.append(h('span', { class: 'ev-media__more' }, '+' + more));
+            if (k === max - 1 && more > 0) art.append(h('span', { class: 'ev-media__more' }, '+' + more));
             return art;
         }));
 }
@@ -135,11 +135,12 @@ export function initEvents() {
     const cdCap = h('span', { class: 'ev-cd__cap' }, 'นับถอยหลัง');
     const cd = h('div', { class: 'ev-cd', hidden: true }, cdCap, h('div', { class: 'ev-cd__segs' }, segH, h('i', null, ':'), segM, h('i', null, ':'), segS));
     const heroMedia = h('div', { class: 'ev-hero__media', hidden: true });
+    // ซ้าย: นาฬิกา / กลาง: รอบ + นับถอยหลัง / ขวา: รูปกิจกรรม (ตาราง 2×2 สูงสุด 4)
     const hero = h('div', { class: 'ev-hero' },
-        heroMedia,
+        h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))),
         h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), heroLabel), heroBody, cd),
-        heroImgs,
-        h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))));
+        heroMedia,
+        heroImgs);
 
     // แถบเวลา 24 ชม. : จุด = รอบกิจกรรม, เข็ม = เวลาตอนนี้
     const needle = h('span', { class: 'ev-day__now' });
@@ -217,7 +218,7 @@ export function initEvents() {
         hero.classList.remove('is-soon');
         cd.hidden = !target;
         heroMedia.hidden = !target;
-        mount(heroMedia, target ? slotMedia(target, events, slotImages, { useSlot: false }) : null);
+        mount(heroMedia, target ? slotMedia(target, events, slotImages, { useSlot: false, max: 4 }) : null);
         if (!target) {
             heroLabel.textContent = 'รอบถัดไป';
             mount(heroBody, h('span', { class: 'muted' }, 'ยังไม่มีข้อมูลกิจกรรม'));

@@ -407,11 +407,12 @@ body.is-admin .product__cta { display: none; }
 .ev-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s; }
 .ev-slide.is-on { opacity: 1; }
 .ev-slide img { width: 100%; height: 100%; object-fit: cover; }
-.ev-hero__clock { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; padding-left: 16px; border-left: 1px solid rgb(245 158 11 / 0.2); }
+.ev-hero__clock { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-right: 18px; border-right: 1px solid rgb(245 158 11 / 0.2); }
 .ev-hero__clock-label { font-size: 11px; color: var(--text-3); }
 .ev-hero__clock b { font-family: var(--font-display); font-size: 30px; color: var(--amber); font-variant-numeric: tabular-nums; }
 .ev-hero__clock small { font-family: var(--font); font-size: 13px; color: var(--text-3); }
-@media (max-width: 640px) { .ev-hero { grid-template-columns: 1fr; } .ev-hero__clock { align-items: flex-start; padding: 10px 0 0; border-left: 0; border-top: 1px solid rgb(245 158 11 / 0.2); } .ev-hero__time { font-size: 32px; } }
+.ev-hero { grid-template-columns: auto 1fr; }
+@media (max-width: 640px) { .ev-hero { grid-template-columns: 1fr; } .ev-hero__clock { flex-direction: row; align-items: baseline; justify-content: space-between; padding: 0 0 10px; border-right: 0; border-bottom: 1px solid rgb(245 158 11 / 0.2); } .ev-hero__time { font-size: 32px; } }
 
 .ev-list { display: flex; flex-direction: column; gap: 18px; }
 .ev-period { display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: var(--radius-lg); background: rgb(14 11 8 / 0.92); border: 1px solid var(--line-strong); }
@@ -574,16 +575,20 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 .ev-chip--sm .ev-art--chip { width: 16px; height: 16px; margin-left: -5px; }
 .ev-art--chip.is-ph i { font-size: 9px; filter: none; }
 /* รูปใน hero หน้าเวลากิจกรรม */
-.ev-hero__media { width: 180px; align-self: stretch; }
+/* รูปฝั่งขวาของ hero: 1 = เต็มช่อง · 2 = ซ้าย/ขวา · 3 = ใหญ่ซ้าย + 2 เล็กขวา · 4 = ตาราง 2×2 */
+.ev-hero__media { width: clamp(240px, 32vw, 400px); align-self: stretch; }
 .ev-hero__media[hidden] { display: none; }
-.ev-hero__media .ev-media { height: 100%; min-height: 150px; flex-direction: column; }
-.ev-hero__media .ev-media[data-n="1"] { flex-direction: row; }
+.ev-hero__media .ev-media { display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 3px; height: 100%; min-height: 180px; }
+.ev-hero__media .ev-media[data-n="1"], .ev-hero__media .ev-media:not([data-n]) { grid-template-columns: 1fr; }
+.ev-hero__media .ev-media[data-n="3"] > :first-child { grid-row: span 2; }
 .ev-hero__media .ev-art.is-ph i { font-size: 40px; }
+.ev-hero__media .ev-media[data-n="4"] .ev-art.is-ph i { font-size: 28px; }
 .ev-hero:has(.ev-hero__media:not([hidden])) { grid-template-columns: auto 1fr auto; }
+@media (max-width: 900px) { .ev-hero__media { width: 240px; } }
 @media (max-width: 640px) {
     .ev-hero:has(.ev-hero__media:not([hidden])) { grid-template-columns: 1fr; }
     .ev-hero__media { width: auto; }
-    .ev-hero__media .ev-media { min-height: 0; height: 110px; flex-direction: row; }
+    .ev-hero__media .ev-media { min-height: 0; height: 160px; }
 }
 
 /* ---------- เวลากิจกรรม: ลูกเล่น ---------- */
