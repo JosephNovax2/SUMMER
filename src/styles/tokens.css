@@ -1,0 +1,71 @@
+/* ===== Design tokens — ธีมส้ม-ดำ SUMMER CITY ===== */
+:root {
+    color-scheme: dark;
+
+    --font: 'Kanit', system-ui, 'Noto Sans Thai', sans-serif;
+    --font-display: 'Orbitron', 'Kanit', sans-serif;
+
+    /* พื้น */
+    --bg: #050505;
+    --surface-0: #0a0806;
+    --surface-1: #111008;
+    --surface-2: #17120c;
+    --surface-3: #1f1810;
+    --line: rgb(255 255 255 / 0.08);
+    --line-strong: rgb(255 255 255 / 0.14);
+
+    /* ข้อความ */
+    --text: #f5f5f4;
+    --text-2: #d4d4d4;
+    --text-3: #a3a3a3;
+    --text-4: #737373;
+
+    /* สีหลัก */
+    --orange: #f97316;
+    --orange-2: #fb923c;
+    --amber: #fbbf24;
+    --cyan: #22d3ee;
+    --emerald: #34d399;
+    --rose: #fb7185;
+    --red: #ef4444;
+    --violet: #a78bfa;
+
+    --grad-brand: linear-gradient(135deg, #f97316, #fbbf24);
+    --grad-text: linear-gradient(90deg, #fb923c, #fde68a, #f97316);
+
+    /* ขนาด */
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --page-w: 1240px;
+    --tabbar-h: 56px;
+
+    --shadow-1: 0 4px 16px rgb(0 0 0 / 0.35);
+    --shadow-2: 0 12px 36px rgb(0 0 0 / 0.55);
+    --glow-orange: 0 0 24px rgb(249 115 22 / 0.18);
+
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+    --ease-back: cubic-bezier(.34, 1.45, .64, 1);
+
+    /* tone เริ่มต้น (ส้ม) — การ์ด/ป้าย/โมดัลเปลี่ยนสีด้วย data-tone */
+    --tone: 249 115 22;
+    --tone-text: #fdba74;
+    --tone-bg-1: #170d05;
+    --tone-bg-2: #0a0806;
+}
+
+/* ===== Tones: ใช้ rgb(var(--tone) / ความโปร่ง) ===== */
+[data-tone="orange"]  { --tone: 249 115 22;  --tone-text: #fdba74; --tone-bg-1: #170d05; --tone-bg-2: #0a0806; }
+[data-tone="amber"],
+[data-tone="gold"]    { --tone: 245 158 11;  --tone-text: #fde68a; --tone-bg-1: #1c1400; --tone-bg-2: #120e00; }
+[data-tone="red"]     { --tone: 239 68 68;   --tone-text: #fca5a5; --tone-bg-1: #1f0505; --tone-bg-2: #130000; }
+[data-tone="rose"]    { --tone: 244 63 94;   --tone-text: #fda4af; --tone-bg-1: #1f0510; --tone-bg-2: #12020a; }
+[data-tone="blue"]    { --tone: 59 130 246;  --tone-text: #93c5fd; --tone-bg-1: #050f1f; --tone-bg-2: #020912; }
+[data-tone="sky"]     { --tone: 56 189 248;  --tone-text: #7dd3fc; --tone-bg-1: #04121c; --tone-bg-2: #020a10; }
+[data-tone="violet"]  { --tone: 139 92 246;  --tone-text: #c4b5fd; --tone-bg-1: #110820; --tone-bg-2: #0a0414; }
+[data-tone="purple"]  { --tone: 168 85 247;  --tone-text: #d8b4fe; --tone-bg-1: #14061f; --tone-bg-2: #0a0312; }
+[data-tone="green"],
+[data-tone="emerald"] { --tone: 16 185 129;  --tone-text: #6ee7b7; --tone-bg-1: #001510; --tone-bg-2: #000e09; }
+[data-tone="cyan"]    { --tone: 34 211 238;  --tone-text: #67e8f9; --tone-bg-1: #06222c; --tone-bg-2: #070b10; }
+[data-tone="neutral"] { --tone: 163 163 163; --tone-text: #d4d4d4; --tone-bg-1: #141414; --tone-bg-2: #0a0a0a; }

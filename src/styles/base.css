@@ -1,0 +1,54 @@
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--tabbar-h) + 12px); }
+body {
+    visibility: visible; /* แสดงหน้าเมื่อสไตล์โหลดแล้ว (index.html ซ่อนไว้ก่อน) */
+    min-height: 100dvh;
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+img, svg { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; }
+a { color: inherit; text-decoration: none; }
+[hidden] { display: none !important; }
+::selection { background: var(--orange); color: #0a0806; }
+
+:focus-visible { outline: 2px solid var(--orange-2); outline-offset: 2px; border-radius: 6px; }
+
+/* แถบเลื่อนบางๆ ภายในกล่อง (ไม่แตะแถบเลื่อนของทั้งหน้า) */
+.scroll-y { overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgb(249 115 22 / 0.35) transparent; }
+.scroll-y::-webkit-scrollbar { width: 6px; }
+.scroll-y::-webkit-scrollbar-thumb { background: rgb(249 115 22 / 0.35); border-radius: 99px; }
+
+/* ===== พื้นหลังภาพเมืองยามเย็น ===== */
+.bg-scene {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+        linear-gradient(to bottom, rgb(0 0 0 / 0.55) 0%, transparent 18%, transparent 82%, rgb(0 0 0 / 0.65) 100%),
+        url('/summer-city-evening.webp') center / cover no-repeat,
+        #0a0806;
+}
+
+/* ===== Utilities ===== */
+.text-gradient { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pre-line { white-space: pre-line; overflow-wrap: anywhere; }
+.clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.noscript { padding: 40px 16px; text-align: center; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

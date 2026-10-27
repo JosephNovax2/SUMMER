@@ -1,0 +1,35 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": "auth != null && (auth.token.email === 'admin@summercity.app' || root.child('roles').child(auth.uid).val() === 'ADMIN')",
+
+    "announcements": { ".read": true },
+    "calc_icons": { ".read": true },
+    "devils": { ".read": true },
+    "eco_golden": { ".read": true },
+    "eco_list": { ".read": true },
+    "eco_time": { ".read": true },
+    "event_slot_images": { ".read": true },
+    "events": { ".read": true },
+    "fashions": { ".read": true },
+    "foods": { ".read": true },
+    "gacha_banner": { ".read": true },
+    "gacha_categories": { ".read": true },
+    "gacha_items": { ".read": true },
+    "gkey": { ".read": true },
+    "items": { ".read": true },
+    "jobs": { ".read": true },
+    "runes": { ".read": true },
+    "site_config": { ".read": true },
+
+    "roles": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid"
+      }
+    },
+
+    "users": {
+      ".read": false
+    }
+  }
+}

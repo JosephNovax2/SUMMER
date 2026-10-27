@@ -1,0 +1,76 @@
+/* ===== ลูกเล่น (ดู src/ui/effects.js) ===== */
+
+/* ---------- แคปซูลไฮไลต์ของแถบหมวด ---------- */
+.tabs__list { position: relative; }
+.tabs__pill {
+    position: absolute; top: 0; bottom: 0; left: 0; z-index: 0; width: 0; opacity: 0;
+    border-radius: 99px; background: var(--grad-brand); box-shadow: 0 4px 14px rgb(249 115 22 / 0.35);
+    transition: transform .35s var(--ease-out), width .35s var(--ease-out), opacity .2s;
+    pointer-events: none;
+}
+:where(.tab) { position: relative; z-index: 1; overflow: hidden; }
+.tabs__list .tab.is-active { background: transparent; }
+
+/* ---------- การ์ด: เอียงตามเมาส์ + แสงไล่ตามเมาส์ ---------- */
+:where(.shortcut, .mini-card) { position: relative; overflow: hidden; }
+:is(.info-card, .job-card, .product, .shortcut, .mini-card) { --rx: 0deg; --ry: 0deg; --mx: 50%; --my: 50%; }
+:is(.info-card, .job-card, .product, .shortcut, .mini-card).is-tilting {
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-3px);
+    transition: transform .08s linear, border-color .2s, box-shadow .2s;
+}
+:is(.info-card, .job-card, .product, .shortcut, .mini-card)::after {
+    content: ''; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(circle at var(--mx) var(--my), rgb(255 255 255 / 0.12), transparent 45%);
+    opacity: 0; transition: opacity .25s;
+}
+:is(.info-card, .job-card, .product, .shortcut, .mini-card).is-tilting::after { opacity: 1; }
+
+/* ---------- คลื่นตอนกดปุ่ม ---------- */
+/* :where() = ไม่เพิ่มน้ำหนัก CSS — ปุ่มที่ตั้งให้ลอย (position: absolute) เองยังลอยได้ตามเดิม */
+:where(.btn, .segmented__btn, .shop__tab, .discord-btn) { position: relative; overflow: hidden; }
+.ripple {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: rgb(255 255 255 / 0.3); transform: scale(0); animation: ripple .55s ease-out forwards;
+}
+@keyframes ripple { to { transform: scale(1); opacity: 0; } }
+
+/* ---------- ปุ่มกลับขึ้นบนสุด ---------- */
+.to-top {
+    position: fixed; right: 28px; bottom: 100px; z-index: 49;
+    width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+    color: var(--orange-2); background: rgb(12 9 6 / 0.88); border: 1px solid rgb(249 115 22 / 0.45);
+    backdrop-filter: blur(8px); box-shadow: var(--shadow-1);
+    opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none;
+    transition: opacity .25s, transform .25s var(--ease-back), background .15s;
+}
+.to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.to-top:hover { background: rgb(249 115 22 / 0.2); }
+body:has(.modal-backdrop) .to-top { display: none; }
+@media (max-width: 640px) { .to-top { right: 17px; bottom: 76px; width: 40px; height: 40px; } }
+
+/* ---------- ประกายไฟลอยในพื้นหลัง ---------- */
+.embers { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.embers span {
+    position: absolute; bottom: -12px; width: var(--size); height: var(--size); border-radius: 50%;
+    background: #ffb238; box-shadow: 0 0 6px 2px rgb(255 122 26 / 0.7); opacity: 0;
+    animation: ember-rise var(--dur) linear var(--delay) infinite;
+}
+@keyframes ember-rise {
+    0% { transform: translate(0, 0); opacity: 0; }
+    10% { opacity: var(--alpha); }
+    80% { opacity: calc(var(--alpha) * 0.6); }
+    100% { transform: translate(var(--drift), -105vh); opacity: 0; }
+}
+
+/* ---------- โหลดข้อมูล: การ์ดโครงร่าง ---------- */
+.skeleton {
+    min-height: 300px; border-radius: var(--radius-lg); border: 1px solid var(--line);
+    background: linear-gradient(100deg, rgb(255 255 255 / 0.03) 30%, rgb(255 255 255 / 0.08) 50%, rgb(255 255 255 / 0.03) 70%) 0 0 / 300% 100%, rgb(14 11 8 / 0.85);
+    animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer { to { background-position: -150% 0, 0 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .embers { display: none; }
+    .tabs__pill { transition: none; }
+}
