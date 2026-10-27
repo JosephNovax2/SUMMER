@@ -6,7 +6,7 @@ import { subscribe } from '../lib/store.js';
 import { TABS, currentTab, goTo } from '../ui/router.js';
 import { createShopBanner } from './gacha.js';
 import { createEcoBoard } from './eco.js';
-import { buildSlots, colorOf, fmtCd, nextSlot, nowSeconds, setTick } from './events.js';
+import { buildSlots, colorOf, fmtCd, nextSlot, nowSeconds, setTick, slotMedia } from './events.js';
 import { countUp } from '../ui/effects.js';
 import { hasUnread, openMail } from './mail.js';
 
@@ -24,6 +24,8 @@ export function initHome() {
 // ---------------------------------------------------------------------------
 function nextEventCard() {
     let slots = [];
+    let events = {};
+    let slotImages = {};
     const body = h('div', { class: 'mini-card__body' }, h('span', { class: 'muted' }, 'กำลังโหลด...'));
     const card = h('button', { type: 'button', class: 'mini-card', dataset: { tone: 'amber' }, onclick: () => goTo('events') },
         h('span', { class: 'mini-card__label' }, h('span', { class: 'ev-pulse' }), h('span', { class: 'mini-card__label-text' }, 'กิจกรรมรอบถัดไป')),
@@ -51,10 +53,14 @@ function nextEventCard() {
         const after = slots.length > 1 ? slots[(idx + 1) % slots.length] : null;
         count.classList.toggle('is-live', n.live);
         mount(body,
+            slotMedia(n.slot, events, slotImages),
             h('div', { class: 'next-ev__row' },
                 h('b', { class: 'next-ev__time' }, n.slot.t),
                 count),
-            h('div', { class: 'next-ev__names' }, n.slot.items.map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name))),
+            // ชื่อบรรทัดเดียว: แสดง 2 ชื่อแรก ที่เหลือรวมเป็น "+N"
+            h('div', { class: 'next-ev__names', title: n.slot.items.map((i) => i.name).join(', ') },
+                n.slot.items.slice(0, 2).map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name)),
+                n.slot.items.length > 2 && h('span', { class: 'ev-chip ev-chip--sm next-ev__more', style: { '--i': 2 } }, '+' + (n.slot.items.length - 2))),
             h('div', { class: ['next-ev__bar', n.live && 'is-live'], role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-label': 'ใกล้ถึงรอบถัดไป' }, bar),
             after && h('div', { class: 'next-ev__after' }, icon('forward'), ' ต่อจากนั้น ', h('b', null, after.t), ' · ', after.items.map((i) => i.name).join(', ')));
         tick();
@@ -79,7 +85,8 @@ function nextEventCard() {
         card.classList.toggle('is-live', cur.live);
     };
 
-    subscribe('events', (v) => { slots = buildSlots(v); render(); });
+    subscribe('events', (v) => { events = v || {}; slots = buildSlots(v); render(); });
+    subscribe('event_slot_images', (v) => { slotImages = v || {}; render(); });
     setInterval(() => { if (currentTab() === 'home' && !document.hidden) tick(); }, 1000);
     on('tab', (id) => { if (id === 'home') render(); });
     return card;

@@ -105,9 +105,9 @@ export function createJobs() {
                 h('h3', { class: 'job-card__name' }, h('span', { class: 'job-card__dot' }), h('span', { class: 'clamp-2' }, job.name)),
                 job.type !== BLACK ? h('div', { class: 'job-card__items' },
                     h('span', { class: 'info-card__label' }, icon('toolbox'), ' ITEMS ที่ต้องใช้ในการฟาร์ม'),
-                    h('div', { class: 'job-card__chips' }, items.length ? items.map((i) => h('span', { class: 'item-chip' }, icon('box'), i)) : h('span', { class: 'muted' }, 'ไม่มีไอเทมเงื่อนไข'))) : null,
+                    h('div', { class: 'job-card__chips scroll-y' }, items.length ? items.map((i) => h('span', { class: 'item-chip' }, icon('box'), i)) : h('span', { class: 'muted' }, 'ไม่มีไอเทมเงื่อนไข'))) : null,
                 job.howto
-                    ? h('p', { class: 'job-card__howto clamp-3' }, job.howto)
+                    ? h('p', { class: 'job-card__howto pre-line scroll-y' }, job.howto)
                     : h('p', { class: 'job-card__howto is-empty' }, icon('hand-pointer'), ' กดที่การ์ดเพื่อดูขั้นตอนการฟาร์ม'),
                 h('div', { class: 'job-card__foot' },
                     difficultyBadge(job.difficulty),

@@ -51,6 +51,46 @@ export function setTick(el, text) {
 export function colorOf(key) { let x = 0; for (const c of String(key)) x = (x * 31 + c.charCodeAt(0)) >>> 0; return COLORS[x % COLORS.length]; }
 export const countdown = (mins, now) => { const d = mins - now, hh = Math.floor(d / 60), mm = d % 60; return 'อีก ' + (hh ? hh + ' ชม. ' : '') + (mm || !hh ? mm + ' นาที' : ''); };
 
+// ไอคอนเดาจากชื่อกิจกรรม (ใช้เป็นภาพแทนตอนยังไม่มีรูป)
+const ICONS = [
+    [/แข่ง|race|รถ|drift/i, 'flag-checkered'], [/dance|เต้น/i, 'music'], [/tdm|ยิง|war|pvp|สงคราม/i, 'crosshairs'],
+    [/color|สี/i, 'palette'], [/egg|ไข่/i, 'egg'], [/chameleon|กิ้งก่า|ซ่อน|hide/i, 'eye-low-vision'],
+    [/\bbb\b|บอล|ball/i, 'futbol'], [/fish|ปลา/i, 'fish'], [/ล่า|hunt|treasure|สมบัติ/i, 'gem'], [/boss|บอส/i, 'dragon'],
+];
+export const iconOf = (name) => (ICONS.find(([re]) => re.test(name || '')) || [])[1] || 'star';
+
+/** รูปของกิจกรรม: รูปที่ตั้งไว้ในกิจกรรม > รูปประจำช่วงเวลาแรกที่มี > null */
+export function imageOf(d, slotImages = {}) {
+    if (!d) return null;
+    if (safeUrl(d.image)) return d.image;
+    for (const t of parseTimes(d.time)) {
+        const u = (slotImages[t.replace(':', '')] || []).find((x) => safeUrl(x));
+        if (u) return u;
+    }
+    return null;
+}
+
+/** ภาพกิจกรรม (มีรูปใช้รูป / ไม่มีใช้สีประจำกิจกรรม + ไอคอน) */
+export function eventArt(key, d, slotImages, cls = '') {
+    const url = imageOf(d, slotImages);
+    return h('span', { class: ['ev-art', cls, !url && 'is-ph'], style: { '--c': colorOf(key) } },
+        url ? img(url, { alt: '', referrerpolicy: 'no-referrer' }) : icon(iconOf(d?.name)));
+}
+
+/** แถบภาพของรอบ: ถ้ามีรูปประจำช่วงเวลาใช้รูปนั้น ไม่งั้นเรียงภาพกิจกรรมในรอบ (สูงสุด 3) */
+export function slotMedia(slot, events, slotImages, { useSlot = true } = {}) {
+    const slotUrl = useSlot && (slotImages[slot.t.replace(':', '')] || []).find((u) => safeUrl(u));
+    if (slotUrl) return h('div', { class: 'ev-media' }, h('span', { class: 'ev-art' }, img(slotUrl, { alt: '', referrerpolicy: 'no-referrer' })));
+    // เกิน 3 กิจกรรม: ช่องสุดท้ายขึ้น "+N"
+    const more = slot.items.length - 3;
+    return h('div', { class: 'ev-media', dataset: { n: Math.min(slot.items.length, 3) } },
+        slot.items.slice(0, 3).map((i, k) => {
+            const art = eventArt(i.key, events[i.key], slotImages);
+            if (k === 2 && more > 0) art.append(h('span', { class: 'ev-media__more' }, '+' + more));
+            return art;
+        }));
+}
+
 /** ตารางทั้งวัน: [{ t:'HH:MM', mins, items:[{key,name}] }] เรียงตามเวลา */
 export function buildSlots(events) {
     const map = {};
@@ -94,7 +134,9 @@ export function initEvents() {
     const [cdS, segS] = seg('วินาที');
     const cdCap = h('span', { class: 'ev-cd__cap' }, 'นับถอยหลัง');
     const cd = h('div', { class: 'ev-cd', hidden: true }, cdCap, h('div', { class: 'ev-cd__segs' }, segH, h('i', null, ':'), segM, h('i', null, ':'), segS));
+    const heroMedia = h('div', { class: 'ev-hero__media', hidden: true });
     const hero = h('div', { class: 'ev-hero' },
+        heroMedia,
         h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), heroLabel), heroBody, cd),
         heroImgs,
         h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))));
@@ -159,7 +201,7 @@ export function initEvents() {
     const chip = (it, small) => h(small ? 'span' : 'button', {
         type: small ? null : 'button', class: ['ev-chip', small && 'ev-chip--sm'],
         style: { '--c': colorOf(it.key) }, onclick: small ? null : () => openInfo(it.key),
-    }, it.name);
+    }, eventArt(it.key, events[it.key], slotImages, 'ev-art--chip'), it.name);
 
     function render() {
         const everything = slots();
@@ -174,6 +216,8 @@ export function initEvents() {
         hero.classList.toggle('is-live', !!live);
         hero.classList.remove('is-soon');
         cd.hidden = !target;
+        heroMedia.hidden = !target;
+        mount(heroMedia, target ? slotMedia(target, events, slotImages, { useSlot: false }) : null);
         if (!target) {
             heroLabel.textContent = 'รอบถัดไป';
             mount(heroBody, h('span', { class: 'muted' }, 'ยังไม่มีข้อมูลกิจกรรม'));
@@ -269,13 +313,12 @@ export function initEvents() {
         const d = events[key];
         if (!d) return;
         const times = parseTimes(d.time);
-        let url = safeUrl(d.image);
-        if (!url) for (const t of times) { const f = (slotImages[t.replace(':', '')] || []).find((u) => safeUrl(u)); if (f) { url = f; break; } }
+        const url = imageOf(d, slotImages);
         const m = openModal({
             bare: true,
             body: h('article', { class: 'ev-info', style: { '--c': colorOf(key) } },
                 h('div', { class: 'ev-info__hero' },
-                    url ? img(url, { alt: '' }) : h('span', { class: 'ev-info__ph' }, icon('calendar-days')),
+                    url ? img(url, { alt: '' }) : h('span', { class: 'ev-info__ph' }, icon(iconOf(d.name))),
                     h('button', { type: 'button', class: 'icon-btn ev-info__close', 'aria-label': 'ปิด', onclick: () => m.close() }, icon('xmark'))),
                 h('div', { class: 'ev-info__body' },
                     h('h2', null, d.name || ''),

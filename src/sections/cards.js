@@ -27,7 +27,7 @@ function devils() {
         filters: Object.entries(DEVIL_TIERS).map(([id, t]) => ({ id, label: id, icon: t.icon, tone: t.tone, test: (d) => devilTier(d) === t })),
         view: (d) => {
             const t = devilTier(d);
-            return { tone: t.tone, glow: t.glow, icon: 'fire', chip: { label: d.tier || 'Common', icon: t.icon }, label: 'ข้อมูลสถานะ', text: d.status };
+            return { tone: t.tone, rarity: t.rank, icon: 'fire', chip: { label: d.tier || 'Common', icon: t.icon }, label: 'ข้อมูลสถานะ', text: d.status };
         },
         defaults: { tier: 'Common' },
         fields: [
@@ -41,12 +41,13 @@ function devils() {
 // ---------------------------------------------------------------------------
 // แฟชั่น
 const FASHION_TYPES = [
-    { value: 'แฟชั่น Topdonate', match: 'Topdonate', rank: 6, tone: 'gold', icon: 'crown', glow: true, label: 'แฟชั่น Topdonate (หายากที่สุด)' },
-    { value: 'แฟชั่นประมูล', match: 'ประมูล', rank: 5, tone: 'red', icon: 'fire', label: 'แฟชั่นประมูล' },
-    { value: 'แฟชั่น Celebrity', match: 'Celebrity', rank: 4, tone: 'blue', icon: 'gem', label: 'แฟชั่น Celebrity' },
-    { value: 'แฟชั่นยอด30k', match: '30k', rank: 3, tone: 'violet', icon: 'coins', label: 'แฟชั่นยอด30k' },
-    { value: 'แฟชั่นกิจกรรม', match: 'กิจกรรม', rank: 2, tone: 'green', icon: 'star', label: 'แฟชั่นกิจกรรม' },
-    { value: 'แฟชั่นปกติ', match: '', rank: 1, tone: 'neutral', icon: 'shirt', label: 'แฟชั่นปกติ' },
+    // rarity = ระดับแสงนีออนของการ์ด 1–5 (ดู .info-card[data-rarity] ใน components.css)
+    { value: 'แฟชั่น Topdonate', match: 'Topdonate', rank: 6, rarity: 5, tone: 'gold', icon: 'crown', label: 'แฟชั่น Topdonate (หายากที่สุด)' },
+    { value: 'แฟชั่นประมูล', match: 'ประมูล', rank: 5, rarity: 4, tone: 'red', icon: 'fire', label: 'แฟชั่นประมูล' },
+    { value: 'แฟชั่น Celebrity', match: 'Celebrity', rank: 4, rarity: 3, tone: 'blue', icon: 'gem', label: 'แฟชั่น Celebrity' },
+    { value: 'แฟชั่นยอด30k', match: '30k', rank: 3, rarity: 3, tone: 'violet', icon: 'coins', label: 'แฟชั่นยอด30k' },
+    { value: 'แฟชั่นกิจกรรม', match: 'กิจกรรม', rank: 2, rarity: 2, tone: 'green', icon: 'star', label: 'แฟชั่นกิจกรรม' },
+    { value: 'แฟชั่นปกติ', match: '', rank: 1, rarity: 1, tone: 'neutral', icon: 'shirt', label: 'แฟชั่นปกติ' },
 ];
 const fashionType = (d) => FASHION_TYPES.find((t) => t.match && String(d.category || '').includes(t.match)) || FASHION_TYPES[FASHION_TYPES.length - 1];
 
@@ -57,7 +58,7 @@ function fashion() {
         filters: FASHION_TYPES.map((t) => ({ id: t.value, label: t.value.replace('แฟชั่น', '').trim() || t.value, icon: t.icon, tone: t.tone, test: (d) => fashionType(d) === t })),
         view: (d) => {
             const t = fashionType(d);
-            return { tone: t.tone, glow: t.glow, icon: 'shirt', chip: { label: d.category || 'แฟชั่นปกติ', icon: t.icon }, label: 'ข้อมูลสถานะ', labelIcon: 'star', text: d.status };
+            return { tone: t.tone, rarity: t.rarity, icon: 'shirt', chip: { label: d.category || 'แฟชั่นปกติ', icon: t.icon }, label: 'ข้อมูลสถานะ', labelIcon: 'star', text: d.status };
         },
         defaults: { category: 'แฟชั่นปกติ' },
         fields: [
@@ -115,7 +116,7 @@ function foods() {
         filters: Object.entries(FOOD_TIERS).map(([id, t]) => ({ id, label: t.label, icon: t.icon, tone: t.tone, test: (d) => foodTier(d) === t })),
         view: (d) => {
             const t = foodTier(d);
-            return { tone: t.tone, glow: t.rank === 3, icon: 'utensils', chip: { label: t.label, icon: t.icon }, label: 'ข้อมูล', labelIcon: 'circle-info', text: d.desc };
+            return { tone: t.tone, rarity: [1, 1, 3, 4][t.rank], icon: 'utensils', chip: { label: t.label, icon: t.icon }, label: 'ข้อมูล', labelIcon: 'circle-info', text: d.desc };
         },
         onOpen: (key, d) => openFoodDetail(d),
         defaults: { tier: 'เขียว' },
