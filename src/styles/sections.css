@@ -478,60 +478,41 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 }
 
 /* ---------- หน้าแรก ---------- */
-.home-hero { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(280px, 1fr); gap: 16px; align-items: stretch; }
-.home-hero__banner { min-width: 0; display: flex; }
-.home-hero__banner .shop-banner-wrap { max-width: none; margin: 0; display: flex; flex-direction: column; flex: 1; }
-.home-hero__banner .shop-banner { height: auto; flex: 1; min-height: clamp(200px, 26vw, 300px); }
-.home-hero__side { display: flex; flex-direction: column; gap: 16px; padding-top: 16px; min-width: 0; }
-@media (max-width: 900px) { .home-hero { grid-template-columns: 1fr; } .home-hero__side { padding-top: 0; display: grid; grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .home-hero__side { grid-template-columns: 1fr; } }
+/* ป้ายร้านกาชา: แถบยาวเต็มความกว้างหน้า */
+.home-banner .shop-banner-wrap { max-width: none; }
+.home-banner .shop-banner { height: clamp(220px, 32vw, 420px); }
 
-.mini-card {
-    flex: 1; display: flex; flex-direction: column; gap: 10px; text-align: left; min-width: 0;
-    padding: 16px 18px; border-radius: var(--radius-lg);
-    background: linear-gradient(160deg, rgb(var(--tone) / 0.12), rgb(12 9 6 / 0.92) 55%);
-    border: 1px solid rgb(var(--tone) / 0.3); backdrop-filter: blur(8px);
-    transition: border-color .2s, transform .2s var(--ease-out);
-}
-.mini-card:hover { border-color: rgb(var(--tone) / 0.7); transform: translateY(-2px); }
-.mini-card__label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: var(--tone-text); }
-.mini-card__body { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.mini-card__more { font-size: 12px; font-weight: 700; color: var(--text-3); }
-.mini-card:hover .mini-card__more { color: var(--tone-text); }
-.next-ev__row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.next-ev__time { font-family: var(--font-display); font-size: 32px; line-height: 1; color: #fff; }
-.next-ev__count { font-size: 14px; font-weight: 700; color: var(--orange-2); }
-.next-ev__count.is-live { color: var(--emerald); }
-.next-ev__names { display: flex; flex-wrap: nowrap; gap: 6px; min-width: 0; }
-.next-ev__names .ev-chip { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
-.next-ev__names .ev-chip.next-ev__more { flex: none; --c: #a3a3a3; }
-/* การ์ดในคอลัมน์ข้างป้ายร้าน: ห้ามหดจนเนื้อหาโดนตัด */
-.home-hero__side .mini-card { flex: 1 0 auto; }
-.mini-card .ev-media { height: 64px; flex: none; }
+/* กล่องรอบถัดไป (ตัวเดียวกับหน้าเวลากิจกรรม) + ลิงก์ไปตารางทั้งวัน */
 .ev-media__more { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 20px; color: #fff; background: rgb(0 0 0 / 0.6); }
-.next-ev__time { font-size: 28px; }
-.news__title { font-size: 18px; line-height: 1.35; color: #fff; text-shadow: 0 1px 8px rgb(249 115 22 / 0.35); }
-.news__excerpt { padding: 6px 10px; font-size: 13px; color: var(--text-2); white-space: pre-line; border-left: 3px solid rgb(249 115 22 / 0.7); border-radius: 0 8px 8px 0; background: rgb(249 115 22 / 0.08); }
-.news__time { font-size: 11px; color: var(--text-3); }
-.news__total { color: var(--text-4); }
+.ev-hero__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: 12px; font-weight: 700; color: var(--text-3); transition: color .15s, gap .15s; }
+.ev-hero__more:hover { color: var(--amber); gap: 10px; }
 
-/* การ์ดประกาศ: พื้นส้มเข้ม + ไอคอนโทรโข่งใหญ่จางๆ มุมขวา / มีประกาศใหม่ = เรืองแสง + ป้าย "ใหม่" */
-.news-card { background: linear-gradient(150deg, rgb(249 115 22 / 0.28), rgb(120 40 5 / 0.35) 40%, rgb(12 9 6 / 0.94) 85%); border-color: rgb(249 115 22 / 0.55); }
-.news-card > * { position: relative; }
-.news-card__bg { position: absolute; right: -14px; bottom: -18px; font-size: 110px; color: rgb(249 115 22 / 0.09); transform: rotate(-14deg); pointer-events: none; }
-.news-card__icon {
-    width: 28px; height: 28px; display: grid; place-items: center; flex: none; border-radius: 8px;
-    font-size: 13px; color: #fff; background: var(--grad-brand); box-shadow: 0 0 12px rgb(249 115 22 / 0.5);
-    animation: horn-wiggle 3.2s ease-in-out infinite; transform-origin: 30% 70%;
+/* แถบประกาศตัววิ่ง: [ป้ายประกาศ] [ข้อความวิ่ง] [อ่านทั้งหมด] — ชี้ค้างหยุดวิ่ง */
+.ticker {
+    display: flex; align-items: center; gap: 12px; width: 100%; height: 46px; padding: 0 6px; overflow: hidden; text-align: left;
+    border-radius: var(--radius-lg); background: rgb(14 11 8 / 0.9); border: 1px solid rgb(249 115 22 / 0.35); backdrop-filter: blur(8px);
+    transition: border-color .2s;
 }
-@keyframes horn-wiggle { 0%, 80%, 100% { transform: none; } 84% { transform: rotate(-14deg) scale(1.1); } 88% { transform: rotate(10deg) scale(1.1); } 92% { transform: rotate(-6deg); } }
-.news-card .mini-card__label { font-size: 13px; color: #fdba74; }
-.news-card__new { display: none; margin-left: auto; padding: 2px 9px; border-radius: 99px; font-size: 10px; font-weight: 900; color: #fff; background: #ef4444; box-shadow: 0 0 10px rgb(239 68 68 / 0.6); animation: live-pulse 1.2s ease-in-out infinite; }
-.news-card.is-unread .news-card__new { display: inline-block; }
-.news-card.is-unread { animation: news-glow 2s ease-in-out infinite; }
-@keyframes news-glow { 50% { box-shadow: 0 0 28px rgb(249 115 22 / 0.4); border-color: rgb(249 115 22 / 0.9); } }
-.news-card .mini-card__more { color: #fdba74; }
-@media (prefers-reduced-motion: reduce) { .news-card__icon, .news-card__new, .news-card.is-unread { animation: none; } }
+.ticker:hover { border-color: rgb(249 115 22 / 0.7); }
+.ticker__tag {
+    flex: none; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border-radius: 10px;
+    font-size: 13px; font-weight: 900; color: #fff; background: var(--grad-brand); box-shadow: 0 0 12px rgb(249 115 22 / 0.45);
+}
+.ticker__new { display: none; padding: 1px 7px; border-radius: 99px; font-size: 9px; background: #ef4444; animation: live-pulse 1.2s ease-in-out infinite; }
+.ticker.is-unread .ticker__new { display: inline-block; }
+.ticker.is-unread { animation: news-glow 2s ease-in-out infinite; }
+@keyframes news-glow { 50% { box-shadow: 0 0 22px rgb(249 115 22 / 0.35); border-color: rgb(249 115 22 / 0.9); } }
+.ticker__view { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.ticker__track { display: flex; width: max-content; animation: ticker-run var(--dur, 20s) linear infinite; }
+.ticker:hover .ticker__track { animation-play-state: paused; }
+@keyframes ticker-run { to { transform: translateX(-50%); } }
+.ticker__set { display: flex; flex: none; }
+.ticker__item { display: inline-flex; align-items: baseline; padding-right: 56px; font-size: 13px; color: var(--text-2); white-space: nowrap; }
+.ticker__item::before { content: '◆'; align-self: center; margin-right: 10px; font-size: 8px; color: var(--orange-2); }
+.ticker__item b { color: #fff; }
+.ticker__item small { font-size: 11px; color: var(--text-4); }
+.ticker__more { flex: none; padding-right: 10px; font-size: 12px; font-weight: 700; color: #fdba74; white-space: nowrap; }
+@media (max-width: 560px) { .ticker__more, .ticker__tag-text { display: none; } .ticker__tag { padding: 0 10px; } }
 
 .home-section { display: flex; flex-direction: column; gap: 14px; }
 .home-section__title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 900; text-shadow: 0 2px 8px rgb(0 0 0 / 0.6); }
@@ -549,9 +530,6 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 .shortcut__text small { font-size: 12px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .shortcut__count { font-size: 11px; font-weight: 700; color: var(--text-4); white-space: nowrap; }
 @media (max-width: 480px) { .shortcuts { grid-template-columns: 1fr 1fr; } .shortcut { flex-direction: column; align-items: flex-start; } .shortcut__text small { white-space: normal; } }
-.next-ev__bar { height: 5px; border-radius: 99px; background: rgb(255 255 255 / 0.08); overflow: hidden; margin-top: 4px; }
-.next-ev__bar span { display: block; height: 100%; border-radius: inherit; background: var(--grad-brand); transition: width .6s var(--ease-out); }
-.next-ev__bar.is-live span { background: linear-gradient(90deg, #10b981, #6ee7b7); animation: live-pulse 1.4s ease-in-out infinite; }
 @keyframes live-pulse { 50% { opacity: .6; } }
 
 /* ---------- ภาพกิจกรรม (รูปจริง / ภาพแทน: สีประจำกิจกรรม + ไอคอน) ---------- */
@@ -569,7 +547,7 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 .ev-media { display: flex; gap: 3px; height: 88px; border-radius: var(--radius); overflow: hidden; border: 1px solid rgb(255 255 255 / 0.08); }
 .ev-media .ev-art { flex: 1; min-width: 0; }
 .ev-media .ev-art img { transition: transform .5s var(--ease-out); }
-.mini-card:hover .ev-media .ev-art img, .ev-hero:hover .ev-media .ev-art img { transform: scale(1.06); }
+.ev-hero:hover .ev-media .ev-art img { transform: scale(1.06); }
 /* รูปเล็กในป้ายชื่อกิจกรรม */
 .ev-art--chip { width: 20px; height: 20px; margin: -2px 6px -2px -7px; flex: none; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--c) 60%, transparent); }
 .ev-chip--sm .ev-art--chip { width: 16px; height: 16px; margin-left: -5px; }
@@ -596,19 +574,7 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 .is-tick { display: inline-block; animation: num-tick .35s var(--ease-out); }
 @keyframes num-tick { from { transform: translateY(-35%); opacity: .2; } }
 
-/* การ์ดหน้าแรก */
-.next-ev__count { font-variant-numeric: tabular-nums; }
-.next-ev__names .ev-chip { animation: chip-in .4s var(--ease-back) both; animation-delay: calc(var(--i, 0) * 60ms); }
 @keyframes chip-in { from { opacity: 0; transform: scale(.7); } }
-.next-ev__bar span { position: relative; overflow: hidden; transition: width 1s linear; }
-.next-ev__after { font-size: 11px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.next-ev__after b { color: var(--text-2); font-variant-numeric: tabular-nums; }
-.next-ev__after i { font-size: 10px; color: var(--amber); }
-.mini-card.is-soon { border-color: rgb(244 63 94 / 0.7); animation: soon-glow 1.6s ease-in-out infinite; }
-.mini-card.is-soon .next-ev__count { color: #fb7185; }
-.mini-card.is-soon .next-ev__bar span { background: linear-gradient(90deg, #f97316, #f43f5e); }
-.mini-card.is-live { border-color: rgb(16 185 129 / 0.7); box-shadow: 0 0 22px rgb(16 185 129 / 0.25); }
-.mini-card.is-live .ev-pulse { background: var(--emerald); }
 @keyframes soon-glow { 50% { box-shadow: 0 0 26px rgb(244 63 94 / 0.35); } }
 
 /* hero: นับถอยหลังแบบแยกช่อง */
@@ -693,5 +659,6 @@ button.ev-chip:hover { background: color-mix(in srgb, var(--c) 32%, transparent)
 
 @media (prefers-reduced-motion: reduce) {
     .is-tick, .ev-hero::before, .ev-cd__segs > i,
-    .mini-card.is-soon, .ev-hero.is-soon, .ev-day__dot.is-next, .ev-list.is-entering .ev-row, .next-ev__names .ev-chip, .ev-hero__names .ev-chip { animation: none; }
+    .ev-hero.is-soon, .ev-day__dot.is-next, .ev-list.is-entering .ev-row, .ev-hero__names .ev-chip,
+    .ticker__track, .ticker.is-unread, .ticker__new { animation: none; }
 }

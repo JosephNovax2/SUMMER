@@ -1,12 +1,12 @@
 // ===== หน้าแรก: สรุปทุกอย่างที่ต้องรู้ =====
-// ป้ายร้านกาชา + กิจกรรมรอบถัดไป + ประกาศล่าสุด / บอร์ดราคา / ทางลัดไปทุกหมวด
+// ป้ายร้านกาชา (เต็มความกว้าง) / แถบประกาศตัววิ่ง / กิจกรรมรอบถัดไป / บอร์ดราคา / ทางลัดไปทุกหมวด
 import { $, h, icon, mount } from '../lib/dom.js';
 import { on } from '../lib/bus.js';
 import { subscribe } from '../lib/store.js';
 import { TABS, currentTab, goTo } from '../ui/router.js';
 import { createShopBanner } from './gacha.js';
 import { createEcoBoard } from './eco.js';
-import { buildSlots, colorOf, fmtCd, nextSlot, nowSeconds, setTick, slotMedia } from './events.js';
+import { buildSlots, createEventHero, nowSeconds } from './events.js';
 import { countUp } from '../ui/effects.js';
 import { hasUnread, openMail } from './mail.js';
 
@@ -14,82 +14,36 @@ const fmtDate = (ts) => { try { return ts ? new Date(Number(ts)).toLocaleDateStr
 
 export function initHome() {
     mount($('#panel-home'),
-        h('div', { class: 'home-hero' },
-            h('div', { class: 'home-hero__banner' }, createShopBanner()),
-            h('div', { class: 'home-hero__side' }, nextEventCard(), latestNewsCard())),
+        h('div', { class: 'home-banner' }, createShopBanner()),
+        newsTicker(),
+        nextEventHero(),
         createEcoBoard(),
         shortcuts());
 }
 
 // ---------------------------------------------------------------------------
-function nextEventCard() {
-    let slots = [];
+function nextEventHero() {
     let events = {};
     let slotImages = {};
-    const body = h('div', { class: 'mini-card__body' }, h('span', { class: 'muted' }, 'กำลังโหลด...'));
-    const card = h('button', { type: 'button', class: 'mini-card', dataset: { tone: 'amber' }, onclick: () => goTo('events') },
-        h('span', { class: 'mini-card__label' }, h('span', { class: 'ev-pulse' }), h('span', { class: 'mini-card__label-text' }, 'กิจกรรมรอบถัดไป')),
-        body,
-        h('span', { class: 'mini-card__more' }, 'ดูตารางทั้งวัน ', icon('arrow-right')));
-
-    // ค่าที่ tick ทุกวินาทีใช้ (ตั้งใหม่ทุกครั้งที่ render)
-    let cur = null;
     let lastMin = -1;
-    const count = h('span', { class: 'next-ev__count' });
-    const bar = h('span');
-
+    const hero = createEventHero({
+        extra: h('button', { type: 'button', class: 'ev-hero__more', onclick: () => goTo('events') }, 'ดูตารางทั้งวัน ', icon('arrow-right')),
+    });
     const render = () => {
         const sec = nowSeconds();
         lastMin = Math.floor(sec / 60);
-        const n = nextSlot(slots, lastMin);
-        card.querySelector('.mini-card__label-text').textContent = n ? n.label : 'กิจกรรมรอบถัดไป';
-        cur = null;
-        card.classList.remove('is-soon', 'is-live');
-        if (!n) { mount(body, h('span', { class: 'muted' }, 'ยังไม่มีข้อมูลกิจกรรม')); return; }
-        // แถบความคืบหน้า: จากรอบก่อนหน้า -> รอบถัดไป (กำลังเริ่ม = เต็ม)
-        const idx = slots.indexOf(n.slot);
-        const prev = idx > 0 ? slots[idx - 1].mins : (slots[slots.length - 1]?.mins ?? 0) - 1440;
-        cur = { live: n.live, start: n.slot.mins * 60, target: (n.slot.mins + (n.tomorrow ? 1440 : 0)) * 60, prev: prev * 60 };
-        const after = slots.length > 1 ? slots[(idx + 1) % slots.length] : null;
-        count.classList.toggle('is-live', n.live);
-        mount(body,
-            slotMedia(n.slot, events, slotImages),
-            h('div', { class: 'next-ev__row' },
-                h('b', { class: 'next-ev__time' }, n.slot.t),
-                count),
-            // ชื่อบรรทัดเดียว: แสดง 2 ชื่อแรก ที่เหลือรวมเป็น "+N"
-            h('div', { class: 'next-ev__names', title: n.slot.items.map((i) => i.name).join(', ') },
-                n.slot.items.slice(0, 2).map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name)),
-                n.slot.items.length > 2 && h('span', { class: 'ev-chip ev-chip--sm next-ev__more', style: { '--i': 2 } }, '+' + (n.slot.items.length - 2))),
-            h('div', { class: ['next-ev__bar', n.live && 'is-live'], role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': 100, 'aria-label': 'ใกล้ถึงรอบถัดไป' }, bar),
-            after && h('div', { class: 'next-ev__after' }, icon('forward'), ' ต่อจากนั้น ', h('b', null, after.t), ' · ', after.items.map((i) => i.name).join(', ')));
-        tick();
+        hero.show(buildSlots(events), events, slotImages, lastMin);
+        hero.tick(sec);
     };
-
-    const tick = () => {
-        const sec = nowSeconds();
-        if (Math.floor(sec / 60) !== lastMin) { render(); return; }
-        if (!cur) return;
-        if (cur.live) {
-            setTick(count, 'เริ่มมา ' + fmtCd(sec - cur.start));
-            bar.style.width = '100%';
-        } else {
-            let left = cur.target - sec;
-            if (left < 0) left += 86400;
-            setTick(count, 'อีก ' + fmtCd(left));
-            const pct = Math.max(0, Math.min(100, ((sec - cur.prev) / Math.max(1, cur.target - cur.prev)) * 100));
-            bar.style.width = pct.toFixed(2) + '%';
-            bar.parentElement?.setAttribute('aria-valuenow', Math.round(pct));
-            card.classList.toggle('is-soon', left <= 300);
-        }
-        card.classList.toggle('is-live', cur.live);
-    };
-
-    subscribe('events', (v) => { events = v || {}; slots = buildSlots(v); render(); });
+    subscribe('events', (v) => { events = v || {}; render(); });
     subscribe('event_slot_images', (v) => { slotImages = v || {}; render(); });
-    setInterval(() => { if (currentTab() === 'home' && !document.hidden) tick(); }, 1000);
+    setInterval(() => {
+        if (currentTab() !== 'home' || document.hidden) return;
+        const sec = nowSeconds();
+        if (Math.floor(sec / 60) !== lastMin) render(); else hero.tick(sec);
+    }, 1000);
     on('tab', (id) => { if (id === 'home') render(); });
-    return card;
+    return hero.el;
 }
 
 /** "เมื่อสักครู่" / "3 ชม. ที่แล้ว" / "2 วันที่แล้ว" (เกิน 30 วันแสดงวันที่) */
@@ -103,30 +57,34 @@ function timeAgo(ts) {
     return fmtDate(ts);
 }
 
-function latestNewsCard() {
-    const body = h('div', { class: 'mini-card__body' }, h('span', { class: 'muted' }, 'กำลังโหลด...'));
-    const total = h('span', { class: 'news__total' });
-    const card = h('button', { type: 'button', class: 'mini-card news-card', dataset: { tone: 'orange' }, onclick: openMail },
-        h('span', { class: 'news-card__bg', 'aria-hidden': 'true' }, icon('bullhorn')),
-        h('span', { class: 'mini-card__label' },
-            h('span', { class: 'news-card__icon' }, icon('bullhorn')), 'ประกาศล่าสุดจากทีมงาน',
-            h('span', { class: 'news-card__new' }, 'ใหม่')),
-        body,
-        h('span', { class: 'mini-card__more' }, 'อ่านประกาศทั้งหมด ', total, icon('arrow-right')));
-    const paintUnread = (u) => card.classList.toggle('is-unread', u);
+/** แถบประกาศเล็กๆ: ประกาศทุกฉบับวิ่งต่อกันจากขวาไปซ้าย (ชี้ค้าง = หยุด / กด = เปิดหน้าต่างประกาศ) */
+function newsTicker() {
+    const track = h('div', { class: 'ticker__track' });
+    const bar = h('button', { type: 'button', class: 'ticker', onclick: openMail, 'aria-label': 'เปิดประกาศจากทีมงาน' },
+        h('span', { class: 'ticker__tag' }, icon('bullhorn'), h('span', { class: 'ticker__tag-text' }, 'ประกาศ'), h('span', { class: 'ticker__new' }, 'ใหม่')),
+        h('span', { class: 'ticker__view' }, track),
+        h('span', { class: 'ticker__more' }, 'อ่านทั้งหมด ', icon('arrow-right')));
+    const paintUnread = (u) => bar.classList.toggle('is-unread', u);
     on('mail-unread', paintUnread);
     subscribe('announcements', (v) => {
         const list = Object.values(v || {}).sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
-        total.textContent = list.length > 1 ? `(${list.length}) ` : '';
         paintUnread(hasUnread());
-        if (!list.length) { mount(body, h('span', { class: 'muted' }, 'ยังไม่มีประกาศ')); return; }
-        const d = list[0];
-        mount(body,
-            h('b', { class: 'news__title clamp-2' }, d.title || 'ไม่มีหัวข้อ'),
-            d.content && h('p', { class: 'news__excerpt clamp-2' }, d.content),
-            h('small', { class: 'news__time', title: fmtDate(d.createdAt) }, icon('clock', 'regular'), ' ', timeAgo(d.createdAt)));
+        if (!list.length) { mount(track, h('span', { class: 'ticker__item muted' }, 'ยังไม่มีประกาศ')); track.style.removeProperty('--dur'); return; }
+        // เนื้อหาแต่ละฉบับตัดเหลือบรรทัดสั้นๆ (อ่านเต็มได้ในหน้าต่างประกาศ)
+        const snippet = (s) => { s = String(s || '').replace(/\s+/g, ' ').trim(); return s.length > 120 ? s.slice(0, 120) + '…' : s; };
+        const items = () => list.map((d) => h('span', { class: 'ticker__item' },
+            h('b', null, d.title || 'ไม่มีหัวข้อ'),
+            d.content && h('span', { class: 'ticker__text' }, ' — ' + snippet(d.content)),
+            h('small', null, ' · ', timeAgo(d.createdAt))));
+        // ใส่ 2 ชุดต่อกันให้วนได้ไม่สะดุด
+        mount(track, h('span', { class: 'ticker__set' }, items()), h('span', { class: 'ticker__set', 'aria-hidden': 'true' }, items()));
     });
-    return card;
+    // ความเร็วคงที่ ~70px/วินาที ไม่ว่าข้อความจะยาวแค่ไหน (วัดใหม่เมื่อขนาดเปลี่ยน / ตอนแท็บหน้าแรกเปิด)
+    new ResizeObserver(() => {
+        const w = track.firstChild?.offsetWidth || 0;
+        if (w) track.style.setProperty('--dur', Math.max(10, Math.round(w / 70)) + 's');
+    }).observe(track);
+    return bar;
 }
 
 function shortcuts() {

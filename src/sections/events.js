@@ -113,34 +113,98 @@ export function nextSlot(slots, now = nowMinutes()) {
     };
 }
 
+/**
+ * กล่อง "รอบถัดไป" — ซ้าย: นาฬิกา / กลาง: รอบ + นับถอยหลัง / ขวา: รูปกิจกรรม (ตาราง 2×2 สูงสุด 4)
+ * ใช้ทั้งหน้าแรกและหน้าเวลากิจกรรม: show() ทุกนาที/ข้อมูลเปลี่ยน, tick(sec) ทุกวินาที
+ * @param {{ extra?: Node }} [o] extra = ต่อท้ายส่วนกลาง (เช่นลิงก์ "ดูตารางทั้งวัน")
+ */
+export function createEventHero({ extra } = {}) {
+    let cur = null;
+    let slideTimer = null;
+    let lastSig = '';
+    const label = h('span', null, 'รอบถัดไป');
+    const body = h('div', { class: 'ev-hero__body' });
+    const imgs = h('div', { class: 'ev-hero__imgs', hidden: true });
+    const media = h('div', { class: 'ev-hero__media', hidden: true });
+    const clock = h('span', null, '--:--:--');
+    const seg = (text) => { const b = h('b', { class: 'ev-cd__num' }, '00'); return [b, h('div', { class: 'ev-cd__seg' }, b, h('small', null, text))]; };
+    const [cdH, segH] = seg('ชม.');
+    const [cdM, segM] = seg('นาที');
+    const [cdS, segS] = seg('วินาที');
+    const cdCap = h('span', { class: 'ev-cd__cap' }, 'นับถอยหลัง');
+    const cd = h('div', { class: 'ev-cd', hidden: true }, cdCap, h('div', { class: 'ev-cd__segs' }, segH, h('i', null, ':'), segM, h('i', null, ':'), segS));
+    const el = h('div', { class: 'ev-hero' },
+        h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))),
+        h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), label), body, cd, extra),
+        media,
+        imgs);
+
+    /** แสดงรอบที่กำลังเริ่ม / รอบถัดไป จากรายการรอบ all; คืน { live, upcoming, target } */
+    function show(all, events, slotImages, now, suffix = '') {
+        const live = all.filter((s) => s.mins <= now && now - s.mins < LIVE_MINUTES).pop();
+        const upcoming = all.find((s) => s.mins > now);
+        const target = live || upcoming || all[0];
+        cur = null;
+        el.classList.toggle('is-live', !!live);
+        el.classList.remove('is-soon');
+        cd.hidden = media.hidden = !target;
+        mount(media, target ? slotMedia(target, events, slotImages, { useSlot: false, max: 4 }) : null);
+        if (!target) {
+            label.textContent = 'รอบถัดไป';
+            mount(body, h('span', { class: 'muted' }, 'ยังไม่มีข้อมูลกิจกรรม'));
+        } else {
+            label.textContent = (live ? 'กำลังเริ่มตอนนี้' : upcoming ? 'รอบถัดไป' : 'รอบแรกของพรุ่งนี้') + suffix;
+            cdCap.textContent = live ? 'เริ่มมาแล้ว' : 'นับถอยหลัง';
+            cur = { live: !!live, start: target.mins * 60, target: (target.mins + (live || upcoming ? 0 : 1440)) * 60 };
+            mount(body, h('span', { class: 'ev-hero__time' }, target.t),
+                h('div', { class: 'ev-hero__names' }, target.items.map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name))));
+        }
+
+        // รูปของช่วงเวลา (แถบยาวใต้กล่อง สลับทุก 5 วิ): เปลี่ยนเฉพาะตอนรายการรูปเปลี่ยน
+        const urls = target ? (slotImages[target.t.replace(':', '')] || []).filter((u) => safeUrl(u)) : [];
+        const sig = urls.join('|');
+        if (sig !== lastSig) {
+            lastSig = sig;
+            clearInterval(slideTimer);
+            mount(imgs, urls.map((u, i) => h('div', { class: ['ev-slide', i === 0 && 'is-on'] }, img(u, { referrerpolicy: 'no-referrer' }))));
+            imgs.hidden = !urls.length;
+            if (urls.length > 1) {
+                slideTimer = setInterval(() => {
+                    const s = [...imgs.children];
+                    const k = s.findIndex((x) => x.classList.contains('is-on'));
+                    s[k]?.classList.remove('is-on');
+                    s[(k + 1) % s.length]?.classList.add('is-on');
+                }, 5000);
+            }
+        }
+        return { live, upcoming, target };
+    }
+
+    function tick(sec) {
+        clock.textContent = pad(Math.floor(sec / 3600)) + ':' + pad(Math.floor(sec / 60) % 60) + ':' + pad(sec % 60);
+        if (!cur) return;
+        let d = cur.live ? sec - cur.start : cur.target - sec;
+        if (d < 0) d += 86400;
+        setTick(cdH, pad(Math.floor(d / 3600)));
+        setTick(cdM, pad(Math.floor(d / 60) % 60));
+        setTick(cdS, pad(d % 60));
+        el.classList.toggle('is-soon', !cur.live && d <= 300);
+    }
+
+    return { el, show, tick };
+}
+
 export function initEvents() {
     let events = {};
     let slotImages = {};
 
     let filter = '';        // key ของกิจกรรมที่เลือกดูอย่างเดียว ('' = ทั้งหมด)
     let enter = true;       // เล่นแอนิเมชันแถวไหลเข้า (เฉพาะตอนเปิดแท็บ/เปลี่ยนตัวกรอง)
-    let cur = null;         // รอบที่ hero แสดง สำหรับ tick ทุกวินาที
     let lastMin = -1;
     let nextStatus = null;  // สถานะของแถวรอบถัดไป (นับถอยหลังเป็นวินาที)
     let enterTimer = null;
 
-    const heroLabel = h('span', null, 'รอบถัดไป');
-    const heroBody = h('div', { class: 'ev-hero__body' });
-    const heroImgs = h('div', { class: 'ev-hero__imgs', hidden: true });
-    const clock = h('span', null, '--:--:--');
-    const seg = (label) => { const b = h('b', { class: 'ev-cd__num' }, '00'); return [b, h('div', { class: 'ev-cd__seg' }, b, h('small', null, label))]; };
-    const [cdH, segH] = seg('ชม.');
-    const [cdM, segM] = seg('นาที');
-    const [cdS, segS] = seg('วินาที');
-    const cdCap = h('span', { class: 'ev-cd__cap' }, 'นับถอยหลัง');
-    const cd = h('div', { class: 'ev-cd', hidden: true }, cdCap, h('div', { class: 'ev-cd__segs' }, segH, h('i', null, ':'), segM, h('i', null, ':'), segS));
-    const heroMedia = h('div', { class: 'ev-hero__media', hidden: true });
-    // ซ้าย: นาฬิกา / กลาง: รอบ + นับถอยหลัง / ขวา: รูปกิจกรรม (ตาราง 2×2 สูงสุด 4)
-    const hero = h('div', { class: 'ev-hero' },
-        h('div', { class: 'ev-hero__clock' }, h('span', { class: 'ev-hero__clock-label' }, icon('clock', 'regular'), ' เวลาไทยตอนนี้'), h('b', null, clock, h('small', null, ' น.'))),
-        h('div', { class: 'ev-hero__main' }, h('div', { class: 'ev-hero__label' }, h('span', { class: 'ev-pulse' }), heroLabel), heroBody, cd),
-        heroMedia,
-        heroImgs);
+    const hero = createEventHero();
 
     // แถบเวลา 24 ชม. : จุด = รอบกิจกรรม, เข็ม = เวลาตอนนี้
     const needle = h('span', { class: 'ev-day__now' });
@@ -159,16 +223,13 @@ export function initEvents() {
                 h('button', { type: 'button', class: 'btn btn--ghost', onclick: copyAsText }, icon('copy', 'regular'), 'คัดลอกเป็นข้อความ'),
                 h('button', { type: 'button', class: 'btn btn--ghost', onclick: openImport }, icon('file-import'), 'นำเข้าจากข้อความ'),
                 h('button', { type: 'button', class: 'btn btn--primary', onclick: () => edit() }, icon('plus'), 'เพิ่มกิจกรรม'))),
-        hero, day, filters, list);
+        hero.el, day, filters, list);
 
     subscribe('events', (v) => { events = v || {}; if (filter && !events[filter]) filter = ''; render(); });
     subscribe('event_slot_images', (v) => { slotImages = v || {}; render(); });
     setInterval(() => { if (currentTab() === 'events' && !document.hidden) tick(); }, 1000);
     on('tab', (id) => { if (id === 'events') { enter = true; render(); } });
     on('user', render);
-
-    let slideTimer = null;
-    let lastSig = '';
 
     const slots = () => buildSlots(events);
 
@@ -186,16 +247,8 @@ export function initEvents() {
     function tick() {
         const sec = nowSeconds();
         if (Math.floor(sec / 60) !== lastMin) { render(); return; }
-        clock.textContent = pad(Math.floor(sec / 3600)) + ':' + pad(Math.floor(sec / 60) % 60) + ':' + pad(sec % 60);
+        hero.tick(sec);
         needle.style.left = (sec / 864).toFixed(3) + '%';
-        if (cur) {
-            let d = cur.live ? sec - cur.start : cur.target - sec;
-            if (d < 0) d += 86400;
-            setTick(cdH, pad(Math.floor(d / 3600)));
-            setTick(cdM, pad(Math.floor(d / 60) % 60));
-            setTick(cdS, pad(d % 60));
-            hero.classList.toggle('is-soon', !cur.live && d <= 300);
-        }
         if (nextStatus) setTick(nextStatus.el, 'อีก ' + fmtCd(nextStatus.at - sec));
     }
 
@@ -210,26 +263,7 @@ export function initEvents() {
         const now = nowMinutes();
         lastMin = now;
 
-        const live = all.filter((s) => s.mins <= now && now - s.mins < LIVE_MINUTES).pop();
-        const upcoming = all.find((s) => s.mins > now);
-        const target = live || upcoming || all[0];
-        cur = null;
-        hero.classList.toggle('is-live', !!live);
-        hero.classList.remove('is-soon');
-        cd.hidden = !target;
-        heroMedia.hidden = !target;
-        mount(heroMedia, target ? slotMedia(target, events, slotImages, { useSlot: false, max: 4 }) : null);
-        if (!target) {
-            heroLabel.textContent = 'รอบถัดไป';
-            mount(heroBody, h('span', { class: 'muted' }, 'ยังไม่มีข้อมูลกิจกรรม'));
-        } else {
-            const who = filter ? ` · ${events[filter]?.name || ''}` : '';
-            heroLabel.textContent = (live ? 'กำลังเริ่มตอนนี้' : upcoming ? 'รอบถัดไป' : 'รอบแรกของพรุ่งนี้') + who;
-            cdCap.textContent = live ? 'เริ่มมาแล้ว' : 'นับถอยหลัง';
-            cur = { live: !!live, start: target.mins * 60, target: (target.mins + (live || upcoming ? 0 : 1440)) * 60 };
-            mount(heroBody, h('span', { class: 'ev-hero__time' }, target.t),
-                h('div', { class: 'ev-hero__names' }, target.items.map((i, k) => h('span', { class: 'ev-chip ev-chip--sm', style: { '--c': colorOf(i.key), '--i': k } }, i.name))));
-        }
+        const { live, upcoming } = hero.show(all, events, slotImages, now, filter ? ` · ${events[filter]?.name || ''}` : '');
 
         // แถบเวลา 24 ชม.
         day.hidden = !everything.length;
@@ -252,24 +286,6 @@ export function initEvents() {
                 type: 'button', class: ['ev-filter__btn', filter === key && 'is-on'], style: { '--c': colorOf(key) },
                 onclick: () => setFilter(key),
             }, h('span', { class: 'ev-filter__dot' }), d.name || 'ไม่มีชื่อ')));
-
-        // รูปของช่วงเวลา: เปลี่ยนเฉพาะตอนรายการรูปเปลี่ยน
-        const urls = target ? (slotImages[target.t.replace(':', '')] || []).filter((u) => safeUrl(u)) : [];
-        const sig = urls.join('|');
-        if (sig !== lastSig) {
-            lastSig = sig;
-            clearInterval(slideTimer);
-            mount(heroImgs, urls.map((u, i) => h('div', { class: ['ev-slide', i === 0 && 'is-on'] }, img(u, { referrerpolicy: 'no-referrer' }))));
-            heroImgs.hidden = !urls.length;
-            if (urls.length > 1) {
-                slideTimer = setInterval(() => {
-                    const s = [...heroImgs.children];
-                    const cur = s.findIndex((x) => x.classList.contains('is-on'));
-                    s[cur]?.classList.remove('is-on');
-                    s[(cur + 1) % s.length]?.classList.add('is-on');
-                }, 5000);
-            }
-        }
 
         nextStatus = null;
         if (!all.length) {
