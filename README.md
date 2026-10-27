@@ -36,7 +36,7 @@ push ขึ้น `main` แล้ว GitHub Actions ([`.github/workflows/deploy
 
 ตั้งค่าครั้งแรกบน GitHub:
 - **Settings → Pages → Source:** `GitHub Actions`
-- **Settings → Secrets and variables → Actions → Variables:** เพิ่ม `VITE_SUPABASE_URL` และ `VITE_SUPABASE_ANON_KEY`
+- **Settings → Secrets and variables → Actions:** เพิ่ม `VITE_SUPABASE_URL` และ `VITE_SUPABASE_ANON_KEY` (แท็บ Variables หรือ Secrets ก็ได้)
 
 > anon key เป็นคีย์สาธารณะ อยู่ในหน้าเว็บได้ สิทธิ์จริงคุมด้วย RLS ใน Supabase — **ห้ามใส่ service_role key ที่ไหนเด็ดขาด**
 
