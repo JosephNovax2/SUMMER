@@ -43,14 +43,14 @@ push ขึ้น `main` แล้ว GitHub Actions ([`.github/workflows/deploy
 ## โครงสร้าง
 
 ```
-index.html            โครงหน้า (เมนูข้าง, หัวเว็บ, คัทซีน, ช่องของแต่ละหมวด)
+index.html            โครงหน้า (หัวเว็บ, แถบหมวด, ท้ายเว็บ, คัทซีน, ช่องของแต่ละหมวด)
 public/               รูปภาพ (เสิร์ฟตรงตามชื่อไฟล์)
 src/
   main.js             จุดเริ่มต้น
   config.js           ค่าตั้งต้น (ลิงก์, อีเมลแอดมิน, เวลาคัทซีน)
   lib/                dom (สร้าง HTML แบบกัน XSS), store (ข้อมูล), auth, sound, bus (สถานะกลาง)
   ui/                 modal, dialog/toast, form (ฟอร์มแอดมิน), layout, router (#แท็บ), cutscene, lightbox, reveal
-  sections/           แต่ละหมวด — collection.js คือแม่แบบของหมวดการ์ด
+  sections/           แต่ละหมวด — home.js หน้าแรก, collection.js แม่แบบของหมวดการ์ด
   styles/             tokens (สี/ขนาด), base, layout, components, sections
 supabase/             schema.sql, seed.sql, สคริปต์แปลงข้อมูลจาก Firebase
 docs/FEATURES.md      เช็กลิสต์ฟีเจอร์ทั้งหมด

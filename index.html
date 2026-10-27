@@ -15,6 +15,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700;900&family=Orbitron:wght@700;900&display=swap">
+    <!-- กันหน้าเปล่าไม่มีสไตล์โผล่ตอน F5: ซ่อนเนื้อหาไว้จนกว่า CSS จริงจะโหลด (base.css สั่งให้แสดง) ระหว่างรอโชว์รูปพื้นหลัง
+         ห้ามใส่ background ที่ html — จะทำให้พื้นของ body บังรูป .bg-scene -->
+    <style>body { visibility: hidden; background: #0a0806 url('/summer-city-evening.webp') center / cover no-repeat fixed; }</style>
+    <noscript><style>body { visibility: visible; }</style></noscript>
 </head>
 <body>
     <div class="bg-scene" aria-hidden="true"></div>
@@ -34,44 +38,42 @@
         </div>
     </div>
 
-    <div class="side-backdrop" id="side-backdrop"></div>
-    <aside class="sidebar" id="sidebar" aria-label="เมนูหลัก">
-        <div class="sidebar__brand">
-            <button type="button" class="sun-btn" id="admin-login-btn" aria-label="เข้าสู่ระบบแอดมิน">
-                <i class="fa-solid fa-sun" aria-hidden="true"></i><span class="sun-btn__ping"></span>
-            </button>
-            <div class="sidebar__brand-text">
-                <strong><span class="text-gradient">SUMMER CITY</span> SS2</strong>
-                <small>Guide book ผู้เล่นใหม่</small>
+    <!-- แถบบนสุด: โลโก้ (กดพระอาทิตย์ = เข้าสู่ระบบแอดมิน) + หมวด + ปุ่มด้านขวา
+         จอกว้างอยู่บรรทัดเดียว / จอแคบเป็น 2 แถว (มือถือพับแถวบนตอนเลื่อนลง) -->
+    <header class="appbar" id="appbar">
+        <div class="appbar__inner">
+            <div class="brand">
+                <button type="button" class="sun-btn" id="admin-login-btn" aria-label="เข้าสู่ระบบแอดมิน">
+                    <i class="fa-solid fa-sun" aria-hidden="true"></i>
+                </button>
+                <a href="#home" class="brand__text" id="brand-link">
+                    <strong><span class="text-gradient">SUMMER CITY</span> SS2</strong>
+                    <small>Guide Book ผู้เล่นใหม่</small>
+                </a>
             </div>
-        </div>
-        <nav class="sidebar__nav" id="sidebar-nav"></nav>
-        <div class="sidebar__foot">
-            <a class="discord-btn" id="discord-link" target="_blank" rel="noopener">
-                <i class="fa-brands fa-discord" aria-hidden="true"></i><span class="sidebar__label">เข้าร่วมดิสคอร์ด</span>
-            </a>
-        </div>
-    </aside>
-
-    <header class="topbar" id="topbar">
-        <button type="button" class="icon-btn topbar__burger" id="burger" aria-label="เปิดเมนู"><i class="fa-solid fa-bars"></i></button>
-        <div class="topbar__actions">
-            <button type="button" class="icon-btn" id="sound-toggle" aria-label="ปิดเสียง"></button>
-            <button type="button" class="mail-btn" id="mail-btn" aria-label="ประกาศจากทีมงาน"><i class="fa-solid fa-envelope"></i></button>
-            <a class="creator" id="creator-link" target="_blank" rel="noopener" aria-label="ผู้จัดทำ: JOSEPH (Facebook)">
-                <img src="creator-avatar.png" alt="" class="creator__avatar">
-                <span class="creator__text"><small>Created By</small><b>JOSEPH</b></span>
-            </a>
-            <div class="admin-bar" id="admin-bar" hidden>
-                <span class="admin-bar__who"><b id="admin-name"></b><small class="role-badge">ADMIN</small></span>
-                <button type="button" class="icon-btn" id="logo-edit-btn" aria-label="ตั้งรูปโลโก้คัทซีน"><i class="fa-solid fa-image"></i></button>
-                <button type="button" class="icon-btn icon-btn--danger" id="logout-btn" aria-label="ออกจากระบบ"><i class="fa-solid fa-right-from-bracket"></i></button>
+            <nav class="tabs" id="tabbar" aria-label="หมวดหมู่">
+                <div class="tabs__list" id="tabbar-list"></div>
+            </nav>
+            <div class="appbar__actions">
+                <button type="button" class="icon-btn" id="sound-toggle" aria-label="ปิดเสียง"></button>
+                <a class="discord-btn" id="discord-link" target="_blank" rel="noopener" aria-label="เข้าร่วมดิสคอร์ด" title="เข้าร่วมดิสคอร์ด"><i class="fa-brands fa-discord" aria-hidden="true"></i></a>
+                <button type="button" class="mail-btn" id="mail-btn" aria-label="ประกาศจากทีมงาน"><i class="fa-solid fa-envelope"></i></button>
+                <a class="creator" id="creator-link" target="_blank" rel="noopener" aria-label="ผู้จัดทำ: JOSEPH (Facebook)">
+                    <img src="creator-avatar.png" alt="" class="creator__avatar">
+                    <span class="creator__text"><small>Created By</small><b>JOSEPH</b></span>
+                </a>
+                <div class="admin-bar" id="admin-bar" hidden>
+                    <span class="admin-bar__who"><b id="admin-name"></b><small class="role-badge">ADMIN</small></span>
+                    <button type="button" class="icon-btn" id="logo-edit-btn" aria-label="ตั้งรูปโลโก้คัทซีน"><i class="fa-solid fa-image"></i></button>
+                    <button type="button" class="icon-btn icon-btn--danger" id="logout-btn" aria-label="ออกจากระบบ"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
             </div>
         </div>
     </header>
 
     <main class="main" id="main">
-        <section class="panel" id="panel-farm" data-tab="farm"></section>
+        <section class="panel" id="panel-home" data-tab="home"></section>
+        <section class="panel" id="panel-farm" data-tab="farm" hidden></section>
         <section class="panel" id="panel-food" data-tab="food" hidden></section>
         <section class="panel" id="panel-devil" data-tab="devil" hidden></section>
         <section class="panel" id="panel-rune" data-tab="rune" hidden></section>
@@ -80,6 +82,13 @@
         <section class="panel" id="panel-events" data-tab="events" hidden></section>
         <section class="panel" id="panel-gkey" data-tab="gkey" hidden></section>
     </main>
+
+    <footer class="footer">
+        <div class="footer__bottom">
+            <span>© <span id="footer-year">2026</span> SUMMER CITY SS2 · Guide Book</span>
+            <span>Created by JOSEPH</span>
+        </div>
+    </footer>
 
     <button type="button" class="float-cart" id="float-cart" aria-label="เปิดร้านค้า GACHA"><i class="fa-solid fa-cart-shopping"></i></button>
 

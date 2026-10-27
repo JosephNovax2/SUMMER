@@ -25,14 +25,29 @@ async function roleOf(userId) {
     return data?.role || 'USER';
 }
 
-/** เริ่มต้น: ถ้าเคยล็อกอินไว้ (Supabase จำ session) ให้กลับเป็นแอดมินเลย */
+/** ลบ session ที่เก็บไว้ในเครื่อง (ใช้เมื่อเซิร์ฟเวอร์ยกเลิก session ไปแล้ว แต่ในเครื่องยังค้าง) */
+function clearStoredSession() {
+    try {
+        Object.keys(localStorage).filter((k) => /^sb-.+-auth-token/.test(k)).forEach((k) => localStorage.removeItem(k));
+    } catch (e) { /* ignore */ }
+}
+
+/** เริ่มต้น: ถ้าเคยล็อกอินไว้ (Supabase จำ session) ให้กลับเป็นแอดมิน — แต่ตรวจกับเซิร์ฟเวอร์ก่อนว่า session ยังใช้ได้จริง */
 export async function restoreSession() {
     await init();
     setUser(GUEST);
     if (db.kind !== 'supabase') return;
     const { data } = await db.client.auth.getSession();
-    const u = data.session?.user;
-    if (u) setUser({ username: displayName(u.email), role: await roleOf(u.id) });
+    if (data.session) {
+        const { data: check, error } = await db.client.auth.getUser();
+        if (error || !check?.user) {
+            // ถูกออกจากระบบไปแล้ว (เช่น ออกจากทุกเครื่อง / เปลี่ยนรหัสผ่าน) — ไม่คืนสิทธิ์แอดมิน
+            clearStoredSession();
+            await db.client.auth.signOut({ scope: 'local' }).catch(() => {});
+        } else {
+            setUser({ username: displayName(check.user.email), role: await roleOf(check.user.id) });
+        }
+    }
     // session หมดอายุ หรือออกจากระบบในแท็บอื่น -> กลับเป็นผู้เล่นทั่วไปทันที
     db.client.auth.onAuthStateChange((event, session) => {
         if ((event === 'SIGNED_OUT' || !session) && state.isAdmin) setUser(GUEST);
@@ -57,6 +72,14 @@ export async function login(username, password) {
 }
 
 export async function logout() {
-    if (db.kind === 'supabase') await db.client.auth.signOut().catch(() => {});
     setUser(GUEST);
+    if (db.kind !== 'supabase') return;
+    const { error } = await db.client.auth.signOut().catch((e) => ({ error: e }));
+    if (error) {
+        // เซิร์ฟเวอร์ยกเลิก session ไปก่อนแล้ว Supabase จะไม่ลบ session ในเครื่องให้เอง
+        // -> ลบเองแล้วโหลดหน้าใหม่ ให้ไม่มีอะไรค้างในหน่วยความจำ
+        console.warn('signOut:', error.message);
+        clearStoredSession();
+        location.reload();
+    }
 }

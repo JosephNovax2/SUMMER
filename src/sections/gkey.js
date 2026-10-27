@@ -7,7 +7,7 @@ import { loading } from './collection.js';
 
 export function initGkey() {
     const panel = $('#panel-gkey');
-    const content = h('div', null, loading(''));
+    const content = h('div', null, loading('', 1));
     let data = {};
 
     mount(panel,

@@ -1,4 +1,4 @@
-// ===== โครงหน้า: เมนูข้าง, หัวเว็บ, ปุ่มลอย, เข้าสู่ระบบแอดมิน =====
+// ===== โครงหน้า: หัวเว็บ, แถบหมวด, ท้ายเว็บ, ปุ่มลอย, เข้าสู่ระบบแอดมิน =====
 import { LINKS } from '../config.js';
 import { $, h, icon, mount, safeUrl } from '../lib/dom.js';
 import { onUser, state } from '../lib/bus.js';
@@ -11,21 +11,37 @@ import { toast } from './dialog.js';
 import { TABS, goTo } from './router.js';
 
 export function initLayout({ onOpenMail, onOpenShop }) {
-    // ----- เมนูข้าง -----
-    mount($('#sidebar-nav'), TABS.map((t) => h('a', {
-        href: '#' + t.id, class: 'nav-item', dataset: { nav: t.id },
+    // ----- แถบหมวด -----
+    mount($('#tabbar-list'), TABS.map((t) => h('a', {
+        href: '#' + t.id, class: 'tab', dataset: { nav: t.id },
         onclick: (e) => { e.preventDefault(); goTo(t.id); },
-    }, icon(t.icon, 'solid', 'nav-item__icon'), h('span', { class: 'sidebar__label' }, t.label))));
+    }, icon(t.icon), h('span', null, t.label))));
+    $('#brand-link').addEventListener('click', (e) => { e.preventDefault(); goTo('home'); });
+
+    $('#footer-year').textContent = new Date().getFullYear();
 
     $('#discord-link').href = LINKS.discord;
     $('#creator-link').href = LINKS.facebook;
-    $('#burger').addEventListener('click', () => document.body.classList.toggle('side-open'));
-    $('#side-backdrop').addEventListener('click', () => document.body.classList.remove('side-open'));
 
-    // ----- หัวเว็บ: พื้นทึบตอนเลื่อนลง -----
-    const topbar = $('#topbar');
+    // ----- แถบบนสุด: เงาเมื่อเลื่อนลง / มือถือ: เลื่อนลงซ่อนแถวโลโก้ เหลือแต่หมวด เลื่อนขึ้นแสดงกลับ -----
+    const appbar = $('#appbar');
+    const tabs = $('#tabbar');
+    const compactMq = window.matchMedia('(max-width: 640px)');
     let ticking = false;
-    const onScroll = () => { topbar.classList.toggle('is-scrolled', window.scrollY > 24); ticking = false; };
+    let lastY = window.scrollY;
+    const onScroll = () => {
+        const y = window.scrollY;
+        appbar.classList.toggle('is-scrolled', y > 8);
+        if (compactMq.matches) {
+            appbar.style.setProperty('--appbar-top', tabs.offsetTop + 'px');
+            if (y < 80 || y < lastY - 4) appbar.classList.remove('is-compact');
+            else if (y > lastY + 4) appbar.classList.add('is-compact');
+        } else {
+            appbar.classList.remove('is-compact');
+        }
+        lastY = y;
+        ticking = false;
+    };
     window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
     onScroll();
 

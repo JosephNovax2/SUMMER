@@ -1,8 +1,9 @@
 /* ===== Base ===== */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--topbar-h) + 8px); }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--tabbar-h) + 12px); }
 body {
+    visibility: visible; /* แสดงหน้าเมื่อสไตล์โหลดแล้ว (index.html ซ่อนไว้ก่อน) */
     min-height: 100dvh;
     font-family: var(--font);
     font-size: 15px;

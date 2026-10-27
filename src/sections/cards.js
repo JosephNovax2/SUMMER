@@ -13,8 +13,8 @@ const byRank = (rankOf) => (a, b) => rankOf(b) - rankOf(a);
 // ผลไม้ปีศาจ
 const DEVIL_TIERS = {
     Mythic: { rank: 5, tone: 'red', icon: 'skull', glow: true, label: '🔴 Mythic (ตำนาน)' },
-    Legendary: { rank: 4, tone: 'gold', icon: 'crown', glow: true, label: '🟡 Legendary (หายากที่สุด)' },
-    EPIC: { rank: 3, tone: 'purple', icon: 'gem', glow: true, label: '🟣 EPIC (หายากมาก)' },
+    Legendary: { rank: 4, tone: 'gold', icon: 'crown', label: '🟡 Legendary (หายากที่สุด)' },
+    EPIC: { rank: 3, tone: 'purple', icon: 'gem', label: '🟣 EPIC (หายากมาก)' },
     Rare: { rank: 2, tone: 'sky', icon: 'diamond', label: '🔵 Rare (หายาก)' },
     Common: { rank: 1, tone: 'green', icon: 'leaf', label: '🟢 Common (ธรรมดา)' },
 };
@@ -24,6 +24,7 @@ function devils() {
     createCollection({
         tab: 'devil', path: 'devils', title: 'ข้อมูลผลไม้ปีศาจ', icon: 'fire', noun: 'ผลไม้ปีศาจ',
         sort: byRank((d) => devilTier(d).rank),
+        filters: Object.entries(DEVIL_TIERS).map(([id, t]) => ({ id, label: id, icon: t.icon, tone: t.tone, test: (d) => devilTier(d) === t })),
         view: (d) => {
             const t = devilTier(d);
             return { tone: t.tone, glow: t.glow, icon: 'fire', chip: { label: d.tier || 'Common', icon: t.icon }, label: 'ข้อมูลสถานะ', text: d.status };
@@ -41,8 +42,8 @@ function devils() {
 // แฟชั่น
 const FASHION_TYPES = [
     { value: 'แฟชั่น Topdonate', match: 'Topdonate', rank: 6, tone: 'gold', icon: 'crown', glow: true, label: 'แฟชั่น Topdonate (หายากที่สุด)' },
-    { value: 'แฟชั่นประมูล', match: 'ประมูล', rank: 5, tone: 'red', icon: 'fire', glow: true, label: 'แฟชั่นประมูล' },
-    { value: 'แฟชั่น Celebrity', match: 'Celebrity', rank: 4, tone: 'blue', icon: 'gem', glow: true, label: 'แฟชั่น Celebrity' },
+    { value: 'แฟชั่นประมูล', match: 'ประมูล', rank: 5, tone: 'red', icon: 'fire', label: 'แฟชั่นประมูล' },
+    { value: 'แฟชั่น Celebrity', match: 'Celebrity', rank: 4, tone: 'blue', icon: 'gem', label: 'แฟชั่น Celebrity' },
     { value: 'แฟชั่นยอด30k', match: '30k', rank: 3, tone: 'violet', icon: 'coins', label: 'แฟชั่นยอด30k' },
     { value: 'แฟชั่นกิจกรรม', match: 'กิจกรรม', rank: 2, tone: 'green', icon: 'star', label: 'แฟชั่นกิจกรรม' },
     { value: 'แฟชั่นปกติ', match: '', rank: 1, tone: 'neutral', icon: 'shirt', label: 'แฟชั่นปกติ' },
@@ -53,6 +54,7 @@ function fashion() {
     createCollection({
         tab: 'fashion', path: 'fashions', title: 'ข้อมูลสถานะแฟชั่น', icon: 'shirt', tone: 'amber', noun: 'แฟชั่น',
         sort: byRank((d) => fashionType(d).rank),
+        filters: FASHION_TYPES.map((t) => ({ id: t.value, label: t.value.replace('แฟชั่น', '').trim() || t.value, icon: t.icon, tone: t.tone, test: (d) => fashionType(d) === t })),
         view: (d) => {
             const t = fashionType(d);
             return { tone: t.tone, glow: t.glow, icon: 'shirt', chip: { label: d.category || 'แฟชั่นปกติ', icon: t.icon }, label: 'ข้อมูลสถานะ', labelIcon: 'star', text: d.status };
@@ -110,9 +112,10 @@ function foods() {
     createCollection({
         tab: 'food', path: 'foods', title: 'ข้อมูลอาหาร', icon: 'utensils', tone: 'emerald', noun: 'อาหาร',
         sort: byRank((d) => foodTier(d).rank),
+        filters: Object.entries(FOOD_TIERS).map(([id, t]) => ({ id, label: t.label, icon: t.icon, tone: t.tone, test: (d) => foodTier(d) === t })),
         view: (d) => {
             const t = foodTier(d);
-            return { tone: t.tone, glow: true, icon: 'utensils', chip: { label: t.label, icon: t.icon }, label: 'ข้อมูล', labelIcon: 'circle-info', text: d.desc };
+            return { tone: t.tone, glow: t.rank === 3, icon: 'utensils', chip: { label: t.label, icon: t.icon }, label: 'ข้อมูล', labelIcon: 'circle-info', text: d.desc };
         },
         onOpen: (key, d) => openFoodDetail(d),
         defaults: { tier: 'เขียว' },

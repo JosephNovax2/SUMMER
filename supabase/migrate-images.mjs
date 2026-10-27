@@ -173,4 +173,5 @@ if (failed.length) {
 } else {
     console.log(`\n✓ ${DRY ? 'โหลดและแปลงได้ครบ' : 'ย้ายครบ'} ${done} รูป`);
 }
-if (!DRY) await sb.auth.signOut();
+// ออกเฉพาะ session ของสคริปต์นี้ — ไม่เตะแอดมินที่ล็อกอินอยู่ในเบราว์เซอร์ออกไปด้วย
+if (!DRY) await sb.auth.signOut({ scope: 'local' });

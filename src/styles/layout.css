@@ -1,141 +1,126 @@
-/* ===== Layout: เมนูข้าง / หัวเว็บ / เนื้อหา ===== */
+/* ===== Layout: แถบบนสุด / เนื้อหา / ท้ายเว็บ ===== */
 
-/* ---------- Sidebar ---------- */
-.sidebar {
-    position: fixed; inset: 0 auto 0 0; z-index: 60;
-    width: var(--side-w);
-    display: flex; flex-direction: column;
-    background: linear-gradient(180deg, rgb(12 9 6 / 0.94), rgb(6 5 4 / 0.96));
-    border-right: 1px solid rgb(249 115 22 / 0.28);
-    box-shadow: 1px 0 14px rgb(249 115 22 / 0.18);
-    backdrop-filter: blur(10px);
-    transition: width .22s var(--ease-out), transform .25s var(--ease-out), box-shadow .2s;
+/* ---------- App bar: โลโก้ + หมวด + ปุ่ม ในแถบเดียว ---------- */
+.appbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgb(10 8 6 / 0.82); backdrop-filter: blur(14px) saturate(1.3);
+    border-bottom: 1px solid rgb(249 115 22 / 0.25);
+    transition: box-shadow .2s, background .2s;
 }
-.sidebar__brand {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px; border-bottom: 1px solid rgb(249 115 22 / 0.45);
-    box-shadow: 0 1px 8px rgb(249 115 22 / 0.35);
+.appbar.is-scrolled { background: rgb(10 8 6 / 0.94); box-shadow: 0 8px 24px rgb(0 0 0 / 0.45); }
+.appbar__inner {
+    max-width: 1360px; margin: 0 auto; padding: 10px 20px;
+    display: grid; align-items: center; column-gap: 16px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "brand tabs actions";
 }
-.sidebar__brand-text { min-width: 0; line-height: 1.2; white-space: nowrap; }
-.sidebar__brand-text strong { display: block; font-size: 13px; font-weight: 900; color: var(--text-2); }
-.sidebar__brand-text small { font-size: 10px; color: rgb(249 115 22 / 0.65); }
-.sidebar__nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 10px 8px; display: flex; flex-direction: column; gap: 4px; scrollbar-width: none; }
-.sidebar__foot { padding: 12px; border-top: 1px solid rgb(249 115 22 / 0.45); box-shadow: 0 -1px 8px rgb(249 115 22 / 0.35); }
+.brand { grid-area: brand; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand__text { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
+.brand__text strong { font-size: 16px; font-weight: 900; letter-spacing: .02em; white-space: nowrap; }
+.brand__text small { font-size: 10px; color: rgb(253 186 116 / 0.75); white-space: nowrap; }
+.appbar__actions { grid-area: actions; display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+
+.tabs { grid-area: tabs; min-width: 0; }
+.tabs__list { display: flex; justify-content: center; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs__list::-webkit-scrollbar { display: none; }
+.tab {
+    flex: none; display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 12px; border-radius: 99px; font-size: 13.5px; font-weight: 600; color: var(--text-3); white-space: nowrap;
+    transition: color .15s, background .15s;
+}
+.tab i { font-size: 12px; opacity: .85; }
+.tab:hover { color: var(--text); background: rgb(255 255 255 / 0.06); }
+.tab.is-active { color: #0a0806; background: var(--grad-brand); font-weight: 800; }
+.tab.is-active i { opacity: 1; }
 
 .sun-btn {
-    position: relative; flex: none; width: 40px; height: 40px; border-radius: var(--radius);
+    flex: none; width: 40px; height: 40px; border-radius: var(--radius);
     display: grid; place-items: center; font-size: 18px; color: var(--orange-2);
-    background: linear-gradient(135deg, rgb(249 115 22 / 0.2), rgb(245 158 11 / 0.08));
-    border: 1px solid rgb(249 115 22 / 0.3); transition: border-color .2s;
+    background: rgb(249 115 22 / 0.1); border: 1px solid rgb(249 115 22 / 0.35);
+    transition: border-color .2s, transform .3s var(--ease-back);
 }
-.sun-btn:hover { border-color: rgb(249 115 22 / 0.7); }
-.sun-btn__ping { position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); animation: ping 1.6s cubic-bezier(0,0,.2,1) infinite; }
-@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+.sun-btn:hover { border-color: rgb(249 115 22 / 0.8); transform: rotate(25deg); }
 
-.nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 12px; border-radius: var(--radius);
-    font-size: 14px; font-weight: 600; color: var(--text-2);
-    border: 1px solid transparent; white-space: nowrap;
-    transition: background .15s, color .15s, border-color .15s;
-}
-.nav-item__icon { width: 18px; text-align: center; flex: none; font-size: 14px; }
-.nav-item:hover { background: rgb(249 115 22 / 0.08); color: var(--orange); }
-.nav-item.is-active {
-    color: #0a0806; background: var(--grad-brand); border-color: rgb(251 191 36 / 0.6);
-    box-shadow: 0 0 16px rgb(249 115 22 / 0.35);
-}
-
-.discord-btn {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 10px 12px; border-radius: 999px; font-weight: 700; font-size: 14px; color: #fff; white-space: nowrap;
-    background: linear-gradient(90deg, #e11d48, #dc2626); border: 1px solid var(--orange);
-    box-shadow: 0 4px 14px rgb(244 63 94 / 0.3); transition: filter .15s;
-}
-.discord-btn:hover { filter: brightness(1.12); }
-
-.side-backdrop { display: none; }
-
-/* เดสก์ท็อป: ย่อเหลือไอคอน ขยายตอนชี้ */
-@media (min-width: 1024px) {
-    .sidebar { width: var(--side-w-collapsed); overflow: hidden; }
-    .sidebar:hover, .sidebar:focus-within { width: var(--side-w); box-shadow: 8px 0 30px rgb(0 0 0 / 0.55); }
-    .sidebar:not(:hover):not(:focus-within) :is(.sidebar__label, .sidebar__brand-text) { display: none; }
-    .sidebar:not(:hover):not(:focus-within) .nav-item { justify-content: center; padding-inline: 0; }
-    .sidebar:not(:hover):not(:focus-within) .sidebar__brand { justify-content: center; }
-    .sidebar:not(:hover):not(:focus-within) .discord-btn { border-radius: var(--radius); padding-inline: 0; }
-    body { padding-left: var(--side-w-collapsed); }
-    .topbar .topbar__burger { display: none; }
-}
-/* มือถือ/แท็บเล็ต: ลิ้นชัก */
-@media (max-width: 1023.98px) {
-    .sidebar { transform: translateX(-100%); width: min(280px, 82vw); background: #0a0806; backdrop-filter: none; }
-    body.side-open .sidebar { transform: none; }
-    body.side-open .side-backdrop { display: block; position: fixed; inset: 0; z-index: 55; background: rgb(0 0 0 / 0.6); }
-}
-
-/* ---------- Topbar ---------- */
-.topbar {
-    position: sticky; top: 0; z-index: 40;
-    height: var(--topbar-h);
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    padding: 0 16px;
-    pointer-events: none;
-    transition: background-color .25s, box-shadow .25s;
-}
-.topbar > * { pointer-events: auto; }
-.topbar.is-scrolled {
-    pointer-events: auto;
-    background: rgb(8 6 5 / 0.8);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 1px 0 rgb(249 115 22 / 0.35), 0 6px 20px rgb(0 0 0 / 0.45);
-}
-.topbar__actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-
+.appbar .icon-btn { width: 36px; height: 36px; background: rgb(255 255 255 / 0.04); border-color: var(--line-strong); }
 .mail-btn {
-    position: relative; width: 38px; height: 38px; border-radius: var(--radius);
-    display: grid; place-items: center; color: #fff;
-    background: var(--grad-brand); border: 1px solid var(--orange-2);
-    box-shadow: 0 4px 14px rgb(249 115 22 / 0.25); transition: filter .15s;
+    position: relative; width: 36px; height: 36px; border-radius: var(--radius);
+    display: grid; place-items: center; color: #fff; background: var(--grad-brand); transition: filter .15s;
 }
 .mail-btn:hover { filter: brightness(1.1); }
+.discord-btn {
+    width: 36px; height: 36px; border-radius: var(--radius); font-size: 17px;
+    display: grid; place-items: center; color: #fff; background: #5865f2; transition: filter .15s;
+}
+.discord-btn:hover { filter: brightness(1.12); }
 .mail-btn.has-unread::after {
-    content: ''; position: absolute; top: -4px; right: -4px; width: 11px; height: 11px; border-radius: 50%;
-    background: var(--red); border: 2px solid #0a0806; animation: pulse-dot 1.4s ease-in-out infinite;
+    content: ''; position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--red); border: 2px solid #0a0806; animation: pulse-dot 1.6s ease-in-out infinite;
 }
-.mail-btn.has-unread i { animation: envelope-jump 2.4s ease-in-out infinite; }
-@keyframes pulse-dot { 50% { transform: scale(1.25); box-shadow: 0 0 10px var(--red); } }
-@keyframes envelope-jump { 0%, 70%, 100% { transform: none; } 80% { transform: translateY(-3px) rotate(-8deg); } 90% { transform: translateY(0) rotate(6deg); } }
+@keyframes pulse-dot { 50% { transform: scale(1.25); } }
 
-.creator {
-    display: flex; align-items: center; gap: 8px; padding: 5px 12px 5px 6px; border-radius: var(--radius);
-    background: rgb(0 0 0 / 0.3); border: 1px solid rgb(249 115 22 / 0.2); transition: border-color .15s, background .15s;
-}
-.creator:hover { border-color: rgb(249 115 22 / 0.5); background: rgb(249 115 22 / 0.1); }
-.creator__avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid rgb(251 146 60 / 0.5); }
-.creator__text { display: flex; flex-direction: column; line-height: 1.15; }
-.creator__text small { font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-4); }
+.creator { display: flex; align-items: center; gap: 8px; padding: 3px 12px 3px 3px; border-radius: 99px; border: 1px solid var(--line-strong); transition: border-color .15s; }
+.creator:hover { border-color: rgb(249 115 22 / 0.5); }
+.creator__avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+.creator__text { display: flex; flex-direction: column; line-height: 1.1; }
+.creator__text small { font-size: 8px; letter-spacing: .18em; text-transform: uppercase; color: var(--text-4); }
 .creator__text b { font-size: 12px; font-weight: 900; }
 
-.admin-bar { display: flex; align-items: center; gap: 8px; padding-left: 10px; border-left: 1px solid rgb(249 115 22 / 0.2); }
-.admin-bar__who { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2; }
-.admin-bar__who b { font-size: 13px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.role-badge { font-size: 9px; font-weight: 900; padding: 1px 8px; border-radius: 99px; background: var(--orange); color: #0a0806; }
+.admin-bar { display: flex; align-items: center; gap: 4px; padding: 3px 3px 3px 12px; border-radius: 99px; border: 1px solid rgb(249 115 22 / 0.4); background: rgb(249 115 22 / 0.06); }
+.admin-bar__who { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; margin-right: 4px; }
+.admin-bar__who b { font-size: 12px; max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.role-badge { font-size: 8px; font-weight: 900; padding: 0 6px; border-radius: 99px; background: var(--orange); color: #0a0806; }
+.appbar .admin-bar .icon-btn { width: 30px; height: 30px; border-radius: 50%; font-size: 12px; }
 
+/* จอไม่กว้างพอ: 2 แถวในกรอบเดียว (แถวบน โลโก้+ปุ่ม / แถวล่าง หมวด) */
+@media (max-width: 1299px) {
+    .appbar__inner {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas: "brand actions" "tabs tabs";
+        row-gap: 8px; padding-bottom: 8px;
+    }
+    .tabs { margin: 0 -20px; border-top: 1px solid var(--line); padding-top: 8px; }
+    .tabs__list { justify-content: flex-start; padding: 0 20px; scroll-padding-inline: 20px;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent);
+        mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 24px), transparent); }
+}
+@media (min-width: 1000px) and (max-width: 1299px) { .tabs__list { justify-content: center; mask-image: none; -webkit-mask-image: none; } }
 @media (max-width: 640px) {
-    .topbar { padding: 0 12px; height: 56px; }
-    .creator__text { display: none; }
-    .creator { padding: 4px; }
-    .creator__avatar { width: 34px; height: 34px; }
-    .mail-btn, .topbar .icon-btn { width: 34px; height: 34px; }
-    .admin-bar__who b { max-width: 80px; font-size: 12px; }
+    .appbar__inner { padding: 8px 12px; row-gap: 6px; padding-bottom: 6px; }
+    .tabs { margin: 0 -12px; padding-top: 6px; }
+    .tabs__list { padding: 0 12px; scroll-padding-inline: 12px; }
+    .tab { padding: 7px 11px; font-size: 13px; }
+    .brand__text strong { font-size: 15px; }
+    .brand__text small { display: none; }
+    .sun-btn { width: 36px; height: 36px; font-size: 16px; }
+    .creator__text, .admin-bar__who { display: none; }
+    .creator { padding: 2px; }
+    .admin-bar { padding-left: 3px; }
+    .appbar .icon-btn, .mail-btn, .discord-btn { width: 34px; height: 34px; }
+    /* เลื่อนลง = เลื่อนแถบขึ้นจนเหลือแค่แถวหมวด (ใช้ transform ไม่ทำให้เนื้อหากระตุก) / เลื่อนขึ้น = กลับมาเต็ม */
+    .appbar { transition: transform .25s var(--ease-out), box-shadow .2s, background .2s; }
+    .appbar.is-compact { transform: translateY(calc(-1 * var(--appbar-top, 0px))); }
 }
 
 /* ---------- Main ---------- */
-.main { max-width: 1280px; margin-inline: auto; padding: 24px 24px 120px; }
-@media (max-width: 640px) { .main { padding: 16px 12px 110px; } }
+.main { max-width: var(--page-w); margin-inline: auto; padding: 28px 20px 40px; }
+@media (max-width: 640px) { .main { padding: 18px 12px 48px; } }
 .panel { display: flex; flex-direction: column; gap: 28px; animation: panel-in .35s var(--ease-out); }
 @keyframes panel-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Footer (แถบเล็กบรรทัดเดียว ชิดล่างเสมอ แม้เนื้อหาสั้น) ---------- */
+body { display: flex; flex-direction: column; }
+.main { flex: 1 0 auto; width: 100%; }
+.footer { flex: none; margin-top: 24px; border-top: 1px solid var(--line); background: rgb(8 6 5 / 0.9); }
+.footer__bottom {
+    max-width: var(--page-w); margin: 0 auto; padding: 14px 20px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px;
+    font-size: 11px; color: var(--text-4);
+}
+/* เว้นขวาให้ปุ่มตะกร้าลอย ไม่ทับข้อความ */
+@media (max-width: 1400px) { .footer__bottom { padding-right: 96px; } }
+@media (max-width: 560px) {
+    .footer__bottom { flex-direction: column; align-items: center; text-align: center; padding: 12px 16px; }
+}
 
 /* ---------- ปุ่มตะกร้าลอย ---------- */
 .float-cart {
@@ -150,6 +135,7 @@
 .float-cart:hover { transform: scale(1.1); box-shadow: 0 0 30px rgb(239 68 68 / 0.9), 0 6px 20px rgb(0 0 0 / 0.5); }
 body:has(.modal-backdrop) .float-cart { display: none; }
 @media (max-width: 640px) { .float-cart { right: 14px; bottom: 18px; width: 48px; height: 48px; } }
+
 
 /* ---------- Cutscene ---------- */
 .cutscene {

@@ -48,8 +48,10 @@ export function createJobs() {
 
     const whiteGrid = h('div', { class: 'job-grid' }, loading('งานฟาร์ม'));
     const blackGrid = h('div', { class: 'job-grid' });
-    const whiteGroup = h('div', { class: 'job-group' }, h('h3', { class: 'job-group__head', dataset: { tone: 'cyan' } }, 'หมวดหมู่: งานขาว (งานถูกกฎหมายรอบเมือง)'), whiteGrid);
-    const blackGroup = h('div', { class: 'job-group' }, h('h3', { class: 'job-group__head', dataset: { tone: 'orange' } }, 'หมวดหมู่: งานดำ (งานใต้ดินมืด)'), blackGrid);
+    const groupHead = (tone, ic, name, desc) => h('h3', { class: 'job-group__head', dataset: { tone } },
+        h('span', { class: 'job-group__icon' }, icon(ic)), h('span', null, h('small', null, 'หมวดหมู่'), name), h('em', null, desc));
+    const whiteGroup = h('div', { class: 'job-group' }, groupHead('cyan', 'briefcase', 'งานขาว', 'งานถูกกฎหมายรอบเมือง'), whiteGrid);
+    const blackGroup = h('div', { class: 'job-group' }, groupHead('orange', 'mask', 'งานดำ', 'งานใต้ดินมืด'), blackGrid);
 
     const filters = [['all', 'ทั้งหมด', 'list'], ['white', 'งานขาว', 'circle'], ['black', 'งานดำ', 'circle']].map(([id, label, ic]) =>
         h('button', {

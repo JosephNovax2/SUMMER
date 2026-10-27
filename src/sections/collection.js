@@ -21,26 +21,76 @@ import { reveal } from '../ui/reveal.js';
  * @param {Array} cfg.fields         ช่องกรอกของฟอร์มแอดมิน (ดู ui/form.js)
  * @param {(values:object)=>object} [cfg.toData]  แปลงค่าจากฟอร์มก่อนบันทึก
  * @param {(key:string,item:object)=>void} [cfg.onOpen]  กดการ์ด (ค่าเริ่มต้น = ขยายการ์ด)
+ * @param {Array<{id,label,icon,tone,test:(item)=>boolean}>} [cfg.filters]  ปุ่มกรอง (เช่น ตามระดับ)
  */
 export function createCollection(cfg) {
     const panel = $(`#panel-${cfg.tab}`);
     const grid = h('div', { class: 'card-grid' }, loading(cfg.noun));
     let data = {};
+    let query = '';
+    let filter = 'all';
+
+    // ----- ค้นหา + ปุ่มกรอง -----
+    const search = h('input', {
+        class: 'input search__input', type: 'search', placeholder: `ค้นหา${cfg.noun}... (กด / เพื่อค้นหา)`,
+        'aria-label': `ค้นหา${cfg.noun}`, oninput: (e) => { query = e.target.value.trim().toLowerCase(); render(); },
+    });
+    const chips = h('div', { class: 'filter-chips', role: 'group', 'aria-label': 'กรอง' });
+    const resultInfo = h('span', { class: 'search__info', 'aria-live': 'polite' });
+    const bar = h('div', { class: 'collection-bar' },
+        h('label', { class: 'search' }, icon('magnifying-glass'), search, resultInfo),
+        cfg.filters?.length ? chips : null);
 
     mount(panel,
         h('header', { class: 'section-head', dataset: { tone: cfg.tone || 'orange' } },
             h('div', null, h('h2', null, icon(cfg.icon), cfg.title), cfg.subtitle ? h('p', null, cfg.subtitle) : null),
             h('div', { class: 'section-head__actions admin-only' },
                 h('button', { type: 'button', class: 'btn btn--primary', onclick: () => edit() }, icon('plus'), `เพิ่ม${cfg.noun}`))),
+        bar,
         grid);
+
+    // กด "/" เพื่อไปที่ช่องค้นหาของหมวดที่เปิดอยู่
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== '/' || panel.hidden || e.target.closest?.('input, textarea, select') || document.querySelector('.modal-backdrop')) return;
+        e.preventDefault();
+        search.focus();
+    });
 
     subscribe(cfg.path, (value) => { data = value || {}; render(); });
 
+    const matches = (item) => {
+        if (!query) return true;
+        const v = cfg.view(item);
+        return [item.name, v.text, v.chip?.label, ...(v.tags || [])].some((x) => String(x || '').toLowerCase().includes(query));
+    };
+
+    function renderChips(all) {
+        if (!cfg.filters?.length) return;
+        const count = (f) => all.filter((k) => f.test(data[k])).length;
+        mount(chips, [{ id: 'all', label: 'ทั้งหมด', icon: 'layer-group', test: () => true }, ...cfg.filters].map((f) => {
+            const n = count(f);
+            if (f.id !== 'all' && !n) return null;
+            return h('button', {
+                type: 'button', class: 'filter-chip', dataset: { tone: f.tone || cfg.tone || 'orange' },
+                'aria-pressed': String(filter === f.id), onclick: () => { filter = f.id; render(); },
+            }, f.icon ? icon(f.icon) : null, f.label, h('small', null, n));
+        }));
+    }
+
     function render() {
-        const keys = Object.keys(data);
-        if (cfg.sort) keys.sort((a, b) => cfg.sort(data[a], data[b]));
-        if (!keys.length) {
+        const all = Object.keys(data);
+        if (cfg.sort) all.sort((a, b) => cfg.sort(data[a], data[b]));
+        renderChips(all);
+        if (!all.length) {
+            resultInfo.textContent = '';
             mount(grid, h('div', { class: 'empty-state' }, icon(cfg.icon), `ยังไม่มีข้อมูล${cfg.noun}`));
+            return;
+        }
+        const f = cfg.filters?.find((x) => x.id === filter);
+        const keys = all.filter((k) => (!f || f.test(data[k])) && matches(data[k]));
+        resultInfo.textContent = query || f ? `${keys.length}/${all.length}` : `${all.length} รายการ`;
+        if (!keys.length) {
+            mount(grid, h('div', { class: 'empty-state' }, icon('magnifying-glass'), `ไม่พบ${cfg.noun}ที่ค้นหา — ลองคำอื่น หรือเลือก "ทั้งหมด"`));
             return;
         }
         mount(grid, keys.map((key) => card(key, data[key])));
@@ -96,6 +146,7 @@ export function createCollection(cfg) {
     return { get data() { return data; }, edit };
 }
 
-export function loading(noun) {
-    return h('div', { class: 'empty-state loading-state' }, icon('circle-notch'), `กำลังโหลดข้อมูล${noun}...`);
+/** การ์ดโครงร่างระหว่างรอโหลด */
+export function loading(noun, count = 4) {
+    return Array.from({ length: count }, (_, i) => h('div', { class: 'skeleton', 'aria-hidden': i ? 'true' : null, 'aria-label': i ? null : `กำลังโหลดข้อมูล${noun}` }));
 }

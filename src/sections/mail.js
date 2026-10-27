@@ -2,7 +2,7 @@
 // announcements/<id> = { title, content, createdAt, author }
 // จำในเครื่อง: เปิดรายการล่าสุดเมื่อไหร่ (จุดแดง) และอ่านฉบับไหนแล้ว (ไอคอนซองเปิด)
 import { $, h, icon, mount } from '../lib/dom.js';
-import { state } from '../lib/bus.js';
+import { emit, state } from '../lib/bus.js';
 import { newId, remove, set, subscribe } from '../lib/store.js';
 import { openModal } from '../ui/modal.js';
 import { openFormModal } from '../ui/form.js';
@@ -19,11 +19,18 @@ const markRead = (key) => { try { localStorage.setItem(READ_KEY, JSON.stringify(
 const fmtDate = (ts) => { try { return ts ? new Date(Number(ts)).toLocaleString('th-TH', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''; } catch (e) { return ''; } };
 const sortedKeys = () => Object.keys(data).sort((a, b) => (Number(data[b].createdAt) || 0) - (Number(data[a].createdAt) || 0));
 
-function refreshBadge() {
+/** มีประกาศใหม่ที่ยังไม่ได้เปิดหน้าต่างประกาศดู */
+export function hasUnread() {
     const latest = Math.max(0, ...Object.values(data).map((d) => Number(d.createdAt) || 0));
     let seen = 0;
     try { seen = Number(localStorage.getItem(SEEN_KEY) || 0); } catch (e) { /* ignore */ }
-    $('#mail-btn')?.classList.toggle('has-unread', latest > seen);
+    return latest > seen;
+}
+
+function refreshBadge() {
+    const unread = hasUnread();
+    $('#mail-btn')?.classList.toggle('has-unread', unread);
+    emit('mail-unread', unread);
 }
 
 export function initMail() {

@@ -38,9 +38,8 @@
     --radius: 12px;
     --radius-lg: 16px;
     --radius-xl: 22px;
-    --side-w: 248px;
-    --side-w-collapsed: 64px;
-    --topbar-h: 64px;
+    --page-w: 1240px;
+    --tabbar-h: 56px;
 
     --shadow-1: 0 4px 16px rgb(0 0 0 / 0.35);
     --shadow-2: 0 12px 36px rgb(0 0 0 / 0.55);

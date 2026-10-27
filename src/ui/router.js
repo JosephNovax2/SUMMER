@@ -4,14 +4,15 @@ import { emit } from '../lib/bus.js';
 import { playCutscene } from './cutscene.js';
 
 export const TABS = [
-    { id: 'farm', label: 'ข้อมูลงานฟาร์ม', icon: 'wheat-awn' },
-    { id: 'food', label: 'ข้อมูลอาหาร', icon: 'drumstick-bite' },
-    { id: 'devil', label: 'ผลไม้ปีศาจ', icon: 'apple-whole' },
-    { id: 'rune', label: 'ข้อมูลรูน', icon: 'scroll' },
-    { id: 'fashion', label: 'สถานะแฟชั่น', icon: 'shirt' },
-    { id: 'items', label: 'แหล่งที่มา ITEMS', icon: 'cube' },
-    { id: 'events', label: 'เวลากิจกรรม', icon: 'calendar-days' },
-    { id: 'gkey', label: 'เมนูลัดปุ่ม G', icon: 'keyboard' },
+    { id: 'home', label: 'หน้าแรก', icon: 'house', desc: 'สรุปทุกอย่างที่ต้องรู้วันนี้' },
+    { id: 'farm', label: 'งานฟาร์ม', icon: 'wheat-awn', desc: 'วิธีทำงานขาว/ดำ + เครื่องคำนวณ', path: 'jobs' },
+    { id: 'food', label: 'อาหาร', icon: 'drumstick-bite', desc: 'เอฟเฟกต์และวัตถุดิบ', path: 'foods' },
+    { id: 'devil', label: 'ผลไม้ปีศาจ', icon: 'apple-whole', desc: 'สกิลพิเศษแต่ละระดับ', path: 'devils' },
+    { id: 'rune', label: 'รูน', icon: 'scroll', desc: 'อาวุธที่ใส่ได้และเอฟเฟกต์', path: 'runes' },
+    { id: 'fashion', label: 'แฟชั่น', icon: 'shirt', desc: 'สถานะของชุดแต่ละแบบ', path: 'fashions' },
+    { id: 'items', label: 'ITEMS', icon: 'cube', desc: 'แหล่งที่มาของไอเทม', path: 'items' },
+    { id: 'events', label: 'เวลากิจกรรม', icon: 'calendar-days', desc: 'ตารางทั้งวัน เวลาไทย', path: 'events' },
+    { id: 'gkey', label: 'ปุ่ม G', icon: 'keyboard', desc: 'เมนูลัดในเกม' },
 ];
 
 let current = null;
@@ -20,7 +21,7 @@ export const currentTab = () => current;
 
 const fromHash = () => {
     const id = location.hash.replace('#', '');
-    return TABS.some((t) => t.id === id) ? id : 'farm';
+    return TABS.some((t) => t.id === id) ? id : 'home';
 };
 
 function show(id) {
@@ -30,15 +31,15 @@ function show(id) {
         const on = b.dataset.nav === id;
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-current', on ? 'page' : 'false');
+        if (on) b.scrollIntoView({ block: 'nearest', inline: 'center' });
     });
-    document.body.classList.remove('side-open');
     window.scrollTo({ top: 0 });
     emit('tab', id);
 }
 
 /** เปลี่ยนหมวดพร้อมคัทซีนสั้นๆ */
 export function goTo(id) {
-    if (id === current) { document.body.classList.remove('side-open'); return; }
+    if (id === current) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
     if (location.hash !== '#' + id) history.pushState(null, '', '#' + id);
     playCutscene(() => show(id), TAB_CUTSCENE_MS);
 }
